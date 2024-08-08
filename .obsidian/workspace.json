@@ -11,8 +11,12 @@
             "id": "8dc235171103af63",
             "type": "leaf",
             "state": {
-              "type": "empty",
-              "state": {}
+              "type": "markdown",
+              "state": {
+                "file": "src/SUMMARY.md",
+                "mode": "source",
+                "source": true
+              }
             }
           }
         ]
@@ -81,6 +85,7 @@
             "state": {
               "type": "backlink",
               "state": {
+                "file": "src/SUMMARY.md",
                 "collapseAll": false,
                 "extraContext": false,
                 "sortOrder": "alphabetical",
@@ -97,6 +102,7 @@
             "state": {
               "type": "outgoing-link",
               "state": {
+                "file": "src/SUMMARY.md",
                 "linksCollapsed": false,
                 "unlinkedCollapsed": true
               }
@@ -118,7 +124,9 @@
             "type": "leaf",
             "state": {
               "type": "outline",
-              "state": {}
+              "state": {
+                "file": "src/SUMMARY.md"
+              }
             }
           }
         ]
@@ -140,13 +148,44 @@
   },
   "active": "8dc235171103af63",
   "lastOpenFiles": [
-    "js/mermaid.min.js",
-    "js/mermaid-init.js",
-    "js",
-    "book.toml",
-    "book",
-    "src/SUMMARY.md",
     "src/chapter_1.md",
-    "src"
+    "src/SUMMARY.md",
+    "book/elasticlunr.min.js",
+    "book/mark.min.js",
+    "book/searcher.js",
+    "book/searchindex.js",
+    "book/searchindex.json",
+    "book/js/mermaid.min.js",
+    "book/js/mermaid-init.js",
+    "book/js",
+    "book/fonts/source-code-pro-v11-all-charsets-500.woff2",
+    "book/fonts/SOURCE-CODE-PRO-LICENSE.txt",
+    "book/FontAwesome/fonts/fontawesome-webfont.svg",
+    "book/favicon.svg",
+    "book/favicon.png",
+    "src/design-and-implementation/vm-architecture.md",
+    "src/design-and-implementation/reference-counting.md",
+    "src/design-and-implementation/README.md",
+    "src/design-and-implementation/module-system.md",
+    "src/design-and-implementation/module-system-design.md",
+    "src/design-and-implementation/memory-management.md",
+    "src/design-and-implementation/lightweight-design.md",
+    "src/design-and-implementation/lexical-syntax-analysis.md",
+    "src/design-and-implementation/interpreter-implementation.md",
+    "src/design-and-implementation/hot-reloading.md",
+    "src/design-and-implementation/gc-optimization.md",
+    "src/design-and-implementation/gc-implementation.md",
+    "src/design-and-implementation/garbage-collection.md",
+    "src/design-and-implementation/dynamic-linking.md",
+    "src/design-and-implementation/design-principles.md",
+    "src/design-and-implementation/code-generation.md",
+    "src/design-and-implementation/bytecode-and-vm.md",
+    "src/basics/variables.md",
+    "src/basics/tables.md",
+    "src/basics/syntax.md",
+    "src/basics/string-handling.md",
+    "src/basics/setup.md",
+    "src/basics/README.md",
+    "src/basics/philosophy-and-features.md"
   ]
 }
