@@ -13,7 +13,7 @@
             "state": {
               "type": "markdown",
               "state": {
-                "file": "src/SUMMARY.md",
+                "file": "src/design-and-implementation/coroutines-scheduling.md",
                 "mode": "source",
                 "source": true
               }
@@ -85,7 +85,7 @@
             "state": {
               "type": "backlink",
               "state": {
-                "file": "src/SUMMARY.md",
+                "file": "src/design-and-implementation/coroutines-scheduling.md",
                 "collapseAll": false,
                 "extraContext": false,
                 "sortOrder": "alphabetical",
@@ -102,7 +102,7 @@
             "state": {
               "type": "outgoing-link",
               "state": {
-                "file": "src/SUMMARY.md",
+                "file": "src/design-and-implementation/coroutines-scheduling.md",
                 "linksCollapsed": false,
                 "unlinkedCollapsed": true
               }
@@ -125,7 +125,7 @@
             "state": {
               "type": "outline",
               "state": {
-                "file": "src/SUMMARY.md"
+                "file": "src/design-and-implementation/coroutines-scheduling.md"
               }
             }
           }
@@ -146,7 +146,7 @@
       "command-palette:打开命令面板": false
     }
   },
-  "active": "8dc235171103af63",
+  "active": "9c9dcd8ef8d5077d",
   "lastOpenFiles": [
     "book/appendix",
     "book/elasticlunr.min.js",
@@ -154,11 +154,18 @@
     "book/searcher.js",
     "book/searchindex.js",
     "book/searchindex.json",
-    "book/404.html",
-    "book/design-and-implementation/coroutines-scheduling.html",
-    "book/design-and-implementation/coroutines-implementation.html",
-    "book/design-and-implementation/coroutines-design.html",
-    "book/design-and-implementation/coroutines.html",
+    "book/clipboard.min.js",
+    "book/ayu-highlight.css",
+    "book/css/variables.css",
+    "book/css/print.css",
+    "book/css/general.css",
+    "src/design-and-implementation/coroutines-scheduling.md",
+    "src/design-and-implementation/coroutines-scheduling.md",
+    "src/design-and-implementation/code-generation.md",
+    "src/design-and-implementation/coroutines-implementation.md",
+    "src/design-and-implementation/coroutines-design.md",
+    "src/SUMMARY.md",
+    "src/design-and-implementation/coroutines.md",
     "src/advanced/self.md",
     "src/advanced/coroutines-basics.md",
     "src/advanced/creating-using-coroutines.md",
@@ -166,12 +173,7 @@
     "src/advanced/coroutines-vs-threads.md",
     "src/advanced/coroutine-best-practices.md",
     "src/advanced/coroutines.md",
-    "src/design-and-implementation/coroutines-design.md",
-    "src/design-and-implementation/coroutines-implementation.md",
-    "src/design-and-implementation/coroutines-scheduling.md",
-    "src/design-and-implementation/coroutines.md",
     "src/lua-best-practices/cross-platform-deployment.md",
-    "src/SUMMARY.md",
     "src/lua-best-practices/code-deployment.md",
     "src/lua-best-practices/deployment.md",
     "src/lua-best-practices/debugging-tools.md",
@@ -182,8 +184,6 @@
     "src/lua-best-practices/performance-optimization.md",
     "src/lua-best-practices/coding-mistakes.md",
     "src/lua-best-practices/coding-standards.md",
-    "src/lua-best-practices/code-style.md",
-    "src/lua-best-practices/README.md",
     "book/FontAwesome/fonts/fontawesome-webfont.svg",
     "book/favicon.svg",
     "book/favicon.png"
