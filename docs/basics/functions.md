@@ -67,14 +67,14 @@ Lua 还支持匿名函数（没有名字的函数），它们通常用于需要�
 
 ```lua
 local functionList = {
-    function(x) return x * x end,  -- 计算平方
-    function(x) return x * x * x end  -- 计算立方
+    function(x) return x * x end,      -- 计算平方
+    function(x) return x * x * x end   -- 计算立方
 }
 
-local square = functionList 
-local cube = functionList 
+local square = functionList[1](5)
+local cube = functionList[2](3)
 print(square)  -- 输出 25
-print(cube)  -- 输出 27
+print(cube)    -- 输出 27
 ```
 
 ## 4. 函数作为参数
@@ -129,7 +129,11 @@ function printArgs(...)
     end
 end
 
-printArgs("a", "b", "c")  -- 输出 1 a 2 b 3 c
+printArgs("a", "b", "c")
+-- 输出
+-- 1	a
+-- 2	b
+-- 3	c
 ```
 
 ## 结语

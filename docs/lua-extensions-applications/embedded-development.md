@@ -30,10 +30,10 @@ make linux
 ```
 
 **为嵌入式平台编译：**
-你可能需要交叉编译Lua，以适应不同的嵌入式平台。例如，使用`arm-none-eabi-gcc`进行交叉编译。
+你可能需要交叉编译Lua，以适应不同的嵌入式平台。例如，使用`arm-none-eabi-gcc`进行交叉编译。Lua 的 Makefile 没有 `CROSS` 变量，用 `CC` 指定工具链即可（`generic` 目标不依赖任何平台特有库，适合裸机等场景）：
 
 ```bash
-make CROSS=arm-none-eabi-
+make generic CC=arm-none-eabi-gcc
 ```
 
 #### 2.3 **集成Lua到嵌入式系统**
@@ -120,7 +120,7 @@ setting2 = "value"
 ```c
 luaL_dofile(L, "config.lua");
 lua_getglobal(L, "setting1");
-bool setting1 = lua_toboolean(L, -1);
+int setting1 = lua_toboolean(L, -1);
 lua_pop(L, 1);
 ```
 

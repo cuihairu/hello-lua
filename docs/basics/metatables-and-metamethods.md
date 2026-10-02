@@ -45,7 +45,7 @@ print(t.someKey)  -- 输出 "Default value"
 
 ### `__newindex`
 
-当表中某个键被赋值时，`__newindex` 元方法会被调用。
+当对表中不存在的键赋值时，`__newindex` 元方法会被调用（对已存在的键赋值不会触发）。
 
 ```lua
 local t = {}
@@ -141,12 +141,14 @@ local mt = {
     end
 }
 setmetatable(t, mt)
-t.someKey = "Some value"
-print(t.someKey)
+t.someKey = "Some value"  -- 键不存在，触发 __newindex
+print(t.someKey)          -- 键已存在，直接读取，不触发 __index
+print(t.otherKey)         -- 键不存在，触发 __index
 -- 输出
--- Setting key: someKey to Some value
--- Accessing key: someKey
+-- Setting key:	someKey	to	Some value
 -- Some value
+-- Accessing key:	otherKey
+-- nil
 ```
 
 ## 结语

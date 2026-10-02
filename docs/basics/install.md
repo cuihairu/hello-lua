@@ -47,7 +47,7 @@
 - **Debian/Ubuntu** 系统：
     ```bash
     sudo apt-get update
-    sudo apt-get install lua5.3
+    sudo apt-get install lua5.4
     ```
 
 - **Fedora** 系统：
@@ -77,8 +77,8 @@
 
 1. 解压下载的压缩包：
     ```bash
-    tar zxpf lua-5.4.4.tar.gz
-    cd lua-5.4.4
+    tar zxpf lua-5.4.8.tar.gz
+    cd lua-5.4.8
     ```
 
 2. 编译 Lua：

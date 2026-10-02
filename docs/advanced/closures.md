@@ -112,8 +112,8 @@ end
 
 local square = makePower(2)
 local cube = makePower(3)
-print(square(4))  -- 输出 16
-print(cube(2))    -- 输出 8
+print(square(4))  -- 输出 16.0（`^` 运算符的结果是浮点数）
+print(cube(2))    -- 输出 8.0
 ```
 
 在这个例子中，`makePower` 函数返回了一个根据传入的 `exp` 参数创建的函数闭包。这些闭包能够计算不同的幂次。

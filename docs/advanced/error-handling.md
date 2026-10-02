@@ -14,7 +14,7 @@ Lua 的错误处理机制主要通过 `pcall` 和 `xpcall` 函数实现，这些
   ```lua
   local status, result = pcall(function()
       -- 可能会抛出错误的代码
-      return 1 / 0
+      error("division by zero")
   end)
   
   if status then
@@ -44,7 +44,7 @@ Lua 的错误处理机制主要通过 `pcall` 和 `xpcall` 函数实现，这些
 
   local status, result = xpcall(function()
       -- 可能会抛出错误的代码
-      return 1 / 0
+      error("division by zero", 0)  -- 第二个参数为 0 表示不在消息前添加出错位置
   end, errorHandler)
   
   print(result)  -- 输出 "Caught an error: division by zero"
@@ -70,9 +70,9 @@ Lua 的错误处理机制主要通过 `pcall` 和 `xpcall` 函数实现，这些
 
 运行时错误发生在代码执行过程中，常见的运行时错误包括：
 
-- **除零错误**：试图除以零。
-- **索引错误**：访问一个表中不存在的键。
-- **类型错误**：传递给函数的参数类型不正确。
+- **除零错误**：对整数执行 `//` 或 `%` 时除数为零（如 `1 // 0` 会抛出错误）。注意 `1 / 0` 并不报错，其结果是 `inf`。
+- **索引错误**：对 `nil` 值进行索引（如 `t.x` 中的 `t` 为 `nil`）。访问表中不存在的键只会得到 `nil`，并不会报错。
+- **类型错误**：对不支持的类型执行操作，如字符串与数字相加。
 
 ##### 2.3 错误信息
 
@@ -104,7 +104,7 @@ Lua 提供了 `error` 函数来手动抛出错误：
   end
 
   local function riskyFunction()
-      error("An error occurred")
+      error("An error occurred", 0)
   end
 
   local status, result = xpcall(riskyFunction, customErrorHandler)

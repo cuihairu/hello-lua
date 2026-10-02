@@ -64,13 +64,14 @@ end)
 **示例**：
 
 ```lua
--- 使用 debug 库打印调用堆栈
+-- 使用 debug 库查看调用者的信息
 function foo()
     bar()
 end
 
 function bar()
-    local info = debug.getinfo(2, "S")
+    -- "n" 才能取到函数名，"S" 提供来源与行号信息
+    local info = debug.getinfo(2, "Sn")
     print("Function name: " .. (info.name or "unknown"))
     print("Source: " .. info.source)
 end
@@ -96,20 +97,20 @@ foo()
 
 **性能分析** 用于识别代码中的性能瓶颈。以下是一些常见的 Lua 性能分析工具：
 
-- **[luaprofiler](https://github.com/keplerproject/luaprofiler)**：一个用于 Lua 代码性能分析的工具，可以生成调用图和性能统计数据。
+- **[luaprofiler](https://github.com/LuaDist/luaprofiler)**：一个用于 Lua 代码性能分析的工具，记录每次函数调用的次数与耗时。它的模块名是 `profiler`，只有 `start([filename])` 和 `stop()` 两个函数：`start` 的可选参数指定日志文件（缺省写为 `lprof_随机数.out`），结果在 `stop` 之后可用于 `summary.lua` 等分析脚本。注意该项目面向 Lua 5.1，在 5.4 下可能需要修改后才能编译。
 
 **示例**：
 
 ```lua
 -- 使用 luaprofiler 进行性能分析
-local profiler = require("luaprofiler")
-profiler.start()
+local profiler = require("profiler")
+profiler.start("profiler.log")
 
 -- 运行需要分析的代码
-doHeavyWork()
+-- doHeavyWork()
 
 profiler.stop()
-profiler.report()
+-- 分析结果写入 profiler.log
 ```
 
 - **[LuaJIT profiler](https://luajit.org/profiling.html)**：LuaJIT 提供了内置的性能分析工具，如 `-jv` 参数。

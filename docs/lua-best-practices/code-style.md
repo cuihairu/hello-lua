@@ -18,8 +18,8 @@
 **示例**:
 
 ```lua
--- 不推荐
-functionfoo(arg1,arg2)returnarg1+arg2end
+-- 不推荐（虽然语法合法，但缺少空格与换行，几乎无法阅读）
+function foo(arg1,arg2)return arg1+arg2 end
 
 -- 推荐
 function foo(arg1, arg2)

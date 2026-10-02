@@ -17,23 +17,29 @@ Lua C扩展允许你将C函数暴露给Lua脚本，这样Lua脚本就可以调�
 
 // C函数：计算两个数的和
 static int l_sum(lua_State *L) {
-    double a = luaL_checknumber(L, 1);  // 获取第一个参数
-    double b = luaL_checknumber(L, 2);  // 获取第二个参数
-    lua_pushnumber(L, a + b);          // 返回结果
-    return 1;                          // 返回一个结果
+    lua_Integer a = luaL_checkinteger(L, 1);  // 获取第一个参数
+    lua_Integer b = luaL_checkinteger(L, 2);  // 获取第二个参数
+    lua_pushinteger(L, a + b);               // 返回结果
+    return 1;                                // 返回一个结果
 }
 
-// 注册函数到Lua中
+// 模块函数表
+static const luaL_Reg mylib_funcs[] = {
+    {"sum", l_sum},
+    {NULL, NULL}
+};
+
+// 模块入口：require("mylib") 时由 Lua 自动调用
 int luaopen_mylib(lua_State *L) {
-    lua_register(L, "sum", l_sum);    // 注册函数
-    return 0;
+    luaL_newlib(L, mylib_funcs);   // 创建模块表并注册函数
+    return 1;                      // 返回模块表（require 的返回值）
 }
 ```
 
 **解释：**
 - `l_sum` 是定义在C中的函数，将执行Lua脚本中的操作。
-- `lua_register` 将 `l_sum` 函数注册为Lua中的 `sum` 函数。
-- `luaopen_mylib` 是Lua C API要求的函数名称，用于初始化库。
+- `luaL_newlib` 创建模块表并把 `mylib_funcs` 中的函数填入其中。
+- `luaopen_mylib` 是Lua C API要求的模块入口函数名：`require("mylib")` 会调用它，并把返回值当作模块。因此这里必须返回 1 个值（模块表）；返回 0 会让 `require` 得到 `true`，随后的 `mylib.sum` 就会报错。
 
 ---
 
@@ -44,19 +50,20 @@ int luaopen_mylib(lua_State *L) {
 **在Linux上：**
 
 ```sh
-gcc -shared -o mylib.so -fPIC mylib.c
+gcc -shared -o mylib.so -fPIC mylib.c -I/usr/local/include
 ```
 
 **在Windows上：**
 
 ```sh
-gcc -shared -o mylib.dll mylib.c
+gcc -shared -o mylib.dll mylib.c -I/path/to/lua/include
 ```
 
 **解释：**
 - `-shared` 表示生成共享库。
 - `-fPIC` 生成位置无关的代码，这在Linux上是必要的。
-- `mylib.so` 或 `mylib.dll` 是编译生成的动态库文件。
+- `-I` 指向 Lua 头文件所在目录，按本机 Lua 的安装位置调整。
+- `mylib.so` 或 `mylib.dll` 是编译生成的动态库文件。Windows 上通常还需要链接 Lua 的导入库（如 `-llua54`），并保证运行时能找到 Lua 的 DLL。
 
 ---
 

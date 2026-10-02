@@ -75,7 +75,7 @@ local a = 10
 local b = 5
 print(a + b)  -- 输出 15
 print(a * b)  -- 输出 50
-print(a ^ b)  -- 输出 100000
+print(a ^ b)  -- 输出 100000.0
 ```
 
 ### 关系操作符

@@ -71,7 +71,7 @@ print(t.someKey)  -- 输出 "Default value"
 ### 常见的元方法
 
 - `__index`: 当表的某个键不存在时调用
-- `__newindex`: 当表的某个键被赋值时调用
+- `__newindex`: 当对表中不存在的键赋值时调用（对已存在的键赋值不会触发）
 - `__add`, `__sub`, `__mul`: 支持运算符重载
 
 ### 示例：运算符重载
@@ -111,7 +111,7 @@ Lua 提供了丰富的字符串处理功能，通过表的索引或库函数来�
 
 ```lua
 local s = "hello, world"
-print(string.len(s))  -- 输出 13
+print(string.len(s))  -- 输出 12
 print(string.upper(s))  -- 输出 "HELLO, WORLD"
 print(string.sub(s, 1, 5))  -- 输出 "hello"
 ```

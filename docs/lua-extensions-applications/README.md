@@ -22,30 +22,41 @@ Lua的一个重要特点是与C语言的高度集成。Lua提供了简单而强�
 // C函数：计算两个数的和
 static int l_sum(lua_State *L) {
     // 获取参数
-    double a = luaL_checknumber(L, 1);
-    double b = luaL_checknumber(L, 2);
-    
+    lua_Integer a = luaL_checkinteger(L, 1);
+    lua_Integer b = luaL_checkinteger(L, 2);
+
     // 计算和并推入栈
-    lua_pushnumber(L, a + b);
-    
+    lua_pushinteger(L, a + b);
+
     // 返回结果的数量
     return 1;
 }
 
-// 注册函数到Lua中
+// 模块函数表
+static const luaL_Reg mylib_funcs[] = {
+    {"sum", l_sum},
+    {NULL, NULL}
+};
+
+// 模块入口：require("mylib") 时由 Lua 自动调用
 int luaopen_mylib(lua_State *L) {
-    lua_register(L, "sum", l_sum);
-    return 0;
+    luaL_newlib(L, mylib_funcs);  // 创建模块表并注册函数
+    return 1;                     // 返回模块表
 }
 ```
 
 **解释：**
-- `luaL_checknumber` 用于获取传递给C函数的参数。
-- `lua_pushnumber` 用于将结果推送到Lua栈。
-- `lua_register` 将C函数注册为Lua中的全局函数。
+- `luaL_checkinteger` 用于获取传递给C函数的参数。
+- `lua_pushinteger` 用于将结果推送到Lua栈。
+- `luaopen_mylib` 是模块入口：`require("mylib")` 会调用它，并把它的**返回值作为模块本身**。因此必须在这里创建模块表（`luaL_newlib`）并返回 1 个值；如果只是用 `lua_register` 把函数注册成全局函数而不返回表，`require("mylib")` 得到的将是 `true`，随后的 `mylib.sum(...)` 就会报错。
 
 **编译并使用扩展：**
-1. 使用 `gcc` 编译 C 扩展为动态库。
+1. 使用 `gcc` 编译 C 扩展为动态库（头文件路径按本机 Lua 安装位置调整）：
+
+   ```sh
+   gcc -shared -fPIC -o mylib.so mylib.c -I/usr/local/include
+   ```
+
 2. 在 Lua 脚本中调用 `require` 来加载动态库，并使用注册的 C 函数。
 
 ```lua
@@ -68,6 +79,7 @@ Lua广泛应用于嵌入式系统中，由于其小巧和高效的特性，非�
 **示例：在嵌入式系统中使用Lua**
 
 ```c
+#include <stdio.h>
 #include <lua.h>
 #include <lualib.h>
 #include <lauxlib.h>
@@ -75,11 +87,11 @@ Lua广泛应用于嵌入式系统中，由于其小巧和高效的特性，非�
 void run_lua_script(const char *script) {
     lua_State *L = luaL_newstate();  // 创建Lua状态
     luaL_openlibs(L);  // 打开Lua标准库
-    
+
     if (luaL_dofile(L, script) != LUA_OK) {
         fprintf(stderr, "Error: %s\n", lua_tostring(L, -1));
     }
-    
+
     lua_close(L);  // 关闭Lua状态
 }
 ```

@@ -8,7 +8,7 @@ Lua 解释器是一个命令行工具，允许你在命令行中直接运行 Lua
 
 ```sh
 $ lua
-Lua 5.4.4  Copyright (C) 1994-2020 Lua.org, PUC-Rio
+Lua 5.4.8  Copyright (C) 1994-2025 Lua.org, PUC-Rio
 > 
 ```
 
@@ -16,14 +16,14 @@ Lua 5.4.4  Copyright (C) 1994-2020 Lua.org, PUC-Rio
 
 在 Lua 提示符下，你可以直接输入 Lua 代码并按回车键执行。例如：
 
-```lua
+```text
 > print("Hello, Lua!")
 Hello, Lua!
 ```
 
 你可以执行任意 Lua 代码，例如定义变量、编写函数等：
 
-```lua
+```text
 > x = 10
 > y = 20
 > print(x + y)
@@ -79,19 +79,27 @@ Lua 解释器支持一些命令行选项，常用选项包括：
 - `-v`：显示 Lua 版本信息。例如：
     ```sh
     $ lua -v
-    Lua 5.4.4  Copyright (C) 1994-2020 Lua.org, PUC-Rio
+    Lua 5.4.8  Copyright (C) 1994-2025 Lua.org, PUC-Rio
     ```
 
 ## 5. 脚本的调试和错误处理
 
-当运行 Lua 脚本时，如果代码中有错误，Lua 解释器会显示错误信息和代码出错的位置。示例错误信息：
+当运行 Lua 脚本时，如果代码中有错误，Lua 解释器会显示错误信息和代码出错的位置。例如有如下 `script.lua`：
+
+```lua
+-- script.lua
+local t = {}
+print(t.x + 1)
+```
+
+运行它时会得到如下错误信息：
 
 ```sh
 $ lua script.lua
-script.lua:3: attempt to perform arithmetic on a nil value (field 'x')
+lua: script.lua:3: attempt to perform arithmetic on a nil value (field 'x')
 stack traceback:
-    script.lua:3: in main chunk
-    [C]: in ?
+	script.lua:3: in main chunk
+	[C]: in ?
 ```
 
 可以根据错误信息进行调试和修正。
@@ -100,7 +108,7 @@ stack traceback:
 
 要退出 Lua 解释器，可以输入 `os.exit()` 或按 `Ctrl+D`（在 Unix 系统上）或 `Ctrl+Z`（在 Windows 系统上）。
 
-```lua
+```text
 > os.exit()
 ```
 

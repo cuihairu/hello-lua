@@ -80,82 +80,100 @@ Lua 的单元测试框架用于验证代码中的功能是否按预期工作。�
   busted test_addition_spec.lua
   ```
 
-### 3. Testrunner
+### 3. 不引入框架的最简做法
 
-**Testrunner** 是一个简单的 Lua 单元测试框架，旨在提供基本的测试功能，适合需要轻量级解决方案的用户。
+如果项目很小，不想引入第三方库，用 `assert` 加一个简单的统计循环就能写出可运行的测试：
 
 - **特性**：
-  - 简单易用
-  - 基本的断言功能
-
-- **安装**：可以从 GitHub 下载。
-
-  ```bash
-  git clone https://github.com/luatest/testrunner.git
-  ```
+  - 零依赖，任何 Lua 环境都能运行
+  - 用 `pcall` 统计失败用例并给出退出码
 
 - **示例代码**：
 
   ```lua
   -- test_addition.lua
-  local testrunner = require('testrunner')
-
-  -- 被测试的函数
-  function add(a, b)
-      return a + b
-  end
-
-  -- 测试用例
-  testrunner.add_test(function()
-      assert(add(2, 3) == 5)
-      assert(add(-1, -1) == -2)
-  end)
-
-  -- 运行测试
-  testrunner.run()
-  ```
-
-### 4. LSpec
-
-**LSpec** 是一个基于 Lua 的 BDD 测试框架，类似于 RSpec（Ruby）和 Jasmine（JavaScript）。它支持描述性测试，并且具有可读性强的测试输出。
-
-- **特性**：
-  - 支持 BDD 风格的测试
-  - 清晰的测试描述
-  - 支持嵌套的测试套件
-
-- **安装**：可以从 GitHub 下载。
-
-  ```bash
-  git clone https://github.com/lunarmodules/lspec.git
-  ```
-
-- **示例代码**：
-
-  ```lua
-  -- test_addition_spec.lua
-  local lspec = require('lspec')
+  local failures = 0
 
   -- 被测试的函数
   local function add(a, b)
       return a + b
   end
 
-  -- 测试用例
-  describe("Addition", function()
-      it("should add positive numbers correctly", function()
-          assert.are.equal(add(2, 3), 5)
-      end)
+  -- 一个极简的测试器：记录失败的用例
+  local function test(name, fn)
+      local ok, err = pcall(fn)
+      if ok then
+          print("[PASS] " .. name)
+      else
+          failures = failures + 1
+          print("[FAIL] " .. name .. " -- " .. tostring(err))
+      end
+  end
 
-      it("should add negative numbers correctly", function()
-          assert.are.equal(add(-1, -1), -2)
-      end)
+  -- 测试用例
+  test("正数相加", function()
+      assert(add(2, 3) == 5)
   end)
 
+  test("负数相加", function()
+      assert(add(-1, -1) == -2)
+  end)
+
+  -- 运行并按失败数决定退出码
+  os.exit(failures)
+  ```
+
+  运行方式与普通脚本相同：
+
+  ```bash
+  lua test_addition.lua
+  ```
+
+### 4. Lunatest
+
+**Lunatest** 是一个 xUnit 风格的 Lua 单元测试框架，额外支持随机化测试（类似 QuickCheck）。它与 lunit 兼容，测试函数用全局的 `test_*` 命名即可被发现；断言函数（`lunatest.assert_equal`、`lunatest.assert_true` 等）挂在 `lunatest` 模块上，不写入全局环境。
+
+- **特性**：
+  - xUnit 风格，lunit 兼容
+  - 支持随机化测试
+  - 零额外依赖（可选使用 lrandom、luasocket 增强随机数与计时）
+
+- **安装**：可以从 GitHub 获取。
+
+  ```bash
+  git clone https://github.com/silentbicycle/lunatest.git
+  ```
+
+- **示例代码**：
+
+  ```lua
+  -- test_addition.lua
+  local lunatest = require("lunatest")
+
+  -- 被测试的函数
+  local function add(a, b)
+      return a + b
+  end
+
+  -- 测试用例：全局函数，名字以 test_ 开头
+  function test_add_positive_numbers()
+      lunatest.assert_equal(add(2, 3), 5)
+  end
+
+  function test_add_negative_numbers()
+      lunatest.assert_equal(add(-1, -1), -2)
+  end
+
   -- 运行测试
-  lspec.run()
+  lunatest.run()
+  ```
+
+  运行测试：
+
+  ```bash
+  lua test_addition.lua -v
   ```
 
 ### 总结
 
-这些单元测试框架提供了不同的功能和特性，可以根据你的需求选择适合的框架来进行 Lua 编程中的单元测试。LuaUnit 和 Busted 是最常用的选择，适合大多数的测试需求，而 Testrunner 和 LSpec 则适合更简单或更具有描述性的测试场景。
+这些单元测试框架提供了不同的功能和特性，可以根据你的需求选择适合的框架来进行 Lua 编程中的单元测试。LuaUnit 和 Busted 是最常用的选择，适合大多数的测试需求；Lunatest 适合希望使用 xUnit 风格或随机化测试的场景；而“不引入框架的最简做法”则在依赖受限或脚本很小的时候最省事。

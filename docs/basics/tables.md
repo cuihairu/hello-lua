@@ -77,10 +77,10 @@ print(person.occupation)  -- 输出 "Engineer"
 for key, value in pairs(person) do
     print(key, value)
 end
--- 输出
--- name Bob
--- age 25
--- occupation Engineer
+-- 输出（三条键值对都会被遍历到，但顺序取决于表的哈希顺序，可能与下面不同）
+-- name	Bob
+-- age	25
+-- occupation	Engineer
 ```
 
 ## 4. 表的嵌套
@@ -121,7 +121,7 @@ print(t.someKey)  -- 输出 "Default value"
 ### 常见的元方法
 
 - `__index`: 当表中找不到某个键时调用
-- `__newindex`: 当表中某个键被赋值时调用
+- `__newindex`: 当对表中不存在的键赋值时调用（对已存在的键赋值不会触发）
 - `__add`, `__sub`, `__mul`: 支持运算符重载
 
 ### 运算符重载示例

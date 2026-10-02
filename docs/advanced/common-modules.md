@@ -25,7 +25,7 @@ Lua 社区有很多功能强大且常用的模块，这些模块扩展了 Lua �
   - URL 解析：处理 HTTP 请求和响应。
 
 - **安装**：`luarocks install luasocket`
-- **文档**：[LuaSocket Wiki](https://github.com/lunajson/lua-socket/wiki)
+- **文档**：[LuaSocket GitHub 页面](https://github.com/lunarmodules/luasocket)
 
 #### 3. LuaFileSystem
 
@@ -37,7 +37,7 @@ Lua 社区有很多功能强大且常用的模块，这些模块扩展了 Lua �
   - 目录遍历：递归遍历目录及其内容。
 
 - **安装**：`luarocks install luafilesystem`
-- **文档**：[LuaFileSystem GitHub 页面](https://github.com/luafilesystem/luafilesystem)
+- **文档**：[LuaFileSystem GitHub 页面](https://github.com/lunarmodules/luafilesystem)
 
 #### 4. Lua CJSON
 
@@ -83,7 +83,7 @@ Lua 社区有很多功能强大且常用的模块，这些模块扩展了 Lua �
   - 结果集处理：处理查询结果并访问数据。
 
 - **安装**：`luarocks install luasql-sqlite3`（根据需要安装不同的数据库驱动）
-- **文档**：[Luasql GitHub 页面](https://github.com/stevedonovan/luasql)
+- **文档**：[LuaSQL GitHub 页面](https://github.com/lunarmodules/luasql)
 
 #### 8. Copas
 

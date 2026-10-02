@@ -61,8 +61,9 @@
 
 ### 相关资源
 
-- [Lua官方文档](https://www.lua.org/manual/5.1/)
+- [Lua 5.4 官方手册](https://www.lua.org/manual/5.4/)
 - [Lua源代码](https://www.lua.org/source/)
-- [Lua垃圾回收机制详解](https://www.lua.org/gc/manual.html)
+- [垃圾回收（手册 2.5 节）](https://www.lua.org/manual/5.4/manual.html#2.5)
+- [《The Implementation of Lua 5.0》论文](https://www.lua.org/doc/jucs05.pdf)
 
 本章节将为你提供 Lua 设计与实现的深刻理解，帮助你更好地利用和扩展 Lua。

@@ -24,18 +24,17 @@ Lua的垃圾回收器采用了一些策略来优化垃圾回收过程：
 
 Lua提供了`collectgarbage`函数用于手动控制垃圾回收。常用的操作包括：
 
-- **获取和设置垃圾回收参数**：
+- **调整垃圾回收参数**：
   ```lua
-  local pause = collectgarbage("getpause")  -- 获取当前的暂停阈值
   collectgarbage("setpause", 200)  -- 设置新的暂停阈值
   ```
+  注意 `collectgarbage` 没有 `getpause`/`getstepmul` 这类读取参数的选项，只能设置；可用选项包括 `"collect"`、`"count"`、`"stop"`、`"restart"`、`"setpause"`、`"setstepmul"`、`"incremental"`、`"generational"`、`"step"`、`"isrunning"`。
 - **手动触发垃圾回收**：
   ```lua
   collectgarbage("collect")  -- 触发一次全垃圾回收
   ```
-- **获取和设置步长倍率**：
+- **设置步长倍率**：
   ```lua
-  local stepmul = collectgarbage("getstepmul")  -- 获取当前的步长倍率
   collectgarbage("setstepmul", 400)  -- 设置新的步长倍率
   ```
 

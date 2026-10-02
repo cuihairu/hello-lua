@@ -126,10 +126,12 @@ end
 
 **示例：模块缓存**
 
+实际项目中很少需要自己实现缓存，因为 `require` 已经通过 `package.loaded` 做了缓存。下面用自定义函数演示缓存机制，注意不要覆盖全局的 `require`：
+
 ```lua
 local module_cache = {}
 
-function require(module_name)
+local function cached_require(module_name)
     if module_cache[module_name] then
         return module_cache[module_name]
     end

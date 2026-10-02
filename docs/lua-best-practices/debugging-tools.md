@@ -2,16 +2,16 @@
 
 ### 1. **Lua 调试器**
 
-#### **Lua Debugger (luadebug)**
+#### **LuaDebug / luadebug**
 
-- **描述**：`luadebug` 是一个集成的 Lua 调试器，提供了基本的调试功能，如设置断点、单步执行、变量查看等。
+- **描述**：`luadebug`（LuaDebug）是一个远程调试器，支持设置断点、单步执行、变量查看，常与 IDE 插件配合调试游戏脚本。
 - **安装**：可以从 GitHub 上获取。
-  
+
   ```bash
-  git clone https://github.com/luadebug/luadebug.git
+  git clone https://github.com/sumory/luadebug.git
   ```
 
-- **使用**：`luadebug` 提供了一个命令行界面，你可以在脚本中插入调试代码，运行调试器并交互式地调试你的 Lua 程序。
+- **使用**：把调试器库加入 `package.path`，在脚本中启动它并连上调试客户端，即可交互式地调试你的 Lua 程序。
 
 #### **ZeroBrane Studio**
 
@@ -22,21 +22,31 @@
 
 ### 2. **Lua 调试库**
 
-#### **LuaDebugger**
+#### **MobDebug**
 
-- **描述**：LuaDebugger 是一个轻量级的 Lua 调试库，可以嵌入到你的 Lua 应用程序中，提供基本的调试功能。
-- **安装**：将 LuaDebugger 库文件添加到你的 Lua 项目中。
+- **描述**：MobDebug 是一个轻量级的 Lua 远程调试库（ZeroBrane Studio 使用的就是它），支持 Lua 5.1～5.4 与 LuaJIT，可以嵌入到你的应用程序中，提供断点、单步执行、变量查看和远程执行等能力。
+- **安装**：从 GitHub 获取后，把 `src/mobdebug.lua` 加入 `package.path`（它依赖 LuaSocket）。
 
-- **使用**：在你的 Lua 代码中引入 `LuaDebugger` 库，并使用提供的 API 进行调试。
+  ```bash
+  git clone https://github.com/pkulchenko/MobDebug.git
+  ```
+
+- **使用**：在脚本中启动调试器，它会连接到调试服务器（如 ZeroBrane Studio），之后从断点处开始单步调试。
 
   ```lua
-  local debug = require('debugger')
+  local mobdebug = require("mobdebug")
 
-  -- 设置断点
-  debug.setBreakpoint("myfile.lua", 10)
+  mobdebug.start()   -- 连接调试服务器并开始调试
 
-  -- 启动调试
-  debug.start()
+  -- 之后在调试客户端中设置断点、单步执行
+  local function work(n)
+      local acc = 0
+      for i = 1, n do acc = acc + i end
+      return acc
+  end
+  print(work(10))
+
+  mobdebug.done()    -- 结束调试
   ```
 
 ### 3. **日志和跟踪**
@@ -50,21 +60,26 @@
   print("Value of x: ", x)
   ```
 
-#### **日志记录库**
+#### **文件日志**
 
-- **描述**：使用日志记录库可以更好地管理和格式化调试信息。例如，使用 `LuaLog` 这样的库可以将日志信息记录到文件中。
-- **安装**：通过 LuaRocks 安装。
-
-  ```bash
-  luarocks install lua-log
-  ```
+- **描述**：当 `print` 不够用时，把日志写入文件更便于留存和检索。不依赖第三方库时，用 `io.open` 即可实现一个简单的日志函数；LuaRocks 上也有多个现成的日志库（搜索 `logging`）。
 
 - **使用**：
 
   ```lua
-  local log = require('log')
-  log.info("This is an info message")
-  log.error("This is an error message")
+  -- 简单的文件日志
+  local logfile = assert(io.open("app.log", "a"))
+
+  local function log(level, msg)
+      logfile:write(string.format("%s [%s] %s\n",
+          os.date("%Y-%m-%d %H:%M:%S"), level, msg))
+      logfile:flush()
+  end
+
+  log("INFO", "service started")
+  log("ERROR", "connection lost")
+
+  logfile:close()
   ```
 
 ### 4. **集成调试工具**
@@ -78,25 +93,35 @@
 
 ### 5. **性能分析**
 
-#### **Lua Profiler (luaprof)**
+#### **LuaJIT 内置分析器（-jp）**
 
-- **描述**：`luaprof` 是一个 Lua 性能分析工具，用于跟踪代码的执行时间和性能瓶颈。
-- **安装**：从 GitHub 上获取。
+- **描述**：LuaJIT 2.1 自带低开销的采样分析器，通过 `-jp` 选项开启，按函数统计调用次数与采样占比，无需引入第三方库。
+- **使用**：
 
   ```bash
-  git clone https://github.com/luaprof/luaprof.git
+  luajit -jp=v myscript.lua     # -jp=v 输出按模块/函数聚合的分析报告
+  luajit -jp=myprof.out myscript.lua   # 把原始采样写入文件
   ```
 
-- **使用**：在 Lua 脚本中引入 `luaprof` 库，并使用提供的 API 进行性能分析。
+#### **LuaProfiler (luaprofiler)**
+
+- **描述**：LuaProfiler 是一个 Lua 性能分析工具，记录每次函数调用的耗时与次数，适合分析标准解释器下的热点函数。模块名为 `profiler`，提供 `start([filename])` 与 `stop()`。
+- **安装**：可以通过 LuaRocks 安装。
+
+  ```bash
+  luarocks install luaprofiler
+  ```
+
+- **使用**：在 Lua 脚本中引入 `profiler` 库，用 `start`/`stop` 包住要分析的代码段。
 
   ```lua
-  local prof = require('luaprof')
-  prof.start()
+  local prof = require("profiler")
+  prof.start("profile.log")
 
   -- 执行你的 Lua 代码
 
   prof.stop()
-  prof.report()
+  -- 结果写入 profile.log
   ```
 
 ### 总结

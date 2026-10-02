@@ -7,29 +7,29 @@
 Lua 中的错误可以大致分为以下几种类型：
 
 1. **语法错误**：
-   - **描述**：在代码编写过程中出现的错误，例如缺少关键字、括号不匹配等。
+   - **描述**：在代码编写过程中出现的错误，例如缺少关键字、括号不匹配等。这类错误在加载阶段就会被 `luac -p` 或解释器发现。
    - **示例**：
      ```lua
      local x = 10
-     print(x -- 缺少右括号
+     -- 下面的调用缺少右括号，会引发语法错误，无法通过语法检查：
+     -- print(x
      ```
 
 2. **运行时错误**：
-   - **描述**：程序运行时发生的错误，如除以零、访问不存在的表元素等。
+   - **描述**：程序运行时发生的错误，如整数除以零、对 `nil` 值进行索引或算术运算等。
    - **示例**：
      ```lua
-     local x = 10 / 0  -- 除以零
+     local x = 10 // 0  -- 整数除以零，会引发运行时错误（10 / 0 则返回 inf，并不报错）
      ```
 
 3. **逻辑错误**：
    - **描述**：程序逻辑错误，代码能够运行但不按预期工作，通常难以通过错误消息直接识别。
    - **示例**：
      ```lua
-     local function factorial(n)
-         if n == 0 then return 1 end
-         return n * factorial(n - 1)  -- 忘记处理负数情况
+     local function is_even(n)
+         return n % 2 == 1  -- 逻辑写反了，判断偶数应为 n % 2 == 0
      end
-     print(factorial(-5))
+     print(is_even(4))  -- 输出 false，但 4 是偶数，预期应为 true
      ```
 
 4. **类型错误**：
@@ -67,7 +67,7 @@ Lua 提供了一些内建的调试工具和库，帮助开发者跟踪和修复�
      - `debug.getinfo([thread,] function[, what])`：获取有关函数的信息，如名称、源代码位置等。
        ```lua
        local info = debug.getinfo(1, "S")
-       print(info.source)  -- 输出当前脚本文件名
+       print(info.source)  -- 输出形如 "@demo.lua"（@ 开头表示代码来自脚本文件）
        ```
 
 2. **`pcall` 和 `xpcall`**：
@@ -75,7 +75,7 @@ Lua 提供了一些内建的调试工具和库，帮助开发者跟踪和修复�
    - **用法**：
      ```lua
      local function riskyFunction()
-         return 1 / 0
+         error("division by zero")
      end
 
      local status, result = pcall(riskyFunction)

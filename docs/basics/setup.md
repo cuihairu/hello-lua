@@ -34,7 +34,7 @@
     - 大多数 Linux 发行版的包管理器都包含 Lua，使用以下命令可以安装 Lua：
       - 在 Debian/Ubuntu 系统上：
         ```bash
-        sudo apt-get install lua5.3
+        sudo apt-get install lua5.4
         ```
       - 在 Fedora 系统上：
         ```bash
@@ -103,3 +103,4 @@ LuaRocks 是 Lua 的包管理器，可以轻松地为你的 Lua 项目安装和�
 安装完成后，可以使用 LuaRocks 来安装和管理 Lua 的第三方库。例如，安装 `luasocket` 库：
 ```bash
 luarocks install luasocket
+```

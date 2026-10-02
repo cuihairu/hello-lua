@@ -10,8 +10,8 @@ Lua 使用的是一种基于标记-清除（mark-and-sweep）算法的垃圾回�
 
 **使用 `collectgarbage` 函数**：
 - `collectgarbage("stop")`：停止垃圾回收。
-- `collectgarbage("start")`：启动垃圾回收。
-- `collectgarbage("collect")`：手动触发一次垃圾回收。
+- `collectgarbage("restart")`：重新启动垃圾回收（没有 `"start"` 这个选项）。
+- `collectgarbage("collect")`：手动触发一次完整回收。
 - `collectgarbage("setpause", value)`：设置垃圾回收的暂停阈值。`value` 是一个百分比，表示 GC 何时触发。
 - `collectgarbage("setstepmul", value)`：设置垃圾回收的步进乘数。`value` 是一个乘数，用于调整 GC 的步进量。
 
@@ -21,21 +21,21 @@ Lua 使用的是一种基于标记-清除（mark-and-sweep）算法的垃圾回�
 -- 停止垃圾回收
 collectgarbage("stop")
 
--- 执行内存密集型操作
-doHeavyWork()
+-- 执行内存密集型操作（doHeavyWork 为示意）
+-- doHeavyWork()
 
 -- 手动触发一次垃圾回收
 collectgarbage("collect")
 
--- 启动垃圾回收
-collectgarbage("start")
+-- 重新启动垃圾回收
+collectgarbage("restart")
 ```
 
 ### 3. **调整 GC 参数**
 
 **调整 GC 阈值**：
-- `setpause`：控制垃圾回收的触发频率。值越大，GC 触发频率越低。
-- `setstepmul`：控制垃圾回收的工作量。值越大，GC 工作越少。
+- `setpause`：控制垃圾回收的触发频率。值越大，GC 触发频率越低（峰值内存更高）。
+- `setstepmul`：控制垃圾回收的工作量。值越大，每个 GC 步骤完成的工作越多，回收越快，但单步占用 CPU 越多。
 
 **示例**：
 
@@ -75,15 +75,28 @@ end
 
 **技巧**：
 - **使用高效的数据结构**：选择适合的表结构来减少内存使用和 GC 压力。
-- **避免循环引用**：尽量避免表和对象之间的循环引用，因为这会导致垃圾回收难以清理这些对象。
+- **及时解除不再需要的引用**：Lua 的标记-清除回收器可以正确处理循环引用，循环引用本身不会造成内存泄漏；但只要对象之间还互相引用着、且从根集可达，它们就不会被回收。因此长期持有的容器（如缓存、注册表）应清掉不再需要的条目，或改用弱引用表，让不再使用的对象能尽早被回收。
 
 **示例**：
 
 ```lua
--- 避免循环引用
-local a = {}
-local b = {a = a}
-a.b = b
+-- 用弱值表做缓存：条目没有被其他地方引用时可以被回收
+local cache = setmetatable({}, { __mode = "v" })
+
+do
+    local a = {}
+    local b = {a = a}
+    a.b = b              -- 循环引用
+    cache.a = a          -- 只有弱表持有 a
+end
+
+print("回收前条目数:", (function()
+    local n = 0 for _ in pairs(cache) do n = n + 1 end return n
+end)())                  -- 1
+collectgarbage("collect")
+print("回收后条目数:", (function()
+    local n = 0 for _ in pairs(cache) do n = n + 1 end return n
+end)())                  -- 0：循环引用的对象被整组回收
 ```
 
 ### 6. **监控和分析**

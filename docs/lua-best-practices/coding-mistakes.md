@@ -31,18 +31,20 @@ end
 
 #### 2. **错误的表键使用**
 
-**误区**: 使用非字符串或非数字类型作为表的键，导致意外的行为或无法预期的结果。
+**误区**: 使用每次都新建的表作为键，导致键值对无法取回。
+
+表本身可以作为键（Lua 允许任何非 `nil` 的值作为键），但下面的写法每次 `{}` 都会创建一个**新**表，写入和读取用的是两个不同的对象，因此取回的是 `nil`。
 
 **示例**:
 
 ```lua
 local t = {}
-t[{}] = "value"  -- 错误的键使用，表不能使用表作为键
+t[{}] = "value"   -- 写入：键是这里新建的表
 
-print(t[{}])  -- 这将导致不可预测的结果
+print(t[{}])      -- 读取：这里又新建了一个表，输出 nil
 ```
 
-**解决方案**: 使用字符串或数字作为表的键，确保键的一致性和可靠性。
+**解决方案**: 使用字符串、数字等可以稳定构造的值作为键；如果必须用表作键，应把同一个表保存到局部变量中复用。
 
 **示例**:
 
@@ -61,20 +63,23 @@ print(t["key"])  -- 输出 "value"
 
 ```lua
 local file = io.open("nonexistent_file.txt", "r")
-local content = file:read("*a")  -- 如果文件打开失败，这里会出错
+local content = file:read("a")  -- 文件不存在时 file 为 nil，这里会报错
 ```
 
-**解决方案**: 使用 `pcall` 或 `xpcall` 来捕获可能的错误，并处理错误情况。
+注意：`io.open` 打开失败时**不会抛出错误**，而是返回 `nil, errmsg`。因此 `pcall(io.open, ...)` 捕获不到“文件不存在”，真正会出错的是随后对 `nil` 调用 `read`。
+
+**解决方案**: 直接检查 `io.open` 的返回值，再做读取操作。
 
 **示例**:
 
 ```lua
-local success, file = pcall(io.open, "nonexistent_file.txt", "r")
-if success then
-    local content = file:read("*a")
+local file, err = io.open("nonexistent_file.txt", "r")
+if file then
+    local content = file:read("a")
     file:close()
+    print(content)
 else
-    print("Error opening file")
+    print("Error opening file: " .. tostring(err))
 end
 ```
 
@@ -164,7 +169,7 @@ end
 
 ```lua
 local str = "Hello"
-str:sub(1, 3) = "Hi"  -- 错误：字符串不可变
+-- str:sub(1, 3) = "Hi"  -- 错误：字符串不可变，不能被赋值修改（这句本身也是语法错误）
 ```
 
 **解决方案**: 使用合适的字符串操作函数，创建新的字符串而不是修改原有字符串。
@@ -173,8 +178,8 @@ str:sub(1, 3) = "Hi"  -- 错误：字符串不可变
 
 ```lua
 local str = "Hello"
-local new_str = "Hi" .. str:sub(4)  -- 创建新字符串
-print(new_str)  -- 输出 "Hi lo"
+local new_str = "Hi" .. str:sub(4)  -- 创建新字符串："Hi" 拼接上 "lo"
+print(new_str)  -- 输出 "Hilo"
 ```
 
 #### 8. **没有利用 Lua 的协程特性**

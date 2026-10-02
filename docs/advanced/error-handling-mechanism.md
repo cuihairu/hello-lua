@@ -13,7 +13,7 @@ Lua 提供了一套简单但强大的错误处理机制，用于捕捉和管理�
   ```lua
   local status, result = pcall(function()
       -- 可能抛出错误的代码
-      return 1 / 0
+      error("division by zero")
   end)
   
   if status then
@@ -46,7 +46,7 @@ Lua 提供了一套简单但强大的错误处理机制，用于捕捉和管理�
 
   local status, result = xpcall(function()
       -- 可能抛出错误的代码
-      return 1 / 0
+      error("division by zero", 0)  -- 第二个参数为 0 表示不在消息前添加出错位置
   end, errorHandler)
   
   print(result)  -- 输出 "Caught an error: division by zero"
@@ -99,7 +99,7 @@ Lua 的错误消息通常包括错误类型和描述信息。你可以通过 `er
 
   local status, result = xpcall(function()
       -- 可能抛出错误的代码
-      return 1 / 0
+      error("division by zero", 0)
   end, customErrorHandler)
   
   print(result)  -- 输出 "Custom Error: division by zero"

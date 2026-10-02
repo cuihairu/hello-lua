@@ -60,29 +60,36 @@ Lua C API提供了一组函数，可以在C中操作Lua虚拟机，包括加载�
 
 // C函数：计算两个数的和
 static int l_sum(lua_State *L) {
-    double a = luaL_checknumber(L, 1);
-    double b = luaL_checknumber(L, 2);
-    lua_pushnumber(L, a + b);
+    lua_Integer a = luaL_checkinteger(L, 1);
+    lua_Integer b = luaL_checkinteger(L, 2);
+    lua_pushinteger(L, a + b);
     return 1;
 }
 
-// 注册函数到Lua中
+// 模块函数表
+static const luaL_Reg mylib_funcs[] = {
+    {"sum", l_sum},
+    {NULL, NULL}
+};
+
+// 模块入口：require("mylib") 时由 Lua 自动调用，返回值即模块表
 int luaopen_mylib(lua_State *L) {
-    lua_register(L, "sum", l_sum);
-    return 0;
+    luaL_newlib(L, mylib_funcs);
+    return 1;
 }
 ```
 
 **编译并使用扩展：**
-1. **编译**：将上述C代码编译为动态库。
+1. **编译**：将上述C代码编译为动态库（头文件路径按本机 Lua 安装位置调整）。
    ```sh
-   gcc -shared -o mylib.so -fPIC mylib.c
+   gcc -shared -o mylib.so -fPIC mylib.c -I/usr/local/include
    ```
 2. **使用**：在Lua脚本中加载并调用C扩展。
    ```lua
    local mylib = require("mylib")
    print(mylib.sum(10, 20))  -- 输出 30
    ```
+   注意：`require` 的返回值就是 `luaopen_mylib` 返回的模块表；如果模块入口不返回表，`require("mylib")` 会得到 `true`，`mylib.sum` 就会报错。
 
 ---
 

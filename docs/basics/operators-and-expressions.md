@@ -4,7 +4,7 @@
 
 ## 1. 算术操作符
 
-算术操作符用于执行数学运算。Lua 提供了基本的算术操作符，包括加法、减法、乘法、除法和取余。
+算术操作符用于执行数学运算。Lua 提供了基本的算术操作符，包括加法、减法、乘法、除法、取余、乘方和整数除法。
 
 ### 加法 (`+`)
 
@@ -49,6 +49,28 @@ local a = 10
 local b = 3
 local remainder = a % b
 print(remainder)  -- 输出 1
+```
+
+### 乘方 (`^`)
+
+乘方操作符总是返回浮点数（float）结果。
+
+```lua
+local a = 2
+local b = 3
+local power = a ^ b
+print(power)  -- 输出 8.0
+```
+
+### 整数除法 (`//`)
+
+整数除法（向下取整除法）在两个操作数都是整数时返回整数结果。
+
+```lua
+local a = 10
+local b = 3
+local quotient = a // b
+print(quotient)  -- 输出 3
 ```
 
 ## 2. 比较操作符
@@ -143,9 +165,9 @@ local fullName = firstName .. " " .. lastName
 print(fullName)  -- 输出 Lua Programming
 ```
 
-## 5. 关系操作符
+## 5. 赋值操作符
 
-关系操作符用于对比两个值，并返回布尔值（`true` 或 `false`）。
+赋值操作符 `=` 用于把右边表达式的值存入左边的变量，注意它和比较操作符 `==` 不同。
 
 ### 赋值操作 (`=`)
 
@@ -167,7 +189,7 @@ local a = 10
 local b = 5
 local c = 2
 local result = (a + b) * c / (b - c)
-print(result)  -- 输出 20.0
+print(result)  -- 输出 10.0
 ```
 
 ## 结语

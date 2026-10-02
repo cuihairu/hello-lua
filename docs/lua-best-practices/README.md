@@ -15,7 +15,7 @@
 
 - **表的使用**: 对于单一对象使用表而不是多个变量。使用表的 `__index` 元方法来模拟类和继承。
 - **避免全局变量**: 使用局部变量和 `local` 关键字来避免全局变量污染。全局变量可能导致意外的命名冲突和难以调试的问题。
-- **模块化**: 将代码组织到模块中，使用 `module` 或 `require` 来加载模块。避免在全局作用域中定义函数和变量。
+- **模块化**: 将代码组织到模块中，使用 `require` 来加载模块。避免在全局作用域中定义函数和变量。
 
 **示例**:
 
@@ -37,7 +37,7 @@ end
 
 **2.1 减少表的创建**
 
-避免在循环中重复创建表或其他数据结构。可以预分配表的大小或复用已存在的表。
+避免在循环中重复创建表或其他数据结构。尽量一次性构造表的内容，或复用已存在的表（Lua 5.4 标准解释器没有预分配表大小的 API）。
 
 **2.2 使用局部变量**
 
@@ -92,7 +92,7 @@ local obj2 = setmetatable({ value = 2 }, mt)
 
 **3.2 调试工具**
 
-使用调试工具如 `Lua Debugger` 或 `luasocket` 来诊断问题和性能瓶颈。调试工具可以帮助你跟踪代码执行流程和查看变量值。
+使用标准 `debug` 库（`debug.traceback`、`debug.getinfo`）或 ZeroBrane Studio 这类带调试器的 IDE 来诊断问题；`luasocket` 是网络库，不是调试工具。调试工具可以帮助你跟踪代码执行流程和查看变量值。
 
 **3.3 错误处理**
 
@@ -102,13 +102,23 @@ local obj2 = setmetatable({ value = 2 }, mt)
 
 ```lua
 local function safe_divide(a, b)
+    if b == 0 then
+        print("Error: division by zero")
+        return nil
+    end
+    -- a / b 在 b 为 0 时不会报错，除零需要显式判断；
+    -- pcall 用于捕获参数类型不对等运行时错误
     local status, result = pcall(function() return a / b end)
     if not status then
-        print("Error: division by zero")
+        print("Error: " .. tostring(result))
         return nil
     end
     return result
 end
+
+print(safe_divide(10, 2))   -- 5.0
+print(safe_divide(10, 0))   -- Error: division by zero
+print(safe_divide("x", 2))  -- Error: ...（pcall 捕获的算术错误）
 ```
 
 #### 4. 部署与发布
