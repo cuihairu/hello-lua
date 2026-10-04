@@ -7,7 +7,7 @@ Lua 的调试工具分几层：带图形界面的 IDE、能嵌入程序的远程
 `luadebug`（LuaDebug）是远程调试器，支持断点、单步执行和变量查看，常与 IDE 插件配合调试游戏脚本。获取方式：
 
   ```bash
-  git clone https://github.com/sumory/luadebug.git
+  git clone https://github.com/cloudwu/luadebug.git
   ```
 
 把调试器库加入 `package.path`，在脚本中启动它并连上调试客户端，就能交互式地调试 Lua 程序。

@@ -36,7 +36,7 @@ end
 os.exit(luaunit.LuaUnit.run())
 ```
 
-[busted](https://olivinelabs.com/busted/) 支持 BDD（行为驱动开发）风格的测试，写起来是这样的：
+[busted](https://lunarmodules.github.io/busted/) 支持 BDD（行为驱动开发）风格的测试，写起来是这样的：
 
 ```lua
 -- 使用 busted 编写测试
@@ -79,7 +79,7 @@ foo()
 
 [ZeroBrane Studio](https://studio.zerobrane.com/) 是专为 Lua 设计的集成开发环境，内置调试功能，设置断点、单步执行、查看变量值都在 IDE 里完成。
 
-[LuaDebug](https://github.com/sumory/luadebug) 是远程调试工具，通过 IDE 或命令行调试 Lua 脚本。
+[LuaDebug](https://github.com/cloudwu/luadebug) 是远程调试工具，通过 IDE 或命令行调试 Lua 脚本。
 
 #### 3. 性能分析
 
@@ -101,7 +101,7 @@ profiler.stop()
 -- 分析结果写入 profiler.log
 ```
 
-LuaJIT 自带分析器，`-jv` 参数开启，详见 [LuaJIT profiler](https://luajit.org/profiling.html)：
+LuaJIT 自带分析器，`-jv` 参数开启，详见 [LuaJIT profiler](https://luajit.org/ext_profiler.html)：
 
 ```bash
 luajit -jv script.lua
