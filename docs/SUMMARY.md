@@ -31,7 +31,8 @@
         - [基于表的对象系统](advanced/object-system.md)
         - [继承与多态](advanced/inheritance-and-polymorphism.md)
         - [面向对象设计模式](advanced/design-patterns.md)
-    - [协程与并发编程](advanced/coroutines.md) 
+        - [面向对象的实现](advanced/oop-implementation.md)
+    - [协程与并发编程](advanced/coroutines.md)
         - [协程的基本概念](advanced/coroutines-basics.md)
         - [协程的创建与使用](advanced/creating-using-coroutines.md)
         - [协程的状态与生命周期](advanced/coroutine-lifecycle.md)
@@ -66,6 +67,7 @@
         - [动态链接与模块加载](design-and-implementation/dynamic-linking.md)
         - [Lua模块系统的设计](design-and-implementation/module-system-design.md)
         - [热加载与动态更新](design-and-implementation/hot-reloading.md)
+    - [Lua 5.5 源码解析](design-and-implementation/lua55-source.md)
 
 - [Lua的扩展与应用](lua-extensions-applications/README.md)
     - [C与Lua的交互](lua-extensions-applications/c-interaction.md)
