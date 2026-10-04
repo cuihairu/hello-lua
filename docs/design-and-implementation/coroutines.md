@@ -53,7 +53,8 @@ coroutine.resume(co) -- 输出: 协程继续
 ```lua
 local co = coroutine.create(function() coroutine.yield() end)
 print(coroutine.status(co)) -- 输出: suspended
-coroutine.resume(co)
+coroutine.resume(co)        -- 运行到 yield，协程再次挂起
+coroutine.resume(co)        -- yield 返回，函数执行完毕
 print(coroutine.status(co)) -- 输出: dead
 ```
 

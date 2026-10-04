@@ -161,8 +161,10 @@ local function g()
 end
 
 local ok, err = pcall(g)
-print(err)          -- 输出：faq.lua:6: oops（附加了调用 f 的那一行）
+print(err)          -- 输出：faq.lua:6: oops
 ```
+
+文件名取自脚本实际保存的名字，行号 6 指向调用 `f` 的那一行——第二个参数 `2` 让消息使用调用者的位置，而不是 `error` 所在的位置。
 
 #### 10. 弱引用表有什么用？
 

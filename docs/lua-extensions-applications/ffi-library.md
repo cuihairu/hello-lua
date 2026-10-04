@@ -1,10 +1,10 @@
 ### 使用 LuaJIT 的 FFI 库
 
-LuaJIT 的 FFI（Foreign Function Interface）库是一个强大的工具，允许 Lua 脚本直接调用 C 语言的函数和使用 C 数据结构。FFI 提供了高效的与 C 语言互操作的能力，避免了传统的 C/C++ 插件编写和 Lua-C 接口的复杂性。以下是如何使用 LuaJIT 的 FFI 库的详细介绍。
+LuaJIT 的 FFI（Foreign Function Interface）库允许 Lua 脚本直接调用 C 函数、使用 C 数据结构。相比写一套 C/C++ 插件再接到 Lua-C 接口上，FFI 免去了这些中间环节。
 
 #### 1. 引入 FFI 库
 
-要使用 FFI 库，首先需要在 Lua 脚本中引入 `ffi` 模块：
+用 FFI 之前，先在 Lua 脚本中引入 `ffi` 模块：
 
 ```lua
 local ffi = require("ffi")
@@ -12,7 +12,7 @@ local ffi = require("ffi")
 
 #### 2. 定义 C 语言函数和数据结构
 
-可以通过 `ffi.cdef` 来定义 C 语言的函数和数据结构。`ffi.cdef` 函数接受一个字符串参数，该参数包含 C 语言的声明。
+C 函数和数据结构用 `ffi.cdef` 定义，它接受一个字符串参数，里面写 C 语言的声明。
 
 ##### 示例：定义 C 语言函数
 
@@ -35,7 +35,7 @@ ffi.cdef[[
 
 #### 3. 加载 C 动态库
 
-使用 `ffi.load` 来加载 C 动态库（共享库）。这使得你可以调用库中定义的函数。
+用 `ffi.load` 加载 C 动态库（共享库），之后就能调用库中定义的函数。
 
 ##### 示例：加载 C 标准库
 
@@ -45,7 +45,7 @@ local libc = ffi.load("c") -- 加载标准 C 库
 
 #### 4. 调用 C 函数
 
-一旦定义了 C 语言函数和数据结构并加载了相关的动态库，就可以直接在 Lua 中调用这些 C 函数。
+声明和加载都做完，这些 C 函数就能直接在 Lua 里调了。
 
 ##### 示例：调用 `printf` 函数
 
@@ -55,12 +55,13 @@ ffi.cdef[[
 ]]
 
 local libc = ffi.load("c")
-libc.printf("Hello from C! %d\n", 42)
+-- 可变参数里的 Lua 数字按 double 传给 C，%d 要先显式转成 int
+libc.printf("Hello from C! %d\n", ffi.new("int", 42))  -- 输出 Hello from C! 42
 ```
 
 #### 5. 使用 C 数据结构
 
-定义了 C 数据结构后，可以在 Lua 中创建这些结构的实例并操作它们。
+定义了 C 数据结构后，可以在 Lua 里创建它的实例并操作字段。
 
 ##### 示例：创建和操作 C 结构体
 
@@ -72,7 +73,6 @@ ffi.cdef[[
     } Point;
 ]]
 
-local ffi = require("ffi")
 local myPoint = ffi.new("Point")
 myPoint.x = 10
 myPoint.y = 20
@@ -82,7 +82,7 @@ print("Point coordinates:", myPoint.x, myPoint.y)
 
 #### 6. 使用 C 函数与结构体结合
 
-可以将 C 函数与定义的结构体结合使用，从而实现更复杂的操作。
+C 函数和结构体可以配合起来用。
 
 ##### 示例：定义和调用一个处理结构体的 C 函数
 
@@ -136,4 +136,4 @@ end
 
 ### 总结
 
-LuaJIT 的 FFI 库提供了一个高效、直接的方式来与 C 语言进行互操作。通过 FFI，你可以在 Lua 中调用 C 语言函数、操作 C 数据结构，并利用 C 语言的高性能特性。使用 FFI 时，确保正确地定义数据结构和函数声明，并注意内存管理和类型安全。
+FFI 用起来就一条主线：`ffi.cdef` 声明，`ffi.load` 加载，然后直接调用。要盯住的是声明必须和真实签名一致，类型和内存出错就是崩溃或未定义行为。

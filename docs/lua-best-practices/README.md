@@ -42,6 +42,7 @@ end
 
 ```lua
 -- 不推荐
+global_var = 0
 for i = 1, 1000 do
     global_var = global_var + i
 end
