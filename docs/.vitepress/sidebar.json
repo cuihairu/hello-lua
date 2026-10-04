@@ -307,6 +307,10 @@
             "link": "/design-and-implementation/hot-reloading"
           }
         ]
+      },
+      {
+        "text": "Lua 5.5 源码解析",
+        "link": "/design-and-implementation/lua55-source"
       }
     ]
   },
