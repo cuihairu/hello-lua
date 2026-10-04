@@ -9,6 +9,15 @@ export default defineConfig({
   base: '/hello-lua/',
   cleanUrls: true,
   lastUpdated: true,
+  sitemap: {
+    hostname: 'https://cuihairu.github.io',
+    // vitepress 1.6.x 生成 sitemap 不拼 base，用官方 transformItems 钩子补上 /hello-lua/
+    transformItems: (items) =>
+      items.map((item) => ({
+        ...item,
+        url: item.url ? `/hello-lua/${item.url}` : '/hello-lua/'
+      }))
+  },
 
   head: [
     // 品牌资产空位：favicon.svg 到位后启用
@@ -18,7 +27,7 @@ export default defineConfig({
   // mdbook 遗留的目录文件保留在仓库作映射底稿，不作为页面构建
   srcExclude: ['**/SUMMARY.md'],
 
-  ignoreDeadLinks: true,
+  ignoreDeadLinks: false,
 
   themeConfig: {
     // 品牌资产空位：logo.svg 到位后启用
@@ -69,6 +78,11 @@ export default defineConfig({
     docFooter: {
       prev: '上一篇',
       next: '下一篇'
+    },
+
+    editLink: {
+      pattern: 'https://github.com/cuihairu/hello-lua/edit/main/docs/:path',
+      text: '在 GitHub 上编辑此页'
     },
 
     lastUpdated: {
