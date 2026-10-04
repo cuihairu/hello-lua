@@ -1,10 +1,8 @@
-在C中调用Lua代码可以通过Lua C API实现，这允许你在C程序中执行Lua脚本，调用Lua函数，和处理Lua返回值。以下是如何在C中调用Lua代码的步骤：
+在C中调用Lua代码走的是 Lua C API：执行Lua脚本、调用Lua函数、处理返回值，全都围绕一个 `lua_State` 和它的栈进行。
 
-### 1. **初始化Lua环境**
+### 1. 初始化Lua环境
 
-首先，需要创建一个Lua状态（`lua_State`），这是所有Lua操作的基础。
-
-**示例代码：**
+所有操作都基于一个Lua状态（`lua_State`），第一步是创建它。
 
 ```c
 #include <lua.h>
@@ -22,16 +20,13 @@ int main() {
 }
 ```
 
-**解释：**
-- `luaL_newstate` 创建一个新的Lua状态。
-- `luaL_openlibs` 加载Lua标准库。
-- `lua_close` 关闭Lua状态，释放资源。
+`luaL_newstate` 创建状态，`luaL_openlibs` 加载Lua标准库，退出前用 `lua_close` 关闭状态、释放资源。
 
-### 2. **加载和执行Lua脚本**
+### 2. 加载和执行Lua脚本
 
-你可以从文件或字符串加载Lua代码，并执行它。
+代码可以来自文件，也可以来自字符串，各有对应的入口。
 
-**从文件加载和执行Lua脚本：**
+从文件加载：
 
 ```c
 if (luaL_dofile(L, "script.lua") != LUA_OK) {
@@ -40,7 +35,7 @@ if (luaL_dofile(L, "script.lua") != LUA_OK) {
 }
 ```
 
-**从字符串加载和执行Lua脚本：**
+从字符串加载：
 
 ```c
 const char *lua_code = "print('Hello from Lua!')";
@@ -50,16 +45,11 @@ if (luaL_dostring(L, lua_code) != LUA_OK) {
 }
 ```
 
-**解释：**
-- `luaL_dofile` 从文件加载并执行Lua脚本。
-- `luaL_dostring` 从字符串加载并执行Lua代码。
-- `lua_tostring(L, -1)` 获取错误信息。
+两个入口对应两种来源：`luaL_dofile` 读文件，`luaL_dostring` 执行字符串。失败时栈顶放着错误信息，用 `lua_tostring(L, -1)` 取出来。
 
-### 3. **调用Lua函数**
+### 3. 调用Lua函数
 
-可以通过Lua C API调用Lua函数。首先需要将函数推送到栈上，然后调用它并处理返回值。
-
-**示例代码：**
+调用分三步：把函数推到栈上，压参数，调用之后取返回值。
 
 ```c
 // 调用Lua函数
@@ -77,17 +67,11 @@ if (lua_pcall(L, 2, 1, 0) != LUA_OK) {
 }
 ```
 
-**解释：**
-- `lua_getglobal` 将Lua全局函数推送到栈上。
-- `lua_pushnumber` 推送参数到栈上。
-- `lua_pcall` 调用Lua函数，传递参数和接收返回值。
-- `lua_tonumber` 从栈中获取返回值。
+`lua_getglobal` 把全局函数推上栈，`lua_pushnumber` 压参数，`lua_pcall` 发起调用并接收返回值，`lua_tonumber` 从栈中取出结果。
 
-### 4. **处理Lua表和函数**
+### 4. 处理Lua表和函数
 
-在C中，可以处理Lua表和函数，获取表的字段或调用表中的函数。
-
-**示例代码：**
+函数也可能是某个表的字段。取表、再从表里取函数，调用方式不变。
 
 ```c
 // 调用Lua表中的函数
@@ -105,23 +89,12 @@ if (lua_pcall(L, 1, 1, 0) != LUA_OK) {
 }
 ```
 
-**解释：**
-- `lua_getfield` 从Lua表中获取字段（如函数）。
-- `lua_pcall` 调用Lua函数，处理表中的数据。
+和上一段的区别只在取函数这一步：`lua_getfield` 从栈顶的表里取字段（这里是函数），而不是从全局环境取。
 
-### 5. **清理和关闭**
+### 5. 清理和关闭
 
-在完成所有操作后，确保正确地清理Lua栈并关闭Lua状态。
-
-**示例代码：**
+用完之后，`lua_close` 关闭Lua状态并释放资源：
 
 ```c
 lua_close(L);  // 关闭Lua状态
 ```
-
-**解释：**
-- `lua_close` 关闭Lua状态并释放资源。
-
-### 总结
-
-在C中调用Lua代码涉及初始化Lua环境、加载和执行Lua脚本、调用Lua函数、处理Lua表和函数，以及在完成操作后清理资源。Lua C API提供了强大的功能，允许你在C程序中高效地集成和控制Lua脚本。
