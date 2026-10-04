@@ -99,4 +99,4 @@ print(coroutine.status(co))  -- 输出 dead
 
 ## 结语
 
-协程的状态机并不复杂：`suspended` 与 `running` 之间靠 `resume`/`yield` 来回切换，`dead` 是唯一不可逆的终点。写代码时记住两件事——不要恢复已死亡的协程，需要提前结束时用 `close` 并让 to-be-closed 变量完成清理——就能避开协程生命周期里绝大多数的坑。
+协程的状态机并不复杂：`suspended` 与 `running` 之间靠 `resume`/`yield` 来回切换，`dead` 是唯一不可逆的终点。写代码时不要恢复已死亡的协程；需要提前结束时调用 `close`，让 to-be-closed 变量完成清理。

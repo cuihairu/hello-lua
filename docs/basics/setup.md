@@ -1,6 +1,6 @@
 # 环境搭建
 
-在开始学习和使用 Lua 之前，首先需要在你的开发环境中安装和配置 Lua 解释器。无论你是在 Windows、macOS 还是 Linux 平台上开发，都可以通过简单的步骤来完成 Lua 的环境搭建。本节将详细介绍如何在不同操作系统上安装 Lua，并介绍一些常用的 Lua 开发工具和集成开发环境（IDE）。
+使用 Lua 之前，先在开发环境里装好解释器。这一节按 Windows、macOS、Linux 分别给出安装步骤，末尾附常用的开发工具和集成开发环境（IDE）。
 
 ## 1. 安装 Lua
 
@@ -20,7 +20,7 @@
 ### 1.2 在 macOS 上安装 Lua
 
 1. 使用 Homebrew 安装：
-    - macOS 用户可以使用 Homebrew 进行安装。首先确保你已经安装了 Homebrew，然后在终端中输入以下命令：
+    - 前提是装好了 Homebrew，然后在终端执行：
       ```bash
       brew install lua
       ```
@@ -50,43 +50,43 @@
 
 ## 2. 集成开发环境（IDE）和编辑器
 
-虽然 Lua 的开发可以在任何文本编辑器中完成，但使用合适的集成开发环境（IDE）或代码编辑器可以大大提升开发效率。以下是一些常用的支持 Lua 开发的 IDE 和编辑器：
+Lua 用任何文本编辑器都能写，但配一个支持补全和调试的编辑器会省事得多。常用的有这么几个：
 
 ### 2.1 Visual Studio Code
 
-- **插件支持**：Visual Studio Code（VSCode）是一个流行的代码编辑器，支持多种编程语言。通过安装插件（如 Lua Plus 或 EmmyLua），你可以获得语法高亮、自动补全、代码格式化和调试支持。
-- **安装插件**：
-    1. 打开 VSCode，在扩展（Extensions）中搜索 `Lua` 或 `EmmyLua` 并安装。
-    2. 安装完成后，重新启动 VSCode，插件就会自动激活。
+Visual Studio Code（VSCode）是一个流行的代码编辑器，支持多种编程语言。安装插件（如 Lua Plus 或 EmmyLua）后，可以获得语法高亮、自动补全、代码格式化和调试支持。
+
+1. 打开 VSCode，在扩展（Extensions）中搜索 `Lua` 或 `EmmyLua` 并安装。
+2. 安装完成后，重新启动 VSCode，插件就会自动激活。
 
 ### 2.2 IntelliJ IDEA / PyCharm
 
-- **插件支持**：IntelliJ IDEA 和 PyCharm 等 JetBrains 系列的 IDE 也支持 Lua 开发。你可以通过安装 `EmmyLua` 插件来启用 Lua 的开发支持。
-- **安装插件**：
-    1. 打开 IDE，进入 `File > Settings > Plugins`。
-    2. 搜索 `EmmyLua`，点击安装，安装完成后重启 IDE。
+IntelliJ IDEA 和 PyCharm 等 JetBrains 系列的 IDE 也能写 Lua，靠的是 `EmmyLua` 插件。
+
+1. 打开 IDE，进入 `File > Settings > Plugins`。
+2. 搜索 `EmmyLua`，点击安装，安装完成后重启 IDE。
 
 ### 2.3 Sublime Text
 
-- **轻量编辑器**：Sublime Text 是一款轻量级但功能强大的编辑器，支持多语言开发。通过安装 Lua 插件，你可以获得语法高亮和基础的代码补全功能。
-- **安装插件**：
-    1. 打开 Sublime Text，进入 `Package Control > Install Package`。
-    2. 搜索并安装 `Lua` 或 `LuaDev` 插件。
+Sublime Text 是一款轻量级编辑器，支持多语言开发。装上 Lua 插件后有语法高亮和基础的代码补全。
+
+1. 打开 Sublime Text，进入 `Package Control > Install Package`。
+2. 搜索并安装 `Lua` 或 `LuaDev` 插件。
 
 ### 2.4 ZeroBrane Studio
 
-- **专用 Lua IDE**：ZeroBrane Studio 是一款专为 Lua 开发设计的 IDE，内置了 Lua 的调试、语法高亮和自动补全功能。它是轻量级且开箱即用的解决方案，非常适合初学者使用。
-- **安装**：
-    1. 访问 [ZeroBrane Studio](https://studio.zerobrane.com/) 官方网站，下载并安装适合你操作系统的版本。
+ZeroBrane Studio 是专为 Lua 开发设计的 IDE，调试、语法高亮和自动补全都内置，开箱即用，初学者可以从它起步。
+
+1. 访问 [ZeroBrane Studio](https://studio.zerobrane.com/) 官方网站，下载并安装适合你操作系统的版本。
 
 ## 3. LuaRocks：Lua 的包管理器
 
 ### 3.1 安装 LuaRocks
 
-LuaRocks 是 Lua 的包管理器，可以轻松地为你的 Lua 项目安装和管理第三方库。在 Windows、macOS 和 Linux 上安装 LuaRocks 的方式略有不同：
+LuaRocks 是 Lua 的包管理器，用来给项目安装和管理第三方库。三个平台的装法略有不同：
 
-- **Windows**：可以从 [LuaRocks 官网](https://luarocks.org/) 下载适用于 Windows 的安装包，或在安装 LuaBinaries 时一并安装。
-- **macOS** 和 **Linux**：可以使用 Homebrew 或包管理器安装：
+- Windows：可以从 [LuaRocks 官网](https://luarocks.org/) 下载适用于 Windows 的安装包，或在安装 LuaBinaries 时一并安装。
+- macOS 和 Linux：用 Homebrew 或包管理器安装：
     ```bash
     brew install luarocks
     ```

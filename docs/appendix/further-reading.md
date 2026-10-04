@@ -4,44 +4,38 @@
 
 #### 1. 论文：理解设计决策
 
-- **The Evolution of Lua**（Roberto Ierusalimschy 等，HOPL III, 2007）—— 讲述 Lua 从 1993 年到 2005 年的演化过程，解释了为什么 Lua 选择表作为唯一的数据结构、为什么嵌入式优先。
-- **The Implementation of Lua 5.0**（JUCS, 2005）—— 系统介绍 Lua 的寄存器虚拟机、哈希表实现与函数调用约定，是理解字节码与虚拟机章节的经典文献：<https://www.lua.org/doc/jucs05.pdf>。
-- **Revisiting Coroutines**（ACM TOPLAS, 2009）—— 讨论对称与非对称协程的语义差异，对应本书协程相关章节。
+The Evolution of Lua（Roberto Ierusalimschy 等，HOPL III, 2007）讲 Lua 从 1993 年到 2005 年的演化，解释了为什么 Lua 选择表作为唯一的数据结构、为什么嵌入式优先。The Implementation of Lua 5.0（JUCS, 2005）系统介绍 Lua 的寄存器虚拟机、哈希表实现与函数调用约定，是理解字节码与虚拟机章节的经典文献：<https://www.lua.org/doc/jucs05.pdf>。Revisiting Coroutines（ACM TOPLAS, 2009）讨论对称与非对称协程的语义差异，对应本书协程相关章节。
 
 #### 2. 官方手册与源码阅读
 
-- **Lua 5.4 参考手册**：<https://www.lua.org/manual/5.4/>，其中第 2 章（语言）和第 3 章（标准库）值得反复阅读。
-- **源码阅读路线**（约 3 万行 C 代码，核心文件更少）：
-  1. `llex.c` / `lparser.c` / `lcode.c` —— 词法分析、语法分析与代码生成，直接生成字节码，不经过 AST；
-  2. `lopcodes.h` / `lvm.c` —— 指令编码与虚拟机主循环 `luaV_execute`；
-  3. `lgc.c` —— 增量标记-清除与分代回收的实现；
-  4. `lapi.c` / `lstate.c` —— C API 与 `lua_State`（协程线程）的管理；
-  5. `ldo.c` —— 调用栈与错误处理（setjmp/longjmp）。
+- Lua 5.4 参考手册：<https://www.lua.org/manual/5.4/>，其中第 2 章（语言）和第 3 章（标准库）值得反复阅读。
+- 源码阅读路线（约 3 万行 C 代码，核心文件更少）：
+  1. `llex.c` / `lparser.c` / `lcode.c`：词法分析、语法分析与代码生成，直接生成字节码，不经过 AST；
+  2. `lopcodes.h` / `lvm.c`：指令编码与虚拟机主循环 `luaV_execute`；
+  3. `lgc.c`：增量标记-清除与分代回收的实现；
+  4. `lapi.c` / `lstate.c`：C API 与 `lua_State`（协程线程）的管理；
+  5. `ldo.c`：调用栈与错误处理（setjmp/longjmp）。
 - 源码在线浏览：<https://www.lua.org/source/>，或 GitHub 镜像 <https://github.com/lua/lua>。
 
 #### 3. 书籍
 
-- **《Programming in Lua》第 4 版** —— 官方作者所著的语言教程，适合补齐语言层面的细节（第 1 版免费：<https://www.lua.org/pil/>）。
-- **《Lua 设计与实现》**（中文）—— 以 5.1/5.3 源码为主线讲解词法分析、虚拟机与 GC。
-- **《Game Programming Patterns》中的 Interpreter / Bytecode 章节**（Robert Nystrom）—— 用通俗语言解释字节码虚拟机的动机与取舍。
+《Programming in Lua》第 4 版是官方作者所著的语言教程，适合补齐语言层面的细节，第 1 版免费：<https://www.lua.org/pil/>。《Lua 设计与实现》（中文）以 5.1/5.3 源码为主线讲解词法分析、虚拟机与 GC。《Game Programming Patterns》中的 Interpreter / Bytecode 章节（Robert Nystrom）用通俗语言解释字节码虚拟机的动机与取舍。
 
 #### 4. 工具实践
 
-- **`luac -l -l`**：查看 Lua 5.4 生成的真实字节码，是验证虚拟机相关表述的第一手工具：
+- `luac -l -l`：查看 Lua 5.4 生成的真实字节码，是验证虚拟机相关表述的第一手工具：
 
   ```bash
   echo 'local a = 10 + 5' > /tmp/t.lua
   luac -l -l /tmp/t.lua
   ```
 
-- **`collectgarbage("count")` / `collectgarbage("step")`**：观察 GC 行为与内存曲线。
-- **LuaJIT 的 `jit.dump` 与 `-jp` 分析器**：查看 trace 编译与采样分析结果，理解 JIT 与解释器的差异。
+- `collectgarbage("count")` / `collectgarbage("step")`：观察 GC 行为与内存曲线。
+- LuaJIT 的 `jit.dump` 与 `-jp` 分析器：查看 trace 编译与采样分析结果，理解 JIT 与解释器的差异。
 
 #### 5. 社区资料
 
-- **lua-users wiki**：<http://lua-users.org/wiki/LuaImplementations> —— 各 Lua 实现（Lua、LuaJIT、Ravi、PUC Lua 衍生版）的对比条目。
-- **LuaJIT 扩展文档**：<https://luajit.org/extensions.html> —— FFI、`bit` 库以及与 Lua 5.1/5.2/5.3 的差异说明。
-- **awesome-lua**：<https://github.com/LewisJEllis/awesome-lua> —— 第三方库与工具清单。
+lua-users wiki 的 LuaImplementations 条目（<http://lua-users.org/wiki/LuaImplementations>）对比了各 Lua 实现，Lua、LuaJIT、Ravi、PUC Lua 衍生版都在其中。LuaJIT 扩展文档（<https://luajit.org/extensions.html>）说明 FFI、`bit` 库以及与 Lua 5.1/5.2/5.3 的差异。awesome-lua（<https://github.com/LewisJEllis/awesome-lua>）是第三方库与工具清单。
 
 ### 总结
 

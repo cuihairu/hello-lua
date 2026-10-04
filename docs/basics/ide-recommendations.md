@@ -1,6 +1,6 @@
 # 集成开发环境（IDE）推荐
 
-在 Lua 开发过程中，选择合适的集成开发环境（IDE）可以大大提高编程效率和体验。以下是一些推荐的 IDE 和代码编辑器，它们在 Lua 开发中表现良好。
+写 Lua 对编辑器没有硬性要求，差别在于插件支持。下面五个都用得顺手，按需挑一个。
 
 ## 1. Visual Studio Code (VSCode)
 
@@ -12,7 +12,7 @@ Visual Studio Code 是一个免费的、开源的代码编辑器，支持多种�
 
 1. 下载并安装 [Visual Studio Code](https://code.visualstudio.com/)。
 2. 打开 VSCode，进入扩展市场（Extensions）。
-3. 搜索并安装 **Lua** 插件，如 **"Lua"**（作者：sumneko）或 **"Lua Plus"**。
+3. 搜索并安装 Lua 插件，如 "Lua"（作者：sumneko）或 "Lua Plus"。
 4. 配置插件设置以适应你的开发需求。例如，你可以配置 Lua 语言服务器以提供智能感知和代码提示。
 
 ### 1.3 特色功能
@@ -26,7 +26,7 @@ Visual Studio Code 是一个免费的、开源的代码编辑器，支持多种�
 
 ### 2.1 简介
 
-ZeroBrane Studio 是一个专为 Lua 开发设计的轻量级 IDE，提供了许多内置的功能来帮助开发 Lua 应用程序。
+ZeroBrane Studio 是专为 Lua 开发设计的轻量级 IDE，该有的功能都内置好了。
 
 ### 2.2 安装与配置
 
@@ -44,13 +44,13 @@ ZeroBrane Studio 是一个专为 Lua 开发设计的轻量级 IDE，提供了许
 
 ### 3.1 简介
 
-IntelliJ IDEA 是一个功能强大的 IDE，通过安装 Lua 插件，可以支持 Lua 开发。虽然 IntelliJ IDEA 主要用于 Java 开发，但其强大的插件系统使其也适用于 Lua。
+IntelliJ IDEA 主要用于 Java 开发，装上 Lua 插件后同样能写 Lua。
 
 ### 3.2 安装与配置
 
 1. 下载并安装 [IntelliJ IDEA](https://www.jetbrains.com/idea/)。
 2. 启动 IntelliJ IDEA，进入插件市场（Plugins）。
-3. 搜索并安装 **"Lua"** 插件（作者：EmmyLua）。
+3. 搜索并安装 "Lua" 插件（作者：EmmyLua）。
 4. 配置插件以支持 Lua 开发。
 
 ### 3.3 特色功能
@@ -70,7 +70,7 @@ Sublime Text 是一个轻量级的文本编辑器，通过安装 Lua 插件，�
 
 1. 下载并安装 [Sublime Text](https://www.sublimetext.com/)。
 2. 打开 Sublime Text，进入 "Package Control"（需要安装 Package Control 插件）。
-3. 安装 Lua 插件，例如 **"Lua"** 插件。
+3. 安装 Lua 插件，例如 "Lua"。
 4. 配置插件以提供语法高亮和代码提示。
 
 ### 4.3 特色功能
@@ -89,7 +89,7 @@ Notepad++ 是一个免费的文本编辑器，虽然它不是专门的 IDE，但
 ### 5.2 安装与配置
 
 1. 下载并安装 [Notepad++](https://notepad-plus-plus.org/)。
-2. 安装 **Lua** 语言支持插件，或使用 **Notepad++** 自带的语法高亮功能。
+2. 安装 Lua 语言支持插件，或直接用 Notepad++ 自带的语法高亮功能。
 3. 配置编辑器以支持 Lua 文件的高亮和基本编辑功能。
 
 ### 5.3 特色功能
@@ -101,4 +101,4 @@ Notepad++ 是一个免费的文本编辑器，虽然它不是专门的 IDE，但
 
 ## 结语
 
-以上是一些推荐的 IDE 和编辑器，它们在 Lua 开发中表现优秀。根据个人的开发需求和偏好，你可以选择最适合你的工具来提高开发效率。
+只想要能跑的环境，ZeroBrane Studio 开箱即用、调试内置。已经有顺手的编辑器的话，装个 Lua 插件就够了。

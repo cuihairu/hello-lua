@@ -1,6 +1,6 @@
 # 安装 Lua
 
-在开始使用 Lua 之前，你需要先安装 Lua 解释器。Lua 的安装过程因操作系统而异，但总体上都是直接的。以下是各主要操作系统上安装 Lua 的详细步骤。
+安装 Lua 就是装一个解释器。过程因操作系统而异，但都不复杂，下面按系统给出步骤。
 
 ## 1. 在 Windows 上安装 Lua
 
@@ -42,20 +42,20 @@
 
 ### 3.1 使用包管理器安装
 
-不同的 Linux 发行版使用不同的包管理器，以下是一些常见的安装命令：
+不同的 Linux 发行版使用不同的包管理器，常见的三种：
 
-- **Debian/Ubuntu** 系统：
+- Debian/Ubuntu，用 `apt`：
     ```bash
     sudo apt-get update
     sudo apt-get install lua5.4
     ```
 
-- **Fedora** 系统：
+- Fedora，用 `dnf`：
     ```bash
     sudo dnf install lua
     ```
 
-- **Arch Linux** 系统：
+- Arch Linux，用 `pacman`：
     ```bash
     sudo pacman -S lua
     ```
@@ -99,4 +99,4 @@
 
 ## 结语
 
-以上步骤帮助你在不同操作系统上安装 Lua。安装完成后，你可以开始编写和运行 Lua 程序。如果遇到任何问题，参考官方文档或社区论坛可能会提供帮助。
+三种装法里，包管理器最省事；要指定版本或特殊配置，再走源码安装。`lua -v` 能打出版本号就说明装好了。
