@@ -1,16 +1,16 @@
 ### 测试与调试
 
-在 Lua 编程中，测试与调试是确保代码质量和性能的关键步骤。以下是一些常见的测试和调试方法：
+测试和调试回答两类问题：代码对不对，慢在哪里。
 
-#### 1. **单元测试**
+#### 1. 单元测试
 
-**单元测试** 是测试代码中最小的可测试单元——通常是函数或方法——的过程。Lua 有几个库和工具可以帮助进行单元测试。
+单元测试针对代码里最小的可测试单元，通常是函数或方法。Lua 有几个现成的框架可用。
 
 ##### 常用单元测试框架
 
-- **[LuaUnit](https://github.com/bluebird75/luaunit)**：一个轻量级的 Lua 单元测试框架，类似于 JUnit。
+[LuaUnit](https://github.com/bluebird75/luaunit) 是轻量级的单元测试框架，类似 JUnit：
 
-**示例**：
+示例：
 
 ```lua
 -- 使用 LuaUnit 编写简单的测试用例
@@ -36,9 +36,7 @@ end
 os.exit(luaunit.LuaUnit.run())
 ```
 
-- **[busted](https://olivinelabs.com/busted/)**：一个功能强大的 Lua 测试框架，支持 BDD（行为驱动开发）风格的测试。
-
-**示例**：
+[busted](https://olivinelabs.com/busted/) 支持 BDD（行为驱动开发）风格的测试，写起来是这样的：
 
 ```lua
 -- 使用 busted 编写测试
@@ -53,15 +51,13 @@ describe("add", function()
 end)
 ```
 
-#### 2. **调试工具**
+#### 2. 调试工具
 
-**调试工具** 可以帮助开发者识别和解决代码中的问题。Lua 有一些内置和第三方的调试工具可供使用。
+调试工具有内置的，也有第三方的。
 
 ##### Lua 内置调试库
 
-- **`debug` 库**：Lua 提供的内置调试库，可以用来检查代码执行过程中的状态。
-
-**示例**：
+内置的 `debug` 库能检查代码执行过程中的状态，比如用 `debug.getinfo` 看调用者：
 
 ```lua
 -- 使用 debug 库查看调用者的信息
@@ -81,25 +77,17 @@ foo()
 
 ##### 第三方调试工具
 
-- **[ZeroBrane Studio](https://studio.zerobrane.com/)**：一个专为 Lua 设计的集成开发环境，内置调试功能。
+[ZeroBrane Studio](https://studio.zerobrane.com/) 是专为 Lua 设计的集成开发环境，内置调试功能，设置断点、单步执行、查看变量值都在 IDE 里完成。
 
-**示例**：
+[LuaDebug](https://github.com/sumory/luadebug) 是远程调试工具，通过 IDE 或命令行调试 Lua 脚本。
 
-在 ZeroBrane Studio 中，您可以设置断点、单步执行代码、查看变量值等操作。
+#### 3. 性能分析
 
-- **[LuaDebug](https://github.com/sumory/luadebug)**：一个功能丰富的 Lua 调试工具。
+性能分析找的是瓶颈在哪。常见的 Lua 分析工具：
 
-**示例**：
+[luaprofiler](https://github.com/LuaDist/luaprofiler) 记录每次函数调用的次数与耗时。模块名是 `profiler`，只有 `start([filename])` 和 `stop()` 两个函数：`start` 的可选参数指定日志文件（缺省写为 `lprof_随机数.out`），结果在 `stop` 之后可用于 `summary.lua` 等分析脚本。注意该项目面向 Lua 5.1，在 5.4 下可能需要修改后才能编译。
 
-使用 LuaDebug 调试 Lua 脚本，可以通过 IDE 或命令行进行调试。
-
-#### 3. **性能分析**
-
-**性能分析** 用于识别代码中的性能瓶颈。以下是一些常见的 Lua 性能分析工具：
-
-- **[luaprofiler](https://github.com/LuaDist/luaprofiler)**：一个用于 Lua 代码性能分析的工具，记录每次函数调用的次数与耗时。它的模块名是 `profiler`，只有 `start([filename])` 和 `stop()` 两个函数：`start` 的可选参数指定日志文件（缺省写为 `lprof_随机数.out`），结果在 `stop` 之后可用于 `summary.lua` 等分析脚本。注意该项目面向 Lua 5.1，在 5.4 下可能需要修改后才能编译。
-
-**示例**：
+用法：
 
 ```lua
 -- 使用 luaprofiler 进行性能分析
@@ -113,21 +101,17 @@ profiler.stop()
 -- 分析结果写入 profiler.log
 ```
 
-- **[LuaJIT profiler](https://luajit.org/profiling.html)**：LuaJIT 提供了内置的性能分析工具，如 `-jv` 参数。
-
-**示例**：
+LuaJIT 自带分析器，`-jv` 参数开启，详见 [LuaJIT profiler](https://luajit.org/profiling.html)：
 
 ```bash
 luajit -jv script.lua
 ```
 
-#### 4. **错误处理**
+#### 4. 错误处理
 
-**错误处理** 是编写健壮代码的重要部分。Lua 使用 `pcall` 和 `xpcall` 来处理运行时错误。
+Lua 用 `pcall` 和 `xpcall` 处理运行时错误。
 
-- **`pcall`**：保护性调用，捕获并处理运行时错误。
-
-**示例**：
+`pcall` 是保护性调用，捕获运行时错误：
 
 ```lua
 -- 使用 pcall 捕获错误
@@ -140,9 +124,7 @@ if not success then
 end
 ```
 
-- **`xpcall`**：扩展的保护性调用，允许指定错误处理函数。
-
-**示例**：
+`xpcall` 在此基础上允许指定错误处理函数：
 
 ```lua
 -- 使用 xpcall 捕获错误并处理
@@ -158,7 +140,3 @@ if not success then
     print("Error handled")
 end
 ```
-
-### 总结
-
-在 Lua 编程中，测试和调试是提高代码质量和性能的关键步骤。通过使用适当的单元测试框架、调试工具和性能分析工具，开发者可以有效地识别和解决问题，并优化程序性能。合理的错误处理也有助于提高代码的健壮性和稳定性。

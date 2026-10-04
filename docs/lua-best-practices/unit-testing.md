@@ -1,21 +1,14 @@
-Lua 的单元测试框架用于验证代码中的功能是否按预期工作。以下是一些流行的 Lua 单元测试框架，它们各具特色，能够帮助你进行有效的测试：
+下面是几个常用的 Lua 单元测试框架，外加一个不引框架的做法。
 
 ### 1. LuaUnit
 
-**LuaUnit** 是一个轻量级的单元测试框架，类似于 JUnit。它支持断言、测试用例和测试套件的创建。LuaUnit 适用于简单的单元测试需求。
-
-- **特性**：
-  - 支持标准断言（如 `assertEquals`, `assertTrue`）
-  - 可以生成测试报告
-  - 简单易用
-
-- **安装**：可以通过克隆 GitHub 仓库来安装。
+LuaUnit 是轻量级的单元测试框架，类似 JUnit，支持断言、测试用例和测试套件，适合简单的测试需求。断言用标准的 `assertEquals`、`assertTrue`，能生成测试报告。安装用克隆 GitHub 仓库：
 
   ```bash
   git clone https://github.com/bluebird75/luaunit.git
   ```
 
-- **示例代码**：
+- 示例代码：
 
   ```lua
   -- test_addition.lua
@@ -43,21 +36,13 @@ Lua 的单元测试框架用于验证代码中的功能是否按预期工作。�
 
 ### 2. Busted
 
-**Busted** 是一个功能强大的 Lua 测试框架，支持 BDD（行为驱动开发）风格的测试。它提供了丰富的断言和测试功能，适合复杂的测试需求。
-
-- **特性**：
-  - 支持 BDD 风格的测试描述
-  - 丰富的断言
-  - 可以生成测试报告
-  - 支持测试标签和过滤
-
-- **安装**：可以通过 LuaRocks 安装。
+Busted 支持 BDD（行为驱动开发）风格的测试，断言齐全，还能打测试标签、按标签过滤，适合复杂一点的测试需求，也能生成测试报告。LuaRocks 安装：
 
   ```bash
   luarocks install busted
   ```
 
-- **示例代码**：
+- 示例代码：
 
   ```lua
   -- test_addition_spec.lua
@@ -82,13 +67,9 @@ Lua 的单元测试框架用于验证代码中的功能是否按预期工作。�
 
 ### 3. 不引入框架的最简做法
 
-如果项目很小，不想引入第三方库，用 `assert` 加一个简单的统计循环就能写出可运行的测试：
+如果项目很小，不想引入第三方库，用 `assert` 加一个简单的统计循环就能写出可运行的测试。零依赖，任何 Lua 环境都能跑；用 `pcall` 统计失败用例并给出退出码。
 
-- **特性**：
-  - 零依赖，任何 Lua 环境都能运行
-  - 用 `pcall` 统计失败用例并给出退出码
-
-- **示例代码**：
+- 示例代码：
 
   ```lua
   -- test_addition.lua
@@ -131,20 +112,13 @@ Lua 的单元测试框架用于验证代码中的功能是否按预期工作。�
 
 ### 4. Lunatest
 
-**Lunatest** 是一个 xUnit 风格的 Lua 单元测试框架，额外支持随机化测试（类似 QuickCheck）。它与 lunit 兼容，测试函数用全局的 `test_*` 命名即可被发现；断言函数（`lunatest.assert_equal`、`lunatest.assert_true` 等）挂在 `lunatest` 模块上，不写入全局环境。
-
-- **特性**：
-  - xUnit 风格，lunit 兼容
-  - 支持随机化测试
-  - 零额外依赖（可选使用 lrandom、luasocket 增强随机数与计时）
-
-- **安装**：可以从 GitHub 获取。
+Lunatest 是 xUnit 风格的 Lua 单元测试框架，额外支持随机化测试（类似 QuickCheck）。它与 lunit 兼容，测试函数用全局的 `test_*` 命名即可被发现；断言函数（`lunatest.assert_equal`、`lunatest.assert_true` 等）挂在 `lunatest` 模块上，不写入全局环境。零额外依赖，可选装 lrandom、luasocket 增强随机数与计时。从 GitHub 获取：
 
   ```bash
   git clone https://github.com/silentbicycle/lunatest.git
   ```
 
-- **示例代码**：
+- 示例代码：
 
   ```lua
   -- test_addition.lua
@@ -176,4 +150,4 @@ Lua 的单元测试框架用于验证代码中的功能是否按预期工作。�
 
 ### 总结
 
-这些单元测试框架提供了不同的功能和特性，可以根据你的需求选择适合的框架来进行 Lua 编程中的单元测试。LuaUnit 和 Busted 是最常用的选择，适合大多数的测试需求；Lunatest 适合希望使用 xUnit 风格或随机化测试的场景；而“不引入框架的最简做法”则在依赖受限或脚本很小的时候最省事。
+选型看场景：多数项目用 LuaUnit 或 Busted 就够；想要 xUnit 风格或随机化测试，选 Lunatest；依赖受限或脚本很小，直接用 `assert` 加统计循环最省事。
