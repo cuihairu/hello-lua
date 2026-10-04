@@ -8,14 +8,14 @@ The Evolution of Lua（Roberto Ierusalimschy 等，HOPL III, 2007）讲 Lua 从 
 
 #### 2. 官方手册与源码阅读
 
-- Lua 5.4 参考手册：<https://www.lua.org/manual/5.4/>，其中第 2 章（语言）和第 3 章（标准库）值得反复阅读。
+- Lua 5.5 参考手册：<https://www.lua.org/manual/5.5/>，其中第 2 章（语言）和第 3 章（标准库）值得反复阅读；旧版手册（如 [5.4](https://www.lua.org/manual/5.4/)）仍在原地址维护。
 - 源码阅读路线（约 3 万行 C 代码，核心文件更少）：
   1. `llex.c` / `lparser.c` / `lcode.c`：词法分析、语法分析与代码生成，直接生成字节码，不经过 AST；
   2. `lopcodes.h` / `lvm.c`：指令编码与虚拟机主循环 `luaV_execute`；
   3. `lgc.c`：增量标记-清除与分代回收的实现；
   4. `lapi.c` / `lstate.c`：C API 与 `lua_State`（协程线程）的管理；
   5. `ldo.c`：调用栈与错误处理（setjmp/longjmp）。
-- 源码在线浏览：<https://www.lua.org/source/>，或 GitHub 镜像 <https://github.com/lua/lua>。
+- 源码在线浏览：<https://www.lua.org/source/>，或 GitHub 镜像 <https://github.com/lua/lua>；站内的 [Lua 5.5 源码解析](/design-and-implementation/lua55-source) 按 v5.5.1 逐文件走过一遍，可作这条路线的对照读本。
 
 #### 3. 书籍
 
@@ -23,7 +23,7 @@ The Evolution of Lua（Roberto Ierusalimschy 等，HOPL III, 2007）讲 Lua 从 
 
 #### 4. 工具实践
 
-- `luac -l -l`：查看 Lua 5.4 生成的真实字节码，是验证虚拟机相关表述的第一手工具：
+- `luac -l -l`：查看编译器生成的真实字节码，是验证虚拟机相关表述的第一手工具：
 
   ```bash
   echo 'local a = 10 + 5' > /tmp/t.lua

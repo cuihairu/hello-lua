@@ -77,8 +77,8 @@
 
 1. 解压下载的压缩包：
     ```bash
-    tar zxpf lua-5.4.8.tar.gz
-    cd lua-5.4.8
+    tar zxpf lua-5.5.1.tar.gz
+    cd lua-5.5.1
     ```
 
 2. 编译 Lua：
