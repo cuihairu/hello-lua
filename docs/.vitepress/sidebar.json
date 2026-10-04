@@ -138,6 +138,10 @@
           {
             "text": "面向对象设计模式",
             "link": "/advanced/design-patterns"
+          },
+          {
+            "text": "面向对象的实现",
+            "link": "/advanced/oop-implementation"
           }
         ]
       },

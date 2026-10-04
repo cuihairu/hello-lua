@@ -14,9 +14,11 @@
 
 尽管 Lua 并没有内置的面向对象编程（OOP）机制，但它通过表（Tables）和元表（Metatables）提供了面向对象的实现方式。理解这些机制将帮助你实现封装、继承和多态等 OOP 概念。
 
+- [self 的作用](./self.md)
 - [基于表的对象系统](./object-system.md)
 - [继承与多态](./inheritance-and-polymorphism.md)
 - [面向对象设计模式](./design-patterns.md)
+- [面向对象的实现](./oop-implementation.md)
 
 ## 3. 模块与包
 
