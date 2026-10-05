@@ -40,11 +40,12 @@ export default defineConfig({
       { text: '进阶', link: '/advanced/README' },
       { text: '设计与实现', link: '/design-and-implementation/README' },
       { text: '扩展与应用', link: '/lua-extensions-applications/README' },
-      { text: '最佳实践', link: '/lua-best-practices/README' }
+      { text: '最佳实践', link: '/lua-best-practices/README' },
+      { text: '附录', link: '/appendix/README' }
     ],
 
     // 由 mdbook SUMMARY.md 结构映射而来（vitepress-migration/parse_summary.py），
-    // 5 个部分 + 未入目录散页归入「附录 · 未入目录」
+    // 6 个部分，附录组含 FAQ/标准库/资源/扩展阅读四页
     sidebar: sidebar as never,
 
     socialLinks: [
@@ -53,7 +54,7 @@ export default defineConfig({
 
     footer: {
       message: 'Hello Lua',
-      copyright: '© 2025 cuihairu'
+      copyright: '© 2024-2026 cuihairu'
     },
 
     search: {
