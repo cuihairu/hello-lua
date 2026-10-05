@@ -90,11 +90,11 @@ LuaRocks 是 Lua 的包管理器，用来给项目安装和管理第三方库。
     ```bash
     brew install luarocks
     ```
-    或者通过源码安装：
+    或者通过源码安装（版本号以 [LuaRocks 官网](https://luarocks.org/) 当前发布为准）：
     ```bash
-    wget https://luarocks.org/releases/luarocks-x.x.x.tar.gz
-    tar zxpf luarocks-x.x.x.tar.gz
-    cd luarocks-x.x.x
+    wget https://luarocks.org/releases/luarocks-3.13.0.tar.gz
+    tar zxpf luarocks-3.13.0.tar.gz
+    cd luarocks-3.13.0
     ./configure; sudo make bootstrap
     ```
 
