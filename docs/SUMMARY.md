@@ -97,3 +97,9 @@
         - [Lua代码的部署](lua-best-practices/code-deployment.md)
         - [跨平台发布Lua应用](lua-best-practices/cross-platform-deployment.md)
 
+- [附录](appendix/README.md)
+    - [常见问题与解决方案](appendix/faq.md)
+    - [Lua标准库参考](appendix/standard-library.md)
+    - [Lua相关资源与社区](appendix/resources.md)
+    - [扩展阅读与学习资源](appendix/further-reading.md)
+

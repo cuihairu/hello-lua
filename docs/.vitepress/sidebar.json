@@ -446,34 +446,25 @@
     ]
   },
   {
-    "text": "附录 · 未入目录",
+    "text": "附录",
+    "link": "/appendix/README",
     "collapsed": true,
     "items": [
       {
-        "text": "appendix",
-        "collapsed": true,
-        "items": [
-          {
-            "text": "appendix",
-            "link": "/appendix/README"
-          },
-          {
-            "text": "faq",
-            "link": "/appendix/faq"
-          },
-          {
-            "text": "further-reading",
-            "link": "/appendix/further-reading"
-          },
-          {
-            "text": "resources",
-            "link": "/appendix/resources"
-          },
-          {
-            "text": "standard-library",
-            "link": "/appendix/standard-library"
-          }
-        ]
+        "text": "常见问题与解决方案",
+        "link": "/appendix/faq"
+      },
+      {
+        "text": "Lua标准库参考",
+        "link": "/appendix/standard-library"
+      },
+      {
+        "text": "Lua相关资源与社区",
+        "link": "/appendix/resources"
+      },
+      {
+        "text": "扩展阅读与学习资源",
+        "link": "/appendix/further-reading"
       }
     ]
   }
