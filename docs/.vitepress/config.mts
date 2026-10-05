@@ -44,7 +44,7 @@ export default defineConfig({
       { text: '附录', link: '/appendix/README' }
     ],
 
-    // 由 mdbook SUMMARY.md 结构映射而来（vitepress-migration/parse_summary.py），
+    // 与 docs/SUMMARY.md 映射底稿一一对应，
     // 6 个部分，附录组含 FAQ/标准库/资源/扩展阅读四页
     sidebar: sidebar as never,
 
