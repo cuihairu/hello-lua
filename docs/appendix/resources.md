@@ -12,7 +12,7 @@ lua-users wiki（<http://lua-users.org/wiki/>）是社区维护的知识库，�
 
 #### 3. 工具与包管理
 
-- **LuaRocks**：<https://luarocks.org/> 是 Lua 的包管理器，用它安装第三方库：
+- LuaRocks：<https://luarocks.org/> 是 Lua 的包管理器，用它安装第三方库：
 
   ```bash
   luarocks install luafilesystem

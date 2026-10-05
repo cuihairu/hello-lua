@@ -51,7 +51,7 @@ print(coroutine.resume(co, 99))       -- 输出 received	99 和 true	done
 
 ## 4. coroutine.wrap：更轻量的使用方式
 
-`coroutine.wrap` 同样可以创建协程，但它返回的不是协程对象，而是一个"恢复函数"：每次调用这个函数相当于 `resume` 一次，协程 `yield` 出的值直接作为函数返回值返回：
+`coroutine.wrap` 同样可以创建协程，但返回值是"恢复函数"，不是协程对象：每次调用这个函数相当于 `resume` 一次，协程 `yield` 出的值直接作为函数返回值返回：
 
 ```lua
 local gen = coroutine.wrap(function()

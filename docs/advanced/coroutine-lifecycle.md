@@ -32,7 +32,7 @@ coroutine.resume(co)           -- 输出 resumed again
 print(coroutine.status(co))    -- 输出 dead（函数返回）
 ```
 
-`normal` 状态比较少见：当一个协程 A 恢复另一个协程 B 时，B 处于 `running`，而 A 就处于 `normal`——它"活着"，但执行权在别人手里：
+`normal` 状态比较少见：当一个协程 A 恢复另一个协程 B 时，B 处于 `running`，而 A 就处于 `normal`。它"活着"，但执行权在别人手里：
 
 ```lua
 local main = coroutine.running()   -- 当前（主）协程

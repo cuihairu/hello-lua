@@ -13,7 +13,7 @@
 | 宿主辅助 | `lauxlib.c` `linit.c` |
 | 驱动 | `lua.c`(解释器)`luac.c`(编译器)`onelua.c`(单文件合并版) |
 
-开发版 makefile 第 1 行自述 "Developer's makefile for building Lua":默认目标 `all` 只产出 `liblua.a` 和 `lua` 可执行文件(makefile:109、makefile:113-114),没有 luac 目标。luac.c 只随发行 tarball 发布(位于 `src/luac.c`,手册页在 `doc/luac.1`);开发仓库里根本没有这个文件。onelua.c 提供单文件构建(`gcc -O2 -std=c99 -o lua onelua.c -lm`,onelua.c:5-17),其中 `MAKE_LUAC` 分支会 `#include "luac.c"`(onelua.c:134-135)——在开发仓库里执行这一步直接报 `fatal error: luac.c: No such file or directory`,原因就是上面这个布局差异。
+开发版 makefile 第 1 行自述 "Developer's makefile for building Lua":默认目标 `all` 只产出 `liblua.a` 和 `lua` 可执行文件(makefile:109、makefile:113-114),没有 luac 目标。luac.c 只随发行 tarball 发布(位于 `src/luac.c`,手册页在 `doc/luac.1`);开发仓库里根本没有这个文件。onelua.c 提供单文件构建(`gcc -O2 -std=c99 -o lua onelua.c -lm`,onelua.c:5-17),其中 `MAKE_LUAC` 分支会 `#include "luac.c"`(onelua.c:134-135)。在开发仓库里执行这一步直接报 `fatal error: luac.c: No such file or directory`,原因就是上面这个布局差异。
 
 发行 tarball 用 `make linux` 一次产出 `src/lua` 和 `src/luac`。最小验证:
 
@@ -24,13 +24,13 @@
 
 解释器启动链路在 lua.c:`main`(lua.c:777)先把控制权交给 `pmain`(lua.c:731),后者调用 `luaL_newstate` 建状态(lauxlib.c:1197)、用 `luaL_openselectedlibs` 按位掩码打开标准库(linit.c:48)、处理 `LUA_INIT` 环境变量(lua.c:392 的 `handle_luainit`),最后经 `docall`(lua.c:161)跑用户脚本或进入 REPL。
 
-仓库还带完整的回归测试 `testes/`,顶层 `all` 脚本用 `lua -W all.lua` 逐项跑全部测试文件——读源码时对照测试用例,比只看实现快得多。
+仓库还带完整的回归测试 `testes/`,顶层 `all` 脚本用 `lua -W all.lua` 逐项跑全部测试文件。读源码时对照测试用例,比只看实现快得多。
 
 ## 2. 核心数据结构
 
 ### 2.1 TValue:带类型标签的值
 
-lobject.h:60-63 的注释块标题就是 "Tagged Values"。所有 Lua 值都是 `TValue`:一个 `Value` 联合(lobject.h:49-57,含 `gc` 指针、整数、浮点、布尔等)+ 类型标签字段(`TValuefields`,lobject.h:65),合成为 `TValue`(lobject.h:67-69)。类型编号带"变体位":`makevariant`(:42)在基础类型上编码子类型,`novariant`(:80)剥掉变体位还原基础类型——整型和浮点数同为 `LUA_TNUMBER`,靠变体位区分。
+lobject.h:60-63 的注释块标题就是 "Tagged Values"。所有 Lua 值都是 `TValue`:一个 `Value` 联合(lobject.h:49-57,含 `gc` 指针、整数、浮点、布尔等)+ 类型标签字段(`TValuefields`,lobject.h:65),合成为 `TValue`(lobject.h:67-69)。类型编号带"变体位":`makevariant`(:42)在基础类型上编码子类型,`novariant`(:80)剥掉变体位还原基础类型。整型和浮点数同为 `LUA_TNUMBER`,靠变体位区分。
 
 顺带纠一个流传的说法:不少文章把内部类型写作 `TaggedValue`。在 5.4 与 5.5 源码里全文检索 `TaggedValue` 均为 0 次命中,类型名是 `TValue`。
 
@@ -43,7 +43,7 @@ Lua 栈本身是 `StackValue` 数组(lobject.h:148-153),栈位置用 `StkIdRel` 
 - `TString`:短字符串内嵌数据,`hnext` 字段把它串进全局字符串表桶链(lobject.h:406-413)。
 - `Proto`:函数原型,持有字节码指令数组、常量表、upvalue 描述等(lobject.h:603-626)。5.5 新增 `p->flag` 的 `PF_VATAB` 位(lobject.h:598),标记该函数声明了 vararg 表参数(见第 3 节)。
 - `UpVal`:upvalue,分开放(指向栈槽)与关闭(自持值)两态(lobject.h:680-693)。
-- `Closure`:联合类型——Lua 闭包 `LClosure`(:707-711)持 `Proto` 加 upvalue 数组,C 闭包 `CClosure`(:700-704)持 C 函数指针加上值数组(:714-717)。
+- `Closure`:联合类型,Lua 闭包 `LClosure`(:707-711)持 `Proto` 加 upvalue 数组,C 闭包 `CClosure`(:700-704)持 C 函数指针加上值数组(:714-717)。
 
 ### 2.3 Table 与它的两个部分
 
@@ -61,7 +61,7 @@ Lua 栈本身是 `StackValue` 数组(lobject.h:148-153),栈位置用 `StkIdRel` 
 
 ### 2.4 两个状态结构
 
-`lua_State` 是每线程状态:栈顶 `top`、当前调用帧 `ci`、开放 upvalue 链、C 调用深度 `nCcalls`(:302)等(lstate.h:285-312)。`CallInfo`(:187-209)记录一帧调用:`u` 联合区分 Lua 帧(存 `savedpc`)与 C 帧(存 continuation 函数),`u2` 联合(:203-207)在不同时机存「让位值个数」「返回值个数」或「被保护调用的函数索引」,状态位段 `callstatus`(:208)的低 8 位存期望返回值数(`CIST_NRESULTS`,lstate.h:223),上限由 `MAXRESULTS` 250 给定(:216)——5.5 起函数最多返回 250 个值,超了会报错。
+`lua_State` 是每线程状态:栈顶 `top`、当前调用帧 `ci`、开放 upvalue 链、C 调用深度 `nCcalls`(:302)等(lstate.h:285-312)。`CallInfo`(:187-209)记录一帧调用:`u` 联合区分 Lua 帧(存 `savedpc`)与 C 帧(存 continuation 函数),`u2` 联合(:203-207)在不同时机存「让位值个数」「返回值个数」或「被保护调用的函数索引」,状态位段 `callstatus`(:208)的低 8 位存期望返回值数(`CIST_NRESULTS`,lstate.h:223),上限由 `MAXRESULTS` 250 给定(:216)。5.5 起函数最多返回 250 个值,超了会报错。
 
 `global_State`(:327-372)是整个虚拟机共享的:内存记账 `GCtotalbytes`/`GCdebt`(:330-331)、GC 参数表 `gcparams`(:338)、各年龄代链表(:355-362)、字符串内部表(:334)。主线程直接内嵌在结构体末尾(`mainth`,:371),`mainthread(G)` 宏(:376)从全局状态反查主线程。
 
@@ -71,7 +71,7 @@ Lua 栈本身是 `StackValue` 数组(lobject.h:148-153),栈位置用 `StkIdRel` 
 
 ### 3.1 词法
 
-保留字表在 `luaX_tokens`(llex.c:45-47),5.5 把 `global` 加了进去(:47);固定保留字列表在 :79-82,查找走 `isreserved`(lstring.h:48)对短字符串的直查。词法主循环是 `llex`(llex.c:467),`luaX_next`(:588)是对外的取下一 token 接口。注意 llex.c:187-194 有一段注释专门解释兼容开关如何影响 `global` 的词法处理——这是 5.5 词法器里少见的「实现听配置」的地方。
+保留字表在 `luaX_tokens`(llex.c:45-47),5.5 把 `global` 加了进去(:47);固定保留字列表在 :79-82,查找走 `isreserved`(lstring.h:48)对短字符串的直查。词法主循环是 `llex`(llex.c:467),`luaX_next`(:588)是对外的取下一 token 接口。注意 llex.c:187-194 有一段注释专门解释兼容开关如何影响 `global` 的词法处理。这是 5.5 词法器里少见的「实现听配置」的地方。
 
 ### 3.2 语法与 global 语句
 
@@ -97,7 +97,7 @@ print(x)
 
 - `<const>` 全局只读,赋值报错(实测输出 `attempt to assign to const variable 'n'`);`global *` 之后还能写成 `global <const> *` 把整个通配声明锁成只读(manual.of:1695-1712)。
 
-兼容开关在语法层落地为一次前瞻:`LUA_COMPAT_GLOBAL` 打开时(luaconf.h:344-346,发行配置默认打开),`global` 不当保留字,`statement` 遇到 `TK_NAME` 时向前看是不是 `global` 跟声明形态,不是就按赋值/表达式语句走(lparser.c:2117-2134)。所以手册说 5.5 里 global 是保留词(manual.of:9587-9590),而官方发行配置默认不让它保留——读手册时这一条要对着源码理解。
+兼容开关在语法层落地为一次前瞻:`LUA_COMPAT_GLOBAL` 打开时(luaconf.h:344-346,发行配置默认打开),`global` 不当保留字,`statement` 遇到 `TK_NAME` 时向前看是不是 `global` 跟声明形态,不是就按赋值/表达式语句走(lparser.c:2117-2134)。所以手册说 5.5 里 global 是保留词(manual.of:9587-9590),而官方发行配置默认不让它保留。读手册时这一条要对着源码理解。
 
 for 循环控制变量 5.5 起按 `RDKCONST` 声明为只读(lparser.c:1694 与 :1721),循环体内改它直接编译报错(手册 manual.of:1615)。
 
@@ -119,7 +119,7 @@ print(f(10, 20, 30))
 
 ### 3.4 指令格式与代码生成
 
-指令编码格式在 lopcodes.h:14-31 的注释里给出六种模式:iABC、ivABC、iABx、iAsBx、iAx、isJ。5.5 新增的 ivABC 用小宽度 B(6 位)配大宽度 C(10 位),专为 `OP_NEWTABLE`/`OP_SETLIST` 设计——表构造器和 list 装填需要更大的 C 空间描述批量行为。各操作数位宽表在 lopcodes.h:42-51,取字段宏 `GET_OPCODE`(:127)、`GETARG_A`(:138)。
+指令编码格式在 lopcodes.h:14-31 的注释里给出六种模式:iABC、ivABC、iABx、iAsBx、iAx、isJ。5.5 新增的 ivABC 用小宽度 B(6 位)配大宽度 C(10 位),专为 `OP_NEWTABLE`/`OP_SETLIST` 设计。表构造器和 list 装填需要更大的 C 空间描述批量行为。各操作数位宽表在 lopcodes.h:42-51,取字段宏 `GET_OPCODE`(:127)、`GETARG_A`(:138)。
 
 代码生成的寄存器管理在 lcode.c:`checkstack`(:476)保证栈空间、`reserveregs`(:488)划走寄存器、表达式求值结果经 `exp2K`(:1055)尽量塞进常量或寄存器,赋值在 `luaK_storevar`(:1105),函数收尾统一 `luaK_ret`(:208)。指令发射的基础设施是 `luaK_codeABCk`(:399)。
 
@@ -156,7 +156,7 @@ main </tmp/demochunk.lua:0,0> (11 instructions at 0x561092b3aa90)
 
 ## 4. 虚拟机主循环
 
-解释器主循环 `luaV_execute` 在 lvm.c:1204。骨架三件套:`vmfetch` 取指并顺带做栈空间检查(:1191-1197),`vmdispatch` 按 opcode 分发(:1199-1201,就是个 `switch`),`vmcase`/`vmbreak` 定义各分支的入口与出口(:1199-1201)。编译宏 `LUA_USE_JUMPTABLE` 打开时,`#include "ljumptab.h"`(:1211-1213)把 switch 换成跳转表——ljumptab.h:9-14 把 `vmcase(x)` 展开成 label;内部测试配置固定关掉它(ltests.h:41),以保证断点与覆盖率工具看到的代码形态稳定。
+解释器主循环 `luaV_execute` 在 lvm.c:1204。骨架三件套:`vmfetch` 取指并顺带做栈空间检查(:1191-1197),`vmdispatch` 按 opcode 分发(:1199-1201,就是个 `switch`),`vmcase`/`vmbreak` 定义各分支的入口与出口(:1199-1201)。编译宏 `LUA_USE_JUMPTABLE` 打开时,`#include "ljumptab.h"`(:1211-1213)把 switch 换成跳转表。ljumptab.h:9-14 把 `vmcase(x)` 展开成 label;内部测试配置固定关掉它(ltests.h:41),以保证断点与覆盖率工具看到的代码形态稳定。
 
 每条指令运行在两道保护之间:`Protect`(:1164)包住可能重入 C 层、导致栈或状态失效的操作;`checkGC`(:1183)在分配点检查是否该让 GC 走一步;`luai_threadyield`(:1176-1178)在协作式调度下给宿主让路的机会。
 
@@ -169,7 +169,7 @@ main </tmp/demochunk.lua:0,0> (11 instructions at 0x561092b3aa90)
 - vararg:`OP_VARARGPREP`(:1959)在函数入口把参数搬好,`OP_VARARG`(:1943)把可变参数铺到寄存器,`OP_GETVARG`(:1949)处理 vararg 表下标,`OP_ERRNNIL`(:1955)拦下全局重定义。
 - `OP_EXTRAARG`(:1968)永远跟在需要 17 位以上操作数的指令后面补位。
 
-被 `yield` 打断的指令靠 `luaV_finishOp`(lvm.c:861)在 resume 时补完——这是协程能跨 VM 指令边界挂起的关键(见第 6 节)。字符串连接、长度、比较的语义实现分别在 `luaV_concat`(:690)、`luaV_objlen`(:737)、`luaV_lessthan`(:555)与 `luaV_equalobj`(:588)。
+被 `yield` 打断的指令靠 `luaV_finishOp`(lvm.c:861)在 resume 时补完。这是协程能跨 VM 指令边界挂起的关键(见第 6 节)。字符串连接、长度、比较的语义实现分别在 `luaV_concat`(:690)、`luaV_objlen`(:737)、`luaV_lessthan`(:555)与 `luaV_equalobj`(:588)。
 
 ## 5. GC:从两态到三态
 
@@ -190,11 +190,11 @@ GC 参数从编译期宏改成运行时可调的字节表 `gcparams[]`(lstate.h:
 | 步进倍率 GCMUL | 200% | lgc.h:198 |
 | 步进粒度 GCSTEPSIZE | 200 × sizeof(Table) | lgc.h:201 |
 
-5.4 同位置是 `LUAI_GENMAJORMUL 100`、`LUAI_GCPAUSE 200`(lgc.h:128、lgc.h:131,5.4)。参数以压缩字节存储:`luaO_codeparam`(lobject.c:62)编码、`luaO_applyparam`(:89)解码。脚本侧对应 `collectgarbage("param", ...)`——5.4 的 `"setpause"`/`"setstepmul"` 选项已从 opts 表删除(lbaselib.c:202-208)。
+5.4 同位置是 `LUAI_GENMAJORMUL 100`、`LUAI_GCPAUSE 200`(lgc.h:128、lgc.h:131,5.4)。参数以压缩字节存储:`luaO_codeparam`(lobject.c:62)编码、`luaO_applyparam`(:89)解码。脚本侧对应 `collectgarbage("param", ...)`。5.4 的 `"setpause"`/`"setstepmul"` 选项已从 opts 表删除(lbaselib.c:202-208)。
 
 ### 5.3 触发条件方向反转
 
-内存记账是 `GCtotalbytes - GCdebt`(lstate.h:435)。5.5 的自动触发判断写成 `GCdebt <= 0`(lgc.h:233 的 `luaC_condGC`),5.4 是 `GCdebt > 0`(lgc.h:168-169,5.4)——债务语义整个反过来,读代码时先换脑子。
+内存记账是 `GCtotalbytes - GCdebt`(lstate.h:435)。5.5 的自动触发判断写成 `GCdebt <= 0`(lgc.h:233 的 `luaC_condGC`),5.4 是 `GCdebt > 0`(lgc.h:168-169,5.4)。债务语义整个反过来,读代码时先换脑子。
 
 ### 5.4 引擎内部
 
@@ -210,9 +210,9 @@ GC 参数从编译期宏改成运行时可调的字节表 `gcparams[]`(lstate.h:
 
 恢复链路:`lua_resume`(ldo.c:968)→ `resume`(:918,处理上次因 debug 钩子让位的现场,包括回退 savedpc)→ 失败时 `precover`(:950)在受保护调用帧间找恢复点 → `unroll`(:868)逐帧重新进入 `luaV_execute`。
 
-让位链路:`coroutine.yield` 最终到 `lua_yieldk`(ldo.c:1008),它把线程状态置 `LUA_YIELD`、把让位值个数存进 `ci->u2.nyield`,然后 `luaD_throw(L, LUA_YIELD)`(:1031)——让位被实现为一次「以 LUA_YIELD 为码的异常抛出」,直接退栈到最近的 resume。`luaD_throw`(:125-144)在有无保护点两种情形下分别走 longjmp 与 panic;`throwbaselevel`(:150-157)处理最外层的边界情况。
+让位链路:`coroutine.yield` 最终到 `lua_yieldk`(ldo.c:1008),它把线程状态置 `LUA_YIELD`、把让位值个数存进 `ci->u2.nyield`,然后 `luaD_throw(L, LUA_YIELD)`(:1031)。让位被实现为一次「以 LUA_YIELD 为码的异常抛出」,直接退栈到最近的 resume。`luaD_throw`(:125-144)在有无保护点两种情形下分别走 longjmp 与 panic;`throwbaselevel`(:150-157)处理最外层的边界情况。
 
-两个支撑机制:`nCcalls` 的高 16 位统计不可让位的 C 调用层数(lstate.h:95-104 的注释与 :302 字段),`lua_resume` 入口用 `LUAI_MAXCCALLS`(ldo.h:63,值 200)限制嵌套深度(ldo.c:985);C 函数要让位必须提供 continuation(`ci->u.c.k`,lstate.h:198),resume 后由 `luaV_finishOp`(lvm.c:861)补完被中断的那条指令——这就是 C 侧 `lua_yieldk` 带回调参数的原因。
+两个支撑机制:`nCcalls` 的高 16 位统计不可让位的 C 调用层数(lstate.h:95-104 的注释与 :302 字段),`lua_resume` 入口用 `LUAI_MAXCCALLS`(ldo.h:63,值 200)限制嵌套深度(ldo.c:985);C 函数要让位必须提供 continuation(`ci->u.c.k`,lstate.h:198),resume 后由 `luaV_finishOp`(lvm.c:861)补完被中断的那条指令。这就是 C 侧 `lua_yieldk` 带回调参数的原因。
 
 ## 7. 标准库组织
 
@@ -243,13 +243,13 @@ GC 参数从编译期宏改成运行时可调的字节表 `gcparams[]`(lstate.h:
 | 调试钩子字段 `ftransfer`/`ntransfer` 改 int | lua.h:500-502 |
 | GC 三态化 + `lua_gcparam` API(第 5 节) | lstate.h:162-164;lgc.h:170-205 |
 
-其中 `global` 是语义变化最大的一项,三条实测行为值得记住:显式声明会关掉隐式 `global *`(上文 "variable 'print' not declared" 一例);重复声明报 `global 'x' already defined`;`<const>` 全局赋值报错。另外手册称 global 为保留词(manual.of:9587-9590),而发行配置 `LUA_COMPAT_GLOBAL` 默认为 1(luaconf.h:344-346)使其退回普通标识符加语法前瞻(lparser.c:2117-2134)——移植脚本时按「非保留、但新增语句形态」理解更贴近实际行为。
+其中 `global` 是语义变化最大的一项,三条实测行为值得记住:显式声明会关掉隐式 `global *`(上文 "variable 'print' not declared" 一例);重复声明报 `global 'x' already defined`;`<const>` 全局赋值报错。另外手册称 global 为保留词(manual.of:9587-9590),而发行配置 `LUA_COMPAT_GLOBAL` 默认为 1(luaconf.h:344-346)使其退回普通标识符加语法前瞻(lparser.c:2117-2134)。移植脚本时按「非保留、但新增语句形态」理解更贴近实际行为。
 
 至于「为什么升 5.5」,手册与源码注释里没有官方动机陈述(未见于源码)。从改动本身归纳:显式 global 与只读全局把「谁在污染环境」变成可静态表达的约束;vararg 表参数把 `select("#", ...)` 这类惯用法收进语言;分代 GC 从 5.4 的实验性两态重做成可切换的三态并给了运行时参数;内置散列种子(lauxlib.c:1168-1182)降低键碰撞被注入的风险。这四类是官方仓库里能从代码直接指认的方向,其余收益属于推测,本文不展开。
 
 ## 结语
 
-读 5.5 源码的要点:数据结构先看 lobject.h 与 ltable.h 的注释块,解释器行为看 lvm.c 的指令分支,生命周期看 lgc.h/lstate.h 的列表与年龄注释。5.5 的三处大改(Table 布局、GC 三态、global 语句)都有对应的注释块与测试用例(testes/ 目录),源码与测试对照着读,行号之外的东西——设计意图——大多写在注释里。
+读 5.5 源码的要点:数据结构先看 lobject.h 与 ltable.h 的注释块,解释器行为看 lvm.c 的指令分支,生命周期看 lgc.h/lstate.h 的列表与年龄注释。5.5 的三处大改(Table 布局、GC 三态、global 语句)都有对应的注释块与测试用例(testes/ 目录),源码与测试对照着读,行号之外的东西(设计意图)大多写在注释里。
 
 ## 相关阅读
 
