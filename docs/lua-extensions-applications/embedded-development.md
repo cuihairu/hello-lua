@@ -11,9 +11,9 @@ Lua 体量小、开销低，经常被嵌进资源受限的环境。这一篇讲�
 源码从 Lua 官方网站下载：
 
 ```bash
-wget https://www.lua.org/ftp/lua-5.5.1.tar.gz
-tar -zxvf lua-5.5.1.tar.gz
-cd lua-5.5.1
+wget https://www.lua.org/ftp/lua-5.4.8.tar.gz
+tar -zxvf lua-5.4.8.tar.gz
+cd lua-5.4.8
 ```
 
 #### 2.2 编译Lua
