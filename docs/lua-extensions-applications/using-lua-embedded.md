@@ -13,9 +13,9 @@ Lua 的核心库非常小，适合资源受限的系统。解释器和虚拟机�
 从Lua官方网站下载Lua的源代码：
 
 ```bash
-wget https://www.lua.org/ftp/lua-5.4.6.tar.gz
-tar -zxvf lua-5.4.6.tar.gz
-cd lua-5.4.6
+wget https://www.lua.org/ftp/lua-5.5.1.tar.gz
+tar -zxvf lua-5.5.1.tar.gz
+cd lua-5.5.1
 ```
 
 #### 2.2 编译Lua
