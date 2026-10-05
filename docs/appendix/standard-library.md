@@ -2,7 +2,7 @@
 
 本章按库梳理 Lua 5.4 自带的标准库。`luaL_openlibs` 默认打开除 `debug` 之外的库（`debug` 库在标准解释器中也会被打开，但嵌入式环境可自行选择）。所有函数签名与返回值以 Lua 5.4 手册为准。
 
-#### 1. base（基础库）
+## 1. base（基础库）
 
 随解释器内建，不需要 `require`，提供语言本身的基础能力。
 
@@ -29,7 +29,7 @@ print(select("#", 1, 2, 3))            -- 3
 print(pcall(function() error("boom") end))  -- false	[string "..."]:1: boom
 ```
 
-#### 2. string（字符串库）
+## 2. string（字符串库）
 
 Lua 字符串以字节为单位，且不可变。字符串方法可以通过 `s:method(...)` 方式调用。
 
@@ -54,7 +54,7 @@ print(string.gsub("hello world", "o", "0"))                 -- hell0 w0rld	2
 for w in string.gmatch("a,b,c", "[^,]+") do io.write(w, " ") end  -- a b c
 ```
 
-#### 3. table（表库）
+## 3. table（表库）
 
 | 函数 | 说明 |
 | --- | --- |
@@ -72,7 +72,7 @@ print(table.concat(t, ","))          -- 1,2,3
 print(table.unpack({10, 20, 30}))    -- 10	20	30
 ```
 
-#### 4. math（数学库）
+## 4. math（数学库）
 
 Lua 5.4 的 `math.random` 默认使用 64 位整数随机数发生器；整数运算不会产生浮点误差。
 
@@ -95,7 +95,7 @@ math.randomseed(os.time())
 print(math.random(1, 6))
 ```
 
-#### 5. io（文件 I/O）
+## 5. io（文件 I/O）
 
 `io.read`/`io.write` 操作默认输入输出；`io.open` 返回文件句柄（失败时返回 `nil, errmsg`，它不会抛出错误）。
 
@@ -113,7 +113,7 @@ if f2 then
 end
 ```
 
-#### 6. os（操作系统库）
+## 6. os（操作系统库）
 
 | 函数 | 说明 |
 | --- | --- |
@@ -130,7 +130,7 @@ print(os.date("%Y-%m-%d %H:%M:%S"))
 print(os.getenv("HOME") or "未设置")
 ```
 
-#### 7. coroutine（协程库）
+## 7. coroutine（协程库）
 
 | 函数 | 说明 |
 | --- | --- |
@@ -151,7 +151,7 @@ print(co(10))        -- 11
 print(co(5))         -- 10
 ```
 
-#### 8. package（模块库）
+## 8. package（模块库）
 
 管理模块搜索与加载：`require`、`package.path`、`package.cpath`、`package.loaded`（已加载模块缓存）、`package.preload`、`package.loadlib`、`package.searchers`。
 
@@ -160,7 +160,7 @@ print(package.loaded["string"] ~= nil)          -- true
 package.path = package.path .. ";./mylib/?.lua"
 ```
 
-#### 9. utf8（UTF-8 库，5.3+）
+## 9. utf8（UTF-8 库，5.3+）
 
 `utf8.char`、`utf8.codepoint`、`utf8.len`、`utf8.offset`、`utf8.charpattern`。注意 `string.len`/`string.sub` 操作的是字节，不是字符。
 
@@ -169,7 +169,7 @@ print(utf8.len("中文abc"))                 -- 5
 print(("中文abc"):sub(1, 3))               -- 按字节截取，前三个字节正好是“中”
 ```
 
-#### 10. debug（调试库）
+## 10. debug（调试库）
 
 提供运行时内省与调试能力，包括 `debug.getinfo`、`debug.getlocal`、`debug.setlocal`、`debug.getupvalue`、`debug.sethook`、`debug.traceback`、`debug.getregistry` 等。该库可能破坏封装并影响性能，生产环境应谨慎使用。
 
@@ -180,6 +180,6 @@ end
 f()
 ```
 
-### 总结
+## 总结
 
 Lua 5.4 的标准库刻意保持精简：基础能力放在 `base`，其余按职责分库，且都可以用 `require` 按需加载（`base`、`coroutine`、`package`、`string`、`table` 除外，它们在 `luaL_openlibs` 中总是可用）。除以上十个库外，Lua 5.4 不再提供 `bit32` 库，位运算已由 `& | ~ << >>` 等语言运算符承担。
