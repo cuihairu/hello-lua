@@ -62,7 +62,7 @@ local function handle_request()
     handler.process_request()
 end
 
--- 模拟文件变化检测
+-- 模拟文件变化检测（file_changed 为伪代码示意，此处只表达流程）
 local function watch_file_changes()
     while true do
         if file_changed("handler_module.lua") then
