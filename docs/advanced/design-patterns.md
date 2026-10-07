@@ -1,6 +1,8 @@
+# 面向对象设计模式
+
 面向对象设计模式解决的是常见的对象组织问题。Lua 没有内建的面向对象支持，但表和元表足够把这些模式实现出来。下面是五种常见模式在 Lua 中的写法。
 
-### 1. 单例模式（Singleton）
+## 1. 单例模式（Singleton）
 
 单例模式保证一个类只有一个实例，并提供一个全局访问点。Lua 里的实现靠一个局部变量缓存实例：
 
@@ -29,7 +31,7 @@ singleton1:showMessage()  -- 输出: This is a singleton instance.
 print(singleton1 == singleton2)  -- 输出: true
 ```
 
-### 2. 工厂模式（Factory）
+## 2. 工厂模式（Factory）
 
 工厂模式提供一个创建对象的接口，而不暴露创建逻辑。下面的工厂根据 `animalType` 决定造狗还是造猫：
 
@@ -80,7 +82,7 @@ local cat = AnimalFactory:createAnimal("cat", "Whiskers")
 cat:meow()  -- 输出: Whiskers meows!
 ```
 
-### 3. 观察者模式（Observer）
+## 3. 观察者模式（Observer）
 
 观察者模式定义一对多的依赖关系：一个对象状态改变时，所有依赖它的对象都会得到通知并自动更新。Subject 维护一张观察者列表，通知时逐个调用 `update`：
 
@@ -131,7 +133,7 @@ subject:notifyObservers("Hello Observers!")
 --       Observer2 received message: Hello Observers!
 ```
 
-### 4. 策略模式（Strategy）
+## 4. 策略模式（Strategy）
 
 策略模式把一系列算法各自封装起来，使它们可以互相替换。算法以函数形式注入 Context，运行期间可以换掉：
 
@@ -177,7 +179,7 @@ context:setStrategy(subtractStrategy)
 print(context:performAction(10, 5))  -- 输出: 5
 ```
 
-### 5. 装饰器模式（Decorator）
+## 5. 装饰器模式（Decorator）
 
 装饰器模式动态地给对象添加额外的职责。MilkDecorator 包装一个 Coffee 对象，`cost` 在被包装对象的费用上加 2：
 
@@ -219,6 +221,6 @@ local milkCoffee = MilkDecorator:new(coffee)
 print("Cost of milk coffee: " .. milkCoffee:cost())  -- 输出: Cost of milk coffee: 7
 ```
 
-### 总结
+## 总结
 
 这五种模式没有用到表和元表之外的任何机制：单例靠缓存实例，工厂靠分支选择构造函数，观察者靠一张回调列表，策略靠把函数当字段存，装饰器靠包一层再转发调用。
