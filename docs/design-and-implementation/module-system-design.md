@@ -129,6 +129,6 @@ end
 
 ---
 
-# 总结
+## 总结
 
 模块以表定义、以 `require` 加载、以 `package.loaded` 缓存，查找路径由 `package.path`/`package.cpath` 决定，动态链接走 `package.loadlib`。这套机制简单直接，嵌入式场景和复杂应用开发都能用。

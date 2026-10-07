@@ -22,7 +22,7 @@ Lua 的设计目标之一是轻量级，核心库小而高效，便于移植和�
 
 - [Lua 5.5 源码解析](/design-and-implementation/lua55-source)：基于官方 v5.5.1 源码逐文件阅读，覆盖源码结构与构建、TValue/Table 等核心数据结构、解析器与字节码、虚拟机主循环、三态 GC、协程实现、标准库组织，以及与 5.4 的关键差异，所有结论附 文件:行号 引用。
 
-# 相关资源
+## 相关资源
 
 - [Lua 5.4 官方手册](https://www.lua.org/manual/5.4/)
 - [Lua源代码](https://www.lua.org/source/)
