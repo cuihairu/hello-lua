@@ -1,6 +1,8 @@
+# Lua的单元测试框架
+
 下面是几个常用的 Lua 单元测试框架，外加一个不引框架的做法。
 
-### 1. LuaUnit
+## 1. LuaUnit
 
 LuaUnit 是轻量级的单元测试框架，类似 JUnit，支持断言、测试用例和测试套件，适合简单的测试需求。断言用标准的 `assertEquals`、`assertTrue`，能生成测试报告。安装用克隆 GitHub 仓库：
 
@@ -34,7 +36,7 @@ LuaUnit 是轻量级的单元测试框架，类似 JUnit，支持断言、测试
   os.exit(luaunit.LuaUnit.run())
   ```
 
-### 2. Busted
+## 2. Busted
 
 Busted 支持 BDD（行为驱动开发）风格的测试，断言齐全，还能打测试标签、按标签过滤，适合复杂一点的测试需求，也能生成测试报告。LuaRocks 安装：
 
@@ -65,7 +67,7 @@ Busted 支持 BDD（行为驱动开发）风格的测试，断言齐全，还能
   busted test_addition_spec.lua
   ```
 
-### 3. 不引入框架的最简做法
+## 3. 不引入框架的最简做法
 
 如果项目很小，不想引入第三方库，用 `assert` 加一个简单的统计循环就能写出可运行的测试。零依赖，任何 Lua 环境都能跑；用 `pcall` 统计失败用例并给出退出码。
 
@@ -110,7 +112,7 @@ Busted 支持 BDD（行为驱动开发）风格的测试，断言齐全，还能
   lua test_addition.lua
   ```
 
-### 4. Lunatest
+## 4. Lunatest
 
 Lunatest 是 xUnit 风格的 Lua 单元测试框架，额外支持随机化测试（类似 QuickCheck）。它与 lunit 兼容，测试函数用全局的 `test_*` 命名即可被发现；断言函数（`lunatest.assert_equal`、`lunatest.assert_true` 等）挂在 `lunatest` 模块上，不写入全局环境。零额外依赖，可选装 lrandom、luasocket 增强随机数与计时。从 GitHub 获取：
 
@@ -148,6 +150,6 @@ Lunatest 是 xUnit 风格的 Lua 单元测试框架，额外支持随机化测�
   lua test_addition.lua -v
   ```
 
-### 总结
+## 总结
 
 选型看场景：多数项目用 LuaUnit 或 Busted 就够；想要 xUnit 风格或随机化测试，选 Lunatest；依赖受限或脚本很小，直接用 `assert` 加统计循环最省事。

@@ -1,8 +1,8 @@
-### Lua的最佳实践
+# Lua的最佳实践
 
 Lua 代码里的问题大多出在全局变量、表的使用和错误处理上。下面按代码风格、性能、测试调试、部署四个方面整理对应的做法。
 
-#### 1. 代码风格与规范
+## 1. 代码风格与规范
 
 **1.1 编码规范**
 
@@ -28,7 +28,7 @@ local function foo()
 end
 ```
 
-#### 2. 性能优化
+## 2. 性能优化
 
 **2.1 减少表的创建**
 
@@ -80,7 +80,7 @@ local obj1 = setmetatable({ value = 1 }, mt)
 local obj2 = setmetatable({ value = 2 }, mt)
 ```
 
-#### 3. 测试与调试
+## 3. 测试与调试
 
 **3.1 单元测试**
 
@@ -117,7 +117,7 @@ print(safe_divide(10, 0))   -- Error: division by zero
 print(safe_divide("x", 2))  -- Error: ...（pcall 捕获的算术错误）
 ```
 
-#### 4. 部署与发布
+## 4. 部署与发布
 
 **4.1 跨平台支持**
 

@@ -1,12 +1,12 @@
-### 测试与调试
+# 测试与调试
 
 测试和调试回答两类问题：代码对不对，慢在哪里。
 
-#### 1. 单元测试
+## 1. 单元测试
 
 单元测试针对代码里最小的可测试单元，通常是函数或方法。Lua 有几个现成的框架可用。
 
-##### 常用单元测试框架
+### 常用单元测试框架
 
 [LuaUnit](https://github.com/bluebird75/luaunit) 是轻量级的单元测试框架，类似 JUnit：
 
@@ -51,11 +51,11 @@ describe("add", function()
 end)
 ```
 
-#### 2. 调试工具
+## 2. 调试工具
 
 调试工具有内置的，也有第三方的。
 
-##### Lua 内置调试库
+### Lua 内置调试库
 
 内置的 `debug` 库能检查代码执行过程中的状态，比如用 `debug.getinfo` 看调用者：
 
@@ -75,13 +75,13 @@ end
 foo()
 ```
 
-##### 第三方调试工具
+### 第三方调试工具
 
 [ZeroBrane Studio](https://studio.zerobrane.com/) 是专为 Lua 设计的集成开发环境，内置调试功能，设置断点、单步执行、查看变量值都在 IDE 里完成。
 
 [LuaDebug](https://github.com/cloudwu/luadebug) 是远程调试工具，通过 IDE 或命令行调试 Lua 脚本。
 
-#### 3. 性能分析
+## 3. 性能分析
 
 性能分析找的是瓶颈在哪。常见的 Lua 分析工具：
 
@@ -107,7 +107,7 @@ LuaJIT 自带分析器，`-jv` 参数开启，详见 [LuaJIT profiler](https://l
 luajit -jv script.lua
 ```
 
-#### 4. 错误处理
+## 4. 错误处理
 
 Lua 用 `pcall` 和 `xpcall` 处理运行时错误。
 
