@@ -40,6 +40,8 @@ end
 示例:
 
 ```lua
+local x = 12
+
 -- 不推荐（虽然语法合法，但所有内容挤在一行，难以阅读）
 if(x>10)then return x+5 end
 
