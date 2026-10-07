@@ -13,6 +13,8 @@ Lua 知识手册 · [在线阅读](https://cuihairu.github.io/hello-lua/)
 
 覆盖 Lua 基础语法、进阶编程（闭包/面向对象/协程）、语言设计与虚拟机实现、C 扩展与 LuaJIT，以及最佳实践的中文知识站点。
 
+<p align="center"><img src="docs/public/badges/topic.svg" alt="topic" /> <img src="docs/public/badges/docs.svg" alt="docs" /></p>
+
 ## 本地开发
 
 ```bash
