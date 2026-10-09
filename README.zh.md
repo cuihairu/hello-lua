@@ -15,6 +15,8 @@
 
 Lua 知识手册 · [在线阅读](https://cuihairu.github.io/hello-lua/)
 
+知识点总览 · [在线阅读](https://cuihairu.github.io/hello-lua/knowledge/README)
+
 </div>
 
 ---

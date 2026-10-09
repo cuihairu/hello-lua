@@ -15,6 +15,8 @@
 
 Lua Knowledge Handbook · [Read online](https://cuihairu.github.io/hello-lua/)
 
+Knowledge Points · [Browse](https://cuihairu.github.io/hello-lua/knowledge/README)
+
 </div>
 
 ---
