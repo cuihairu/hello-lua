@@ -1,4 +1,4 @@
-# 使用 LuaJIT 的 FFI 库
+# 使用LuaJIT的FFI库
 
 LuaJIT 的 FFI（Foreign Function Interface）库允许 Lua 脚本直接调用 C 函数、使用 C 数据结构。相比写一套 C/C++ 插件再接到 Lua-C 接口上，FFI 免去了这些中间环节。
 
