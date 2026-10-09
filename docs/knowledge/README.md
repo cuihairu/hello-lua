@@ -17,12 +17,12 @@
 - 来源以站内各页与附录资源页为准；查无实据的条目标「来源未考」。
 - 版本基线：语言示例以 Lua 5.4 为准，5.5 内容以 v5.5.1 源码实测为准。
 
-## 盘点中发现的站内问题
+## 盘点修正记录
 
-整理过程顺带发现几处站内不一致，如实记录在此：
+整理过程顺带发现几处站内不一致，2026-10-10 已全部修复：
 
-- [设计与实现](/design-and-implementation/README) 概览页写「语法分析出 AST」「代码生成做死代码消除」，与专页实测结论（不建 AST、不做死代码消除）相矛盾，引用时以专页为准。
-- [环境搭建](/basics/setup) 与 [安装Lua](/basics/install) 的安装章节大量重叠，且前者结尾疑似截断。
-- [基本语法](/basics/syntax) 的算术操作符只列六种，漏了 `//`，与 [操作符和表达式](/basics/operators-and-expressions) 的七种不一致。
-- [部署与发布](/lua-best-practices/deployment) 与 [Lua代码的部署](/lua-best-practices/code-deployment) 内容高度重合，是同一主题的两份近似文本。
-- [Lua的历史和发展](/basics/history-and-development) 对 Lua 5.5 的年份标注与公开记录不一致（来源未考）。
+- [设计与实现](/design-and-implementation/README) 概览页的编译链路（误写 AST 与死代码消除）和 GC 表述（误列引用计数）已按专页实测结论改写。
+- [环境搭建](/basics/setup) 已改为导览页，安装与 IDE 细节指向专页，补上缺失的结语。
+- [基本语法](/basics/syntax) 的算术操作符已补上 `//`，与七种的说法对齐。
+- 「Lua代码的部署」与 [部署与发布](/lua-best-practices/deployment) 高度重合，重复页已删除，主题统一到后者。
+- [Lua的历史和发展](/basics/history-and-development) 的 5.5 年份已按官方 versions 页核实改为 2025 年。
