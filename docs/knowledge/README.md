@@ -6,10 +6,10 @@
 
 | 页面 | 收拢内容 | 条目 |
 | --- | --- | --- |
-| [核心概念](/knowledge/core-concepts) | 语言基础、进阶抽象、设计与实现、扩展工程四组 | 32 |
+| [核心概念](/knowledge/core-concepts) | 语言基础、进阶抽象、设计与实现、扩展工程四组 | 34 |
 | [权威书籍要点](/knowledge/books) | 4 本书与 3 篇论文：书名、作者、对应知识点 | 7 |
 | [官方文档要点](/knowledge/official-docs) | lua.org 手册、源码、LuaJIT、LuaRocks 与第三方仓库 | 21 |
-| [应用场景](/knowledge/applications) | 游戏、嵌入式、Web、配置等八个领域 | 16 |
+| [应用场景](/knowledge/applications) | 游戏、嵌入式、Web、配置等八个领域 | 21 |
 | [常见坑与误区](/knowledge/pitfalls) | 语法、元表、协程、GC、实现层误传等八组 | 39 |
 
 ## 口径
