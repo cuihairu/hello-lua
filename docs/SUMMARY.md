@@ -76,7 +76,6 @@
         - [使用Lua与C语言混合编程](lua-extensions-applications/mixed-programming.md)
     - [嵌入式开发](lua-extensions-applications/embedded-development.md)
         - [在嵌入式系统中使用Lua](lua-extensions-applications/using-lua-embedded.md)
-        - [Lua脚本的优化](lua-extensions-applications/script-optimization.md)
         - [内存管理与垃圾回收](lua-extensions-applications/memory-gc.md)
     - [LuaJIT](lua-extensions-applications/luajit.md)
         - [LuaJIT的简介](lua-extensions-applications/introduction-to-luajit.md)

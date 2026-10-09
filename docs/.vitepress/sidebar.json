@@ -348,10 +348,6 @@
             "link": "/lua-extensions-applications/using-lua-embedded"
           },
           {
-            "text": "Lua脚本的优化",
-            "link": "/lua-extensions-applications/script-optimization"
-          },
-          {
             "text": "内存管理与垃圾回收",
             "link": "/lua-extensions-applications/memory-gc"
           }

@@ -210,6 +210,6 @@ FFI 让 Lua 脚本直接调用 C 函数、使用 C 数据结构，省掉写一�
 
 ### 脚本优化
 
-变量尽量局部化；循环长度先缓存到局部变量；多个字符串拼接交给 `table.concat`；预编译成字节码用 `luac -o script.luac script.lua`；GC 用 `collectgarbage("setpause"/"setstepmul")` 按实际分配节奏调参。性能关键的部分再交给 C 或 LuaJIT。
+变量尽量局部化；多个字符串拼接交给 `table.concat`；GC 用 `collectgarbage("setpause"/"setstepmul")` 按实际分配节奏调参；脚本可在打包前用 `luac` 预编译成字节码。性能关键的部分再交给 C 或 LuaJIT。
 
-来源：[Lua脚本的优化](/lua-extensions-applications/script-optimization)。
+来源：[Lua代码的优化技巧](/lua-best-practices/optimization-techniques)、[部署与发布](/lua-best-practices/deployment)。
