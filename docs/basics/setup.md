@@ -1,83 +1,14 @@
 # 环境搭建
 
-使用 Lua 之前，先在开发环境里装好解释器。这一节按 Windows、macOS、Linux 分别给出安装步骤，末尾附常用的开发工具和集成开发环境（IDE）。
+使用 Lua 之前，先把环境搭起来：装好解释器、配一个顺手的编辑器或 IDE，再装上包管理器 LuaRocks。安装与编辑器的细节各有专页，本页给路线，LuaRocks 部分单独展开。
 
 ## 1. 安装 Lua
 
-### 1.1 在 Windows 上安装 Lua
-
-1. 下载 Lua 官方提供的 Windows 版本：
-    - 访问 Lua 的官方网站 [lua.org](https://www.lua.org/)，下载最新版本的 Lua 源码压缩包。
-    - 如果不想自行编译源码，可以从第三方网站下载预编译的 Lua 安装包，例如 [LuaBinaries](https://luabinaries.sourceforge.net/) 提供了各种版本的 Windows 可执行文件。
-
-2. 解压并配置环境变量：
-    - 将下载的压缩包解压到你希望安装的位置。
-    - 打开系统的环境变量设置，将 Lua 的 `bin` 目录添加到 `PATH` 环境变量中。
-
-3. 验证安装：
-    - 打开命令提示符（cmd），输入 `lua -v` 或 `lua`，如果出现 Lua 解释器的版本信息或 Lua 提示符，说明安装成功。
-
-### 1.2 在 macOS 上安装 Lua
-
-1. 使用 Homebrew 安装：
-    - 前提是装好了 Homebrew，然后在终端执行：
-      ```bash
-      brew install lua
-      ```
-
-2. 验证安装：
-    - 安装完成后，可以在终端输入 `lua -v` 或 `lua`，如果出现 Lua 解释器的版本信息或 Lua 提示符，说明安装成功。
-
-### 1.3 在 Linux 上安装 Lua
-
-1. 使用包管理器安装：
-    - 大多数 Linux 发行版的包管理器都包含 Lua，使用以下命令可以安装 Lua：
-      - 在 Debian/Ubuntu 系统上：
-        ```bash
-        sudo apt-get install lua5.4
-        ```
-      - 在 Fedora 系统上：
-        ```bash
-        sudo dnf install lua
-        ```
-      - 在 Arch Linux 系统上：
-        ```bash
-        sudo pacman -S lua
-        ```
-
-2. 验证安装：
-    - 安装完成后，可以在终端输入 `lua -v` 或 `lua`，如果出现 Lua 解释器的版本信息或 Lua 提示符，说明安装成功。
+按 Windows、macOS、Linux 三个平台分别装：Windows 用官方源码包或 [LuaBinaries](https://luabinaries.sourceforge.net/) 预编译包，macOS 走 Homebrew，Linux 用发行版包管理器（`apt-get`、`dnf`、`pacman`）。包管理器最省事，要指定版本或特殊配置再走源码安装。装完用 `lua -v` 验证。完整步骤见 [安装Lua](/basics/install)。
 
 ## 2. 集成开发环境（IDE）和编辑器
 
-Lua 用任何文本编辑器都能写，但配一个支持补全和调试的编辑器会省事得多。常用的有这么几个：
-
-### 2.1 Visual Studio Code
-
-Visual Studio Code（VSCode）是一个流行的代码编辑器，支持多种编程语言。安装插件（如 Lua Plus 或 EmmyLua）后，可以获得语法高亮、自动补全、代码格式化和调试支持。
-
-1. 打开 VSCode，在扩展（Extensions）中搜索 `Lua` 或 `EmmyLua` 并安装。
-2. 安装完成后，重新启动 VSCode，插件就会自动激活。
-
-### 2.2 IntelliJ IDEA / PyCharm
-
-IntelliJ IDEA 和 PyCharm 等 JetBrains 系列的 IDE 也能写 Lua，靠的是 `EmmyLua` 插件。
-
-1. 打开 IDE，进入 `File > Settings > Plugins`。
-2. 搜索 `EmmyLua`，点击安装，安装完成后重启 IDE。
-
-### 2.3 Sublime Text
-
-Sublime Text 是一款轻量级编辑器，支持多语言开发。装上 Lua 插件后有语法高亮和基础的代码补全。
-
-1. 打开 Sublime Text，进入 `Package Control > Install Package`。
-2. 搜索并安装 `Lua` 或 `LuaDev` 插件。
-
-### 2.4 ZeroBrane Studio
-
-ZeroBrane Studio 是专为 Lua 开发设计的 IDE，调试、语法高亮和自动补全都内置，开箱即用，初学者可以从它起步。
-
-1. 访问 [ZeroBrane Studio](https://studio.zerobrane.com/) 官方网站，下载并安装适合你操作系统的版本。
+Lua 用任何文本编辑器都能写，配一个支持补全和调试的编辑器会省事得多。常用的有 VSCode（装 Lua Plus 或 EmmyLua 插件）、ZeroBrane Studio（专为 Lua 的 IDE，开箱即用）、IntelliJ IDEA / PyCharm（EmmyLua 插件）、Sublime Text、Notepad++。对比与安装见 [集成开发环境（IDE）推荐](/basics/ide-recommendations)。
 
 ## 3. LuaRocks：Lua 的包管理器
 
@@ -104,3 +35,7 @@ LuaRocks 是 Lua 的包管理器，用来给项目安装和管理第三方库。
 ```bash
 luarocks install luasocket
 ```
+
+## 结语
+
+环境搭好后，先用 `lua` 进交互模式试几段代码，再用 LuaRocks 装一两个库，就可以进入 [基本语法](/basics/syntax) 的学习了。
