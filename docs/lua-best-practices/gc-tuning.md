@@ -12,8 +12,9 @@ Lua 用的是基于标记-清除（mark-and-sweep）算法的垃圾回收机制�
 - `collectgarbage("stop")`：停止垃圾回收。
 - `collectgarbage("restart")`：重新启动垃圾回收（没有 `"start"` 这个选项）。
 - `collectgarbage("collect")`：手动触发一次完整回收。
+- `collectgarbage("incremental", pause, stepmul, stepsize)`：切到增量模式，一次设好暂停值、步进倍率与步长，`0` 表示保持不变。
 - `collectgarbage("setpause", value)`：设置垃圾回收的暂停阈值。`value` 是一个百分比，表示 GC 何时触发。
-- `collectgarbage("setstepmul", value)`：设置垃圾回收的步进乘数。`value` 是一个乘数，用于调整 GC 的步进量。
+- `collectgarbage("setstepmul", value)`：设置垃圾回收的步进乘数。`value` 是一个乘数，用于调整 GC 的步进量。这两个选项沿袭自 5.1，5.4 起已标记为过时，新代码用上面的 `incremental` 形式。
 
 示例：
 
@@ -34,17 +35,14 @@ collectgarbage("restart")
 ## 3. 调整 GC 参数
 
 两个关键参数：
-- `setpause`：控制垃圾回收的触发频率。值越大，GC 触发频率越低（峰值内存更高）。
-- `setstepmul`：控制垃圾回收的工作量。值越大，每个 GC 步骤完成的工作越多，回收越快，但单步占用 CPU 越多。
+- `pause`（暂停值）：控制垃圾回收的触发频率。值越大，GC 触发频率越低（峰值内存更高）。
+- `stepmul`（步进倍率）：控制垃圾回收的工作量。值越大，每个 GC 步骤完成的工作越多，回收越快，但单步占用 CPU 越多。
 
 示例：
 
 ```lua
--- 设置垃圾回收的暂停阈值为 200
-collectgarbage("setpause", 200)
-
--- 设置垃圾回收的步进乘数为 500
-collectgarbage("setstepmul", 500)
+-- 增量模式：暂停值 200、步进倍率 100、步长不变（0 表示不改）
+collectgarbage("incremental", 200, 100, 0)
 ```
 
 ## 4. 减少内存使用

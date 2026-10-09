@@ -105,14 +105,13 @@ local str = table.concat(t)
 
 ## 6. 减少垃圾回收的影响
 
-垃圾回收会带来性能波动。调整触发频率和阈值；性能关键的代码里用 `collectgarbage` 手动控制。对象创建能省则省，能复用就复用，对象池这类技术可以管住对象的生命周期。
+垃圾回收会带来性能波动。性能关键的代码里用 `collectgarbage` 手动控制；增量模式的触发频率和步进量用 `collectgarbage("incremental", pause, stepmul, stepsize)` 一次调好（`0` 表示保持不变），旧的 `setpause`/`setstepmul` 自 5.4 起已标记为过时。对象创建能省则省，能复用就复用，对象池这类技术可以管住对象的生命周期。
 
 示例:
 
 ```lua
--- 调整垃圾回收参数
-collectgarbage("setpause", 100)
-collectgarbage("setstepmul", 500)
+-- 增量模式：暂停值 200、步进倍率 100、步长不变
+collectgarbage("incremental", 200, 100, 0)
 ```
 
 ## 7. 使用 LuaJIT

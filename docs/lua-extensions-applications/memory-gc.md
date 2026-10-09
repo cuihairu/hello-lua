@@ -20,21 +20,17 @@ Lua提供了`collectgarbage`函数用于手动控制垃圾回收。常用的操�
 
 - 调整垃圾回收参数：
   ```lua
-  collectgarbage("setpause", 200)  -- 设置新的暂停阈值
+  collectgarbage("incremental", 200, 100, 0)  -- 增量模式：暂停值 200、步进倍率 100、步长不变
   ```
-  注意 `collectgarbage` 没有 `getpause`/`getstepmul` 这类读取参数的选项，只能设置；可用选项包括 `"collect"`、`"count"`、`"stop"`、`"restart"`、`"setpause"`、`"setstepmul"`、`"incremental"`、`"generational"`、`"step"`、`"isrunning"`。
+  注意 `collectgarbage` 没有 `getpause`/`getstepmul` 这类读取参数的选项，只能设置；可用选项包括 `"collect"`、`"count"`、`"stop"`、`"restart"`、`"setpause"`、`"setstepmul"`、`"incremental"`、`"generational"`、`"step"`、`"isrunning"`。其中 `setpause`/`setstepmul` 沿袭自 5.1，5.4 起已标记为过时，新代码用 `incremental` 形式。
 - 手动触发垃圾回收：
   ```lua
   collectgarbage("collect")  -- 触发一次全垃圾回收
   ```
-- 设置步长倍率：
-  ```lua
-  collectgarbage("setstepmul", 400)  -- 设置新的步长倍率
-  ```
 
 ## 5. 垃圾回收的优化策略
 
-根据程序的内存使用情况调整`setpause`和`setstepmul`，GC的压力会贴合实际的分配节奏。性能关键的代码路径里少创建短生命周期对象，避免频繁创建和销毁。弱引用表也有用，让表里的对象不被强引用攥住：
+根据程序的内存使用情况调整增量模式的 `pause`/`stepmul` 参数，GC的压力会贴合实际的分配节奏。性能关键的代码路径里少创建短生命周期对象，避免频繁创建和销毁。弱引用表也有用，让表里的对象不被强引用攥住：
 
   ```lua
   local weakTable = setmetatable({}, {__mode = "v"})  -- 创建一个弱值表

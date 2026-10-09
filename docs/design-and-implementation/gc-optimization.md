@@ -12,7 +12,7 @@ Lua 的垃圾回收机制有一组优化策略，目标是提高性能、减少�
 
 ## 3. 垃圾回收器的调优
 
-`collectgarbage` 函数是调优入口。`collectgarbage("collect")` 手动触发回收，在合适的时机清理；`collectgarbage("setpause", value)` 和 `collectgarbage("setstepmul", value)` 调整暂停值和步长，控制回收的频率和效率；`collectgarbage("count")` 返回当前内存使用情况，用来观察内存开销和回收效果。
+`collectgarbage` 函数是调优入口。`collectgarbage("collect")` 手动触发回收，在合适的时机清理；`collectgarbage("incremental", pause, stepmul, stepsize)` 调整暂停值、步进倍率和步长，控制回收的频率和效率（旧的 `setpause`/`setstepmul` 自 5.4 起已标记为过时）；`collectgarbage("count")` 返回当前内存使用情况，用来观察内存开销和回收效果。
 
 ## 4. 优化对象分配
 
