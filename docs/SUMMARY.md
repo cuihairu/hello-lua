@@ -45,6 +45,7 @@
     - [错误处理](advanced/error-handling.md)
         - [错误处理机制](advanced/error-handling-mechanism.md)
         - [错误类型与调试](advanced/error-types-debugging.md)
+        - [沙箱与不可信代码](advanced/sandboxing.md)
 
 - [设计与实现](design-and-implementation/README.md)
     - [Lua语言的设计原理](design-and-implementation/design-principles.md)
@@ -100,4 +101,11 @@
     - [Lua标准库参考](appendix/standard-library.md)
     - [Lua相关资源与社区](appendix/resources.md)
     - [扩展阅读与学习资源](appendix/further-reading.md)
+
+- [知识点总览](knowledge/README.md)
+    - [核心概念](knowledge/core-concepts.md)
+    - [权威书籍要点](knowledge/books.md)
+    - [官方文档要点](knowledge/official-docs.md)
+    - [应用场景](knowledge/applications.md)
+    - [常见坑与误区](knowledge/pitfalls.md)
 

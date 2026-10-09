@@ -203,6 +203,10 @@
           {
             "text": "错误类型与调试",
             "link": "/advanced/error-types-debugging"
+          },
+          {
+            "text": "沙箱与不可信代码",
+            "link": "/advanced/sandboxing"
           }
         ]
       }

@@ -90,6 +90,12 @@ Lua 没有 `class` 关键字，类和继承都用表与元表搭。标准三步�
 
 来源：[面向对象设计模式](/advanced/design-patterns)。
 
+### 沙箱与不可信代码
+
+Lua 没有内建沙箱，三件事自己搭：`load` 的 env 参数给白名单环境表（`io`/`os`/`package`/`debug`/`load`/`require` 一律不放）；`debug.sethook` 挂计数钩子卡指令配额和时间配额，`collectgarbage("count")` 观察内存用量；三个洞堵不住——`debug` 库能读改钩子、C 扩展绕过 Lua 层检查、解释器侧信道。生产级隔离靠 OS 级（独立进程、容器、seccomp）。
+
+来源：[沙箱与不可信代码](/advanced/sandboxing)。
+
 ### 协程
 
 协程是可执行到一半暂停、之后从暂停处继续的函数，是 Lua 的原生 thread 类型。`coroutine.create` 创建后不运行，要 `coroutine.resume` 启动；`yield` 与 `resume` 构成双向数据通道。状态四种：suspended、running、normal、dead，dead 是不可逆的终点。`coroutine.wrap` 返回恢复函数而非协程对象，没有错误保护层。

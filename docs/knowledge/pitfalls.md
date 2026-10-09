@@ -69,6 +69,7 @@
 - 常量折叠只对两个操作数都是常量的表达式生效，有变量参与就失效。
 - 元方法调用有额外开销，频繁调用的热路径避免元方法；`debug` 库操作同样有开销，别拿它做生产性能分析。
 - `jit.dump` 和 `-jp` 观察的是 JIT trace 编译与采样，不是 GC 分析器；Lua 5.4 标准解释器没有内置 GC 分析器。
+- 「Lua 沙箱能防住恶意代码」是误传：沙箱里的代码拿到 `debug` 就能读钩子、改钩子、访问注册表，`ffi.load` 进来的 C 代码绕过 Lua 层的一切检查，定时与内存布局差异构成侧信道。沙箱只是纵深防御的一层，硬隔离在操作系统一侧。
 
 来源：[引用计数与标记-清除算法](/design-and-implementation/reference-counting)、[垃圾回收的调优](/lua-best-practices/gc-tuning)、[Lua代码的优化技巧](/lua-best-practices/optimization-techniques)、[代码生成与优化](/design-and-implementation/code-generation)、[垃圾回收的优化策略](/design-and-implementation/gc-optimization)。
 
@@ -79,4 +80,4 @@
 - Lua 脚本层没有条件编译，平台判断只能在运行时做（`package.config`，LuaJIT 下可用 `jit.os`）。
 - 「Lua 内部值类型叫 TaggedValue」是讹传，5.4/5.5 源码里是 `TValue`。
 
-来源：[协程的底层实现](/design-and-implementation/coroutines-implementation)、[字节码与虚拟机](/design-and-implementation/bytecode-and-vm)、[跨平台发布Lua应用](/lua-best-practices/cross-platform-deployment)、[Lua 5.5 源码解析](/design-and-implementation/lua55-source)。
+来源：[协程的底层实现](/design-and-implementation/coroutines-implementation)、[字节码与虚拟机](/design-and-implementation/bytecode-and-vm)、[跨平台发布Lua应用](/lua-best-practices/cross-platform-deployment)、[Lua 5.5 源码解析](/design-and-implementation/lua55-source)、[沙箱与不可信代码](/advanced/sandboxing)。
