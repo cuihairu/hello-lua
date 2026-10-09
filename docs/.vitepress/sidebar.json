@@ -467,5 +467,31 @@
         "link": "/appendix/further-reading"
       }
     ]
+  },
+  {
+    "text": "知识点总览",
+    "link": "/knowledge/README",
+    "items": [
+      {
+        "text": "核心概念",
+        "link": "/knowledge/core-concepts"
+      },
+      {
+        "text": "权威书籍要点",
+        "link": "/knowledge/books"
+      },
+      {
+        "text": "官方文档要点",
+        "link": "/knowledge/official-docs"
+      },
+      {
+        "text": "应用场景",
+        "link": "/knowledge/applications"
+      },
+      {
+        "text": "常见坑与误区",
+        "link": "/knowledge/pitfalls"
+      }
+    ]
   }
 ]

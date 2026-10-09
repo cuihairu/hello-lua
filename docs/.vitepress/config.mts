@@ -39,7 +39,8 @@ export default defineConfig({
       { text: '设计与实现', link: '/design-and-implementation/README' },
       { text: '扩展与应用', link: '/lua-extensions-applications/README' },
       { text: '最佳实践', link: '/lua-best-practices/README' },
-      { text: '附录', link: '/appendix/README' }
+      { text: '附录', link: '/appendix/README' },
+      { text: '知识点', link: '/knowledge/README' }
     ],
 
     // 与 docs/SUMMARY.md 映射底稿一一对应，
