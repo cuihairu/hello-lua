@@ -94,7 +94,6 @@
         - [Lua的单元测试框架](lua-best-practices/unit-testing.md)
         - [调试工具与技术](lua-best-practices/debugging-tools.md)
     - [部署与发布](lua-best-practices/deployment.md)
-        - [Lua代码的部署](lua-best-practices/code-deployment.md)
         - [跨平台发布Lua应用](lua-best-practices/cross-platform-deployment.md)
 
 - [附录](appendix/README.md)
