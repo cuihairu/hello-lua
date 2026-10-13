@@ -100,3 +100,14 @@
 ## 结语
 
 三种装法里，包管理器最省事；要指定版本或特殊配置，再走源码安装。`lua -v` 能打出版本号就说明装好了。
+
+## 参考资料
+
+- [Lua 官方文档索引](https://www.lua.org/docs.html)
+- [Lua 下载页](https://www.lua.org/download.html)
+- [LuaRocks 包管理器首页](https://luarocks.org/)
+
+<!-- BACKLINKS-AUTO -->
+## 相关页面
+
+- [setup](setup.md)

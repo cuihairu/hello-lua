@@ -47,3 +47,15 @@ collectgarbage("generational", 20, 100)       -- 小回收倍率、大回收倍�
 ## 总结
 
 增量收集、分代收集、参数调优、对象分配优化、性能分析，五条路都指向同一个目标：让回收更少地打断程序。先用 `collectgarbage("count")` 量化现状，再选模式和调参数。
+
+## 参考资料
+
+- [Lua 5.4 官方手册](https://www.lua.org/manual/5.4/manual.html#2.9)
+- [Garbage_collection_(computer_science)](https://en.wikipedia.org/wiki/Garbage_collection_(computer_science))
+- [Manual_memory_management](https://en.wikipedia.org/wiki/Manual_memory_management)
+
+<!-- BACKLINKS-AUTO -->
+## 相关页面
+
+- [lua55-source](lua55-source.md)
+- [pitfalls](/knowledge/pitfalls.md)

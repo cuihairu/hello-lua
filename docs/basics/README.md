@@ -28,3 +28,13 @@
    - 数组和字典的使用
 
 读完这四组内容，你可以写出简单到中等复杂度的 Lua 程序，也知道下一步该去查什么。
+
+## 参考资料
+
+- [Lua 官方文档索引](https://www.lua.org/docs.html)
+- [Lua 5.4 官方手册](https://www.lua.org/manual/5.4/manual.html)
+- [Lua_(programming_language)](https://en.wikipedia.org/wiki/Lua_(programming_language))
+
+## 相关页面
+
+- [applications](applications.md)

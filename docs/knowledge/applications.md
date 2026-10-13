@@ -62,3 +62,8 @@
 - 性能关键的部分用 C 实现，非关键部分用 Lua。
 
 来源：[Lua的扩展与应用](/lua-extensions-applications/README)、[编写Lua C扩展](/lua-extensions-applications/writing-c-extensions)、[使用 LuaJIT 的 FFI 库](/lua-extensions-applications/ffi-library)。
+
+## 参考资料
+
+- [Lua_(programming_language)](https://en.wikipedia.org/wiki/Lua_(programming_language))
+- [lua-users 维基](http://lua-users.org/wiki/)

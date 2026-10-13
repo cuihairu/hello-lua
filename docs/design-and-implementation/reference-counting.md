@@ -37,3 +37,14 @@ Lua 的垃圾回收机制结合了标记-清除算法和增量收集技术。主
 ## 总结
 
 引用计数实时但处理不了循环引用，频繁操作对象时开销也高；标记-清除能处理循环引用，代价是较长的暂停时间。Lua 选了标记-清除，再叠加增量收集和分代收集来压低停顿。
+
+## 参考资料
+
+- [Reference_counting](https://en.wikipedia.org/wiki/Reference_counting)
+- [Lua 官方源码仓 github.com/lua/lua](https://github.com/lua/lua)
+
+<!-- BACKLINKS-AUTO -->
+## 相关页面
+
+- [core-concepts](/knowledge/core-concepts.md)
+- [pitfalls](/knowledge/pitfalls.md)

@@ -118,3 +118,16 @@ Lua 5.4 中，用 `coroutine.close` 结束协程或让协程函数自然返回�
 ## 结语
 
 协程的典型场景有四类：把回调拍平成顺序代码、按需生产的惰性序列、分帧执行的批处理、可复用的迭代器。场景之外再记住四条：检查 resume 返回值、不复用死协程、不做阻塞调用、用 close 清理资源。
+
+## 参考资料
+
+- [Lua 5.4 官方手册](https://www.lua.org/manual/5.4/manual.html#2.5)
+- [Coroutine](https://en.wikipedia.org/wiki/Coroutine)
+- [lua-users 维基](http://lua-users.org/wiki/)
+
+<!-- BACKLINKS-AUTO -->
+## 相关页面
+
+- [coroutines](coroutines.md)
+- [glossary](/glossary.md)
+- [pitfalls](/knowledge/pitfalls.md)

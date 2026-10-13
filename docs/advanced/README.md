@@ -34,3 +34,13 @@ Lua 没有内置的面向对象机制，类、继承、多态都要靠表（Tabl
 
 - [错误处理机制](./error-handling-mechanism.md)
 - [错误类型与调试](./error-types-debugging.md)
+
+## 参考资料
+
+- [Lua 官方文档索引](https://www.lua.org/docs.html)
+- [Lua 5.4 官方手册](https://www.lua.org/manual/5.4/manual.html#2.6)
+- [PIL · 元表](https://www.lua.org/pil/11.html)
+
+## 相关页面
+
+- [anonymous-functions](anonymous-functions.md)

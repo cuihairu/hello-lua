@@ -25,3 +25,13 @@ Lua 的核心库只有几百千字节，这在嵌入式系统和低资源环境�
 ## 总结
 
 几百千字节的核心库、低的内存占用、简洁的虚拟机、C API 嵌入接口、最小的语言特性集合，这五点合起来决定了 Lua 适合嵌入式系统和资源受限环境。
+
+## 参考资料
+
+- [Lua_(programming_language)](https://en.wikipedia.org/wiki/Lua_(programming_language))
+- [Lua 5.4 官方手册](https://www.lua.org/manual/5.4/manual.html#2.2)
+
+<!-- BACKLINKS-AUTO -->
+## 相关页面
+
+- [core-concepts](/knowledge/core-concepts.md)

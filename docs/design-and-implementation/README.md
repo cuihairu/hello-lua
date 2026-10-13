@@ -28,3 +28,15 @@ Lua 的垃圾回收采用标记-清除算法：从根对象出发遍历所有可
 - [Lua源代码](https://www.lua.org/source/)
 - [垃圾回收（手册 2.5 节）](https://www.lua.org/manual/5.4/manual.html#2.5)
 - [《The Implementation of Lua 5.0》论文](https://www.lua.org/doc/jucs05.pdf)
+
+## 参考资料
+
+- [Lua 官方文档索引](https://www.lua.org/docs.html)
+- [Lua 5.4 官方手册](https://www.lua.org/manual/5.4/manual.html)
+- [Lua 官方源码仓 github.com/lua/lua](https://github.com/lua/lua)
+
+<!-- BACKLINKS-AUTO -->
+## 相关页面
+
+- [README](/knowledge/README.md)
+- [books](/knowledge/books.md)

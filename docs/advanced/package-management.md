@@ -86,3 +86,17 @@ OpenResty 是一个基于 Nginx 的 Lua 平台，自带一套集成的 Lua 模�
 ## 总结
 
 日常的包管理就是四件事：模块从哪来（LuaRocks 或手动下载）、放在哪个目录、怎么更新、依赖冲突怎么处理。`package` 库负责查找和缓存，剩下的交给 LuaRocks。
+
+## 参考资料
+
+- [Lua 5.4 官方手册](https://www.lua.org/manual/5.4/manual.html#6.3)
+- [Package_(software)](https://en.wikipedia.org/wiki/Package_(software))
+- [LuaRocks 包管理器首页](https://luarocks.org/)
+
+<!-- BACKLINKS-AUTO -->
+## 相关页面
+
+- [README](README.md)
+- [modules-and-packages](modules-and-packages.md)
+- [glossary](/glossary.md)
+- [core-concepts](/knowledge/core-concepts.md)

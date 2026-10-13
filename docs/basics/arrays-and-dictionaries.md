@@ -124,3 +124,14 @@ end
 ## 4. 总结
 
 数组用整数索引、从 1 数起，`#` 取长度；字典用键取值，`pairs` 遍历。两者可以混在一张表里，这也是 Lua 不需要第二种数据结构的原因。
+
+## 参考资料
+
+- [Lua 5.4 官方手册](https://www.lua.org/manual/5.4/manual.html#2.2)
+- [Associative_array](https://en.wikipedia.org/wiki/Associative_array)
+
+<!-- BACKLINKS-AUTO -->
+## 相关页面
+
+- [data-structures](data-structures.md)
+- [core-concepts](/knowledge/core-concepts.md)

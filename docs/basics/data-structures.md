@@ -10,3 +10,17 @@ Lua 只提供一种数据结构：表（tables）。数组、字典以及更复�
 ## 结语
 
 整数索引的表就是数组，字符串索引的表就是字典，改表的行为用元表，处理文本用 `string` 库。Lua 管数据的工具就这些。
+
+## 参考资料
+
+- [Lua 5.4 官方手册](https://www.lua.org/manual/5.4/manual.html#2.2)
+- [Associative_array](https://en.wikipedia.org/wiki/Associative_array)
+- [Hash_table](https://en.wikipedia.org/wiki/Hash_table)
+- [PIL · 表](https://www.lua.org/pil/12.html)
+
+<!-- BACKLINKS-AUTO -->
+## 相关页面
+
+- [glossary](/glossary.md)
+- [README](/knowledge/README.md)
+- [core-concepts](/knowledge/core-concepts.md)

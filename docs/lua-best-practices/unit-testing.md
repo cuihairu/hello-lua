@@ -153,3 +153,13 @@ Lunatest 是 xUnit 风格的 Lua 单元测试框架，额外支持随机化测�
 ## 总结
 
 选型看场景：多数项目用 LuaUnit 或 Busted 就够；想要 xUnit 风格或随机化测试，选 Lunatest；依赖受限或脚本很小，直接用 `assert` 加统计循环最省事。
+
+## 参考资料
+
+- [Lua 5.4 官方手册](https://www.lua.org/manual/5.4/manual.html#6.3)
+- [lua-users 维基](http://lua-users.org/wiki/)
+
+<!-- BACKLINKS-AUTO -->
+## 相关页面
+
+- [testing-debugging](testing-debugging.md)

@@ -33,3 +33,15 @@ Lua解释器负责解析Lua代码、执行指令并与底层系统交互。实�
 ## 总结
 
 词法分析、语法分析、代码生成、字节码执行、内存管理、调试和错误处理，这几个组件合起来构成 Lua 解释器，也是理解 Lua 工作原理的入口。
+
+## 参考资料
+
+- [Interpreter_(computing)](https://en.wikipedia.org/wiki/Interpreter_(computing))
+- [Bytecode](https://en.wikipedia.org/wiki/Bytecode)
+- [Lua 官方源码仓 github.com/lua/lua](https://github.com/lua/lua)
+
+<!-- BACKLINKS-AUTO -->
+## 相关页面
+
+- [interpreter](/basics/interpreter.md)
+- [core-concepts](/knowledge/core-concepts.md)

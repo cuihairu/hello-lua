@@ -39,3 +39,15 @@ luarocks install luasocket
 ## 结语
 
 环境搭好后，先用 `lua` 进交互模式试几段代码，再用 LuaRocks 装一两个库，就可以进入 [基本语法](/basics/syntax) 的学习了。
+
+## 参考资料
+
+- [Lua 官方文档索引](https://www.lua.org/docs.html)
+- [Lua 下载页](https://www.lua.org/download.html)
+- [Lua 5.4 官方手册](https://www.lua.org/manual/5.4/manual.html)
+
+<!-- BACKLINKS-AUTO -->
+## 相关页面
+
+- [README](/knowledge/README.md)
+- [official-docs](/knowledge/official-docs.md)

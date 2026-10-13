@@ -51,3 +51,15 @@
 ## 总结
 
 算法选择、内存管理策略、暂停时间、性能优化、线程安全，这五项决定了回收器的基本面；设计文档、策略调整、语言集成、测试和文档把基本面守住。每一项都有取舍，按应用的负载特征选即可。
+
+## 参考资料
+
+- [Lua 5.4 官方手册](https://www.lua.org/manual/5.4/manual.html#2.7)
+- [Lua 5.4 官方手册](https://www.lua.org/manual/5.4/manual.html#2.9)
+- [Garbage_collection_(computer_science)](https://en.wikipedia.org/wiki/Garbage_collection_(computer_science))
+- [Mark-and-sweep](https://en.wikipedia.org/wiki/Mark-and-sweep)
+
+<!-- BACKLINKS-AUTO -->
+## 相关页面
+
+- [lua55-source](lua55-source.md)

@@ -88,3 +88,15 @@ end
 ```
 
 `pcall` 用于保护性调用，函数执行中的错误都会被它接住，不至于直接把脚本打崩。
+
+## 参考资料
+
+- [Lua 5.4 官方手册](https://www.lua.org/manual/5.4/manual.html#4)
+- [Resource_acquisition_is_initialization](https://en.wikipedia.org/wiki/Resource_acquisition_is_initialization)
+
+<!-- BACKLINKS-AUTO -->
+## 相关页面
+
+- [applications](/knowledge/applications.md)
+- [core-concepts](/knowledge/core-concepts.md)
+- [pitfalls](/knowledge/pitfalls.md)

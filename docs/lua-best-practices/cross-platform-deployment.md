@@ -67,3 +67,14 @@ Lua 语言本身是跨平台的，但解释器和扩展库要在目标平台上�
 ### 6.3. 更新和修复
 
 根据用户反馈和测试结果发更新，修已知问题、补功能。长期维护的版本要跟上新的操作系统。
+
+## 参考资料
+
+- [Lua 官方文档索引](https://www.lua.org/docs.html)
+- [Type_system](https://en.wikipedia.org/wiki/Type_system)
+- [Lua 下载页](https://www.lua.org/download.html)
+
+<!-- BACKLINKS-AUTO -->
+## 相关页面
+
+- [pitfalls](/knowledge/pitfalls.md)

@@ -29,3 +29,16 @@
 ## 总结
 
 轻量级和协作式调度决定了协程的成本模型，状态保存与恢复决定了它能否正确续跑，简化异步编程则是它对使用者的直接价值。这几条理念合在一起，让 Lua 的协程成为易用的并发编程工具。
+
+## 参考资料
+
+- [Lua 5.4 官方手册](https://www.lua.org/manual/5.4/manual.html#2.5)
+- [Coroutine](https://en.wikipedia.org/wiki/Coroutine)
+- [Continuation](https://en.wikipedia.org/wiki/Continuation)
+
+<!-- BACKLINKS-AUTO -->
+## 相关页面
+
+- [coroutines](coroutines.md)
+- [glossary](/glossary.md)
+- [books](/knowledge/books.md)

@@ -40,3 +40,17 @@ lua-users wiki 的 LuaImplementations 条目（<http://lua-users.org/wiki/LuaImp
 ## 总结
 
 建议的进阶顺序：先用 `luac -l -l` 建立对字节码的直观认识，再读《The Implementation of Lua 5.0》补齐原理，然后按“解析器 → 虚拟机 → GC → C API”的顺序阅读源码，遇到疑问回到官方手册核对。这样能把本书各章节的内容串成一条完整的主线。工具安装与社区求助渠道见[Lua相关资源与社区](/appendix/resources)。
+
+## 参考资料
+
+- [PIL · 进阶主题](https://www.lua.org/pil/14.html)
+- [Lua 官方文档索引](https://www.lua.org/docs.html)
+- [Lua_(programming_language)](https://en.wikipedia.org/wiki/Lua_(programming_language))
+
+<!-- BACKLINKS-AUTO -->
+## 相关页面
+
+- [resources](resources.md)
+- [README](/knowledge/README.md)
+- [books](/knowledge/books.md)
+- [official-docs](/knowledge/official-docs.md)

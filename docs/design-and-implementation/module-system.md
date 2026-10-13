@@ -155,3 +155,16 @@ end
 ## 6. 总结
 
 Lua 的模块系统以表为单位组织代码，`require` 负责加载和缓存，`package.path`/`package.cpath` 管查找路径，`package.loadlib` 管动态链接。热加载靠清除 `package.loaded` 后重新 `require`，错误处理交给 `pcall`。
+
+## 参考资料
+
+- [Lua 5.4 官方手册](https://www.lua.org/manual/5.4/manual.html#6.3)
+- [Module_(computer_science)](https://en.wikipedia.org/wiki/Module_(computer_science))
+- [Lua 官方源码仓 github.com/lua/lua](https://github.com/lua/lua)
+
+<!-- BACKLINKS-AUTO -->
+## 相关页面
+
+- [module-system-design](module-system-design.md)
+- [glossary](/glossary.md)
+- [core-concepts](/knowledge/core-concepts.md)

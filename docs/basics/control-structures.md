@@ -154,3 +154,14 @@ end
 ## 结语
 
 条件判断交给 `if`，重复交给 `for`、`while` 和 `repeat-until`，中途跳出用 `break`，从函数退出用 `return`。
+
+## 参考资料
+
+- [Lua 5.4 官方手册](https://www.lua.org/manual/5.4/manual.html#2.2)
+- [PIL · 控制结构](https://www.lua.org/pil/2.html)
+- [Goto](https://en.wikipedia.org/wiki/Goto)
+
+<!-- BACKLINKS-AUTO -->
+## 相关页面
+
+- [core-concepts](/knowledge/core-concepts.md)

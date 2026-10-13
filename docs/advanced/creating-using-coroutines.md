@@ -121,3 +121,15 @@ print(coroutine.status(co))    -- 输出 dead
 ## 结语
 
 创建协程只需要 `create` 或 `wrap` 一行代码，真正的关键在于理解参数如何在 `resume` 与 `yield` 之间双向流动，以及 `create` 与 `wrap` 在错误处理上的差异。迭代器、任务调度这些结构，都是在这个基础上搭的。
+
+## 参考资料
+
+- [Lua 5.4 官方手册](https://www.lua.org/manual/5.4/manual.html#2.5)
+- [Coroutine](https://en.wikipedia.org/wiki/Coroutine)
+- [PIL · 协程](https://www.lua.org/pil/10.html)
+
+<!-- BACKLINKS-AUTO -->
+## 相关页面
+
+- [coroutines](coroutines.md)
+- [core-concepts](/knowledge/core-concepts.md)

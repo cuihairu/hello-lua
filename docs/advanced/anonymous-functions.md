@@ -104,3 +104,16 @@ end)  -- 输出 Button clicked!
 ## 4. 总结
 
 匿名函数和普通函数在 Lua 里是同一种东西，只是定义时不绑定名字。回调、高阶函数的参数、事件处理器，这些只用一次的函数用匿名形式最省事。
+
+## 参考资料
+
+- [Lua 5.4 官方手册](https://www.lua.org/manual/5.4/manual.html#2.4)
+- [First-class_function](https://en.wikipedia.org/wiki/First-class_function)
+- [Closure_(computer_programming)](https://en.wikipedia.org/wiki/Closure_(computer_programming))
+
+<!-- BACKLINKS-AUTO -->
+## 相关页面
+
+- [README](README.md)
+- [glossary](/glossary.md)
+- [core-concepts](/knowledge/core-concepts.md)

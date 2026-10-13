@@ -113,3 +113,16 @@ print(table.concat(even, ", "))  -- 输出 2, 4
 ## 4. 总结
 
 闭包把状态留在函数里，高阶函数把行为当参数传，匿名函数省掉不必要的命名。三者组合起来，就是 Lua 里函数编程的基础。
+
+## 参考资料
+
+- [Lua 5.4 官方手册](https://www.lua.org/manual/5.4/manual.html#2.4)
+- [Functional_programming](https://en.wikipedia.org/wiki/Functional_programming)
+- [First-class_function](https://en.wikipedia.org/wiki/First-class_function)
+- [Higher-order_function](https://en.wikipedia.org/wiki/Higher-order_function)
+
+<!-- BACKLINKS-AUTO -->
+## 相关页面
+
+- [glossary](/glossary.md)
+- [core-concepts](/knowledge/core-concepts.md)

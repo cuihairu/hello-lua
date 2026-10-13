@@ -127,3 +127,14 @@ lua_close(L);
 ## 4. 常见问题
 
 用`lua_pcall`调用Lua函数时，务必检查返回值，再用`lua_tostring`获取详细的错误信息。在C中操作Lua数据，注意数据类型的转换和栈操作的顺序。Lua状态的生命周期也要管好，用完关闭，避免内存泄漏。
+
+## 参考资料
+
+- [Lua 5.4 官方手册](https://www.lua.org/manual/5.4/manual.html#4)
+- [Resource_acquisition_is_initialization](https://en.wikipedia.org/wiki/Resource_acquisition_is_initialization)
+
+<!-- BACKLINKS-AUTO -->
+## 相关页面
+
+- [glossary](/glossary.md)
+- [core-concepts](/knowledge/core-concepts.md)

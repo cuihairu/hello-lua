@@ -121,3 +121,18 @@ print(cube(2))    -- 输出 8.0
 ## 4. 总结
 
 闭包让函数带上自己的状态。计数器、工厂函数、私有数据，都是靠这一点实现的。
+
+## 参考资料
+
+- [Lua 5.4 官方手册](https://www.lua.org/manual/5.4/manual.html#2.4)
+- [Closure_(computer_programming)](https://en.wikipedia.org/wiki/Closure_(computer_programming))
+- [Higher-order_function](https://en.wikipedia.org/wiki/Higher-order_function)
+- [PIL · 函数](https://www.lua.org/pil/4.html)
+
+<!-- BACKLINKS-AUTO -->
+## 相关页面
+
+- [README](README.md)
+- [glossary](/glossary.md)
+- [books](/knowledge/books.md)
+- [core-concepts](/knowledge/core-concepts.md)

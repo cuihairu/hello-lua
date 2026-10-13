@@ -139,3 +139,14 @@ end
 ## 8. 总结
 
 配置 `package.path`/`package.cpath`、用 `require` 加载 Lua 与 C 扩展模块、清除 `package.loaded` 实现热加载、`pcall` 兜底加载错误，这四件事覆盖了 Lua 动态链接和模块加载的日常工作。
+
+## 参考资料
+
+- [Lua 5.4 官方手册](https://www.lua.org/manual/5.4/manual.html#8)
+- [Dynamic_linking](https://en.wikipedia.org/wiki/Dynamic_linking)
+
+<!-- BACKLINKS-AUTO -->
+## 相关页面
+
+- [glossary](/glossary.md)
+- [core-concepts](/knowledge/core-concepts.md)

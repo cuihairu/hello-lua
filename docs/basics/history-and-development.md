@@ -33,3 +33,17 @@ DEL 和 SOL 都是为 Petrobras（巴西国家石油公司）开发的，用于�
 需要小而快、能嵌进宿主程序的脚本语言时，Lua 至今仍是常见选择。
 
 从 1993 年到现在，Lua 的版本一直在变，定位没变过：小、快、可嵌入。
+
+## 参考资料
+
+- [Lua_(programming_language)](https://en.wikipedia.org/wiki/Lua_(programming_language))
+- [Markup_language](https://en.wikipedia.org/wiki/Markup_language)
+- [Lua 5.4 官方手册](https://www.lua.org/manual/5.4/manual.html)
+
+<!-- BACKLINKS-AUTO -->
+## 相关页面
+
+- [philosophy-and-features](philosophy-and-features.md)
+- [README](/knowledge/README.md)
+- [applications](/knowledge/applications.md)
+- [books](/knowledge/books.md)

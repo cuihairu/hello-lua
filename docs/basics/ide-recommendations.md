@@ -102,3 +102,14 @@ Notepad++ 是一个免费的文本编辑器，虽然它不是专门的 IDE，但
 ## 结语
 
 只想要能跑的环境，ZeroBrane Studio 开箱即用、调试内置。已经有顺手的编辑器的话，装个 Lua 插件就够了。
+
+## 参考资料
+
+- [Lua 官方文档索引](https://www.lua.org/docs.html)
+- [lua-users 维基](http://lua-users.org/wiki/)
+
+<!-- BACKLINKS-AUTO -->
+## 相关页面
+
+- [setup](setup.md)
+- [official-docs](/knowledge/official-docs.md)

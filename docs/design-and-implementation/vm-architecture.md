@@ -29,3 +29,17 @@
 ## 总结
 
 字节码作为中间表示、基于寄存器的栈管理、统一的分配函数、栈帧式的调用机制，这套设计以性能和简洁性为目标；调试接口和 C API 则把扩展能力留给了宿主程序。
+
+## 参考资料
+
+- [Virtual_machine](https://en.wikipedia.org/wiki/Virtual_machine)
+- [Stack_machine](https://en.wikipedia.org/wiki/Stack_machine)
+- [Lua 官方源码仓 github.com/lua/lua](https://github.com/lua/lua)
+
+<!-- BACKLINKS-AUTO -->
+## 相关页面
+
+- [lua55-source](lua55-source.md)
+- [glossary](/glossary.md)
+- [books](/knowledge/books.md)
+- [core-concepts](/knowledge/core-concepts.md)

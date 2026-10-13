@@ -142,3 +142,14 @@ if (lua_pcall(L, 2, 1, 0) != LUA_OK) {
 ```c
 lua_close(L);  // 关闭Lua状态
 ```
+
+## 参考资料
+
+- [Lua 5.4 官方手册](https://www.lua.org/manual/5.4/manual.html#4)
+- [LuaJIT C API 文档](https://luajit.org/ext_c_api.html)
+
+<!-- BACKLINKS-AUTO -->
+## 相关页面
+
+- [glossary](/glossary.md)
+- [core-concepts](/knowledge/core-concepts.md)

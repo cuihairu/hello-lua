@@ -8,3 +8,17 @@ Lua 的错误处理围绕 `pcall`、`xpcall` 和 `error` 展开：先把可能�
 ## 结语
 
 `pcall` 把错误变成一次带返回值的调用，`xpcall` 多给一次在错误现场加工信息的机会；分清错误类型，再用 `debug.traceback` 顺藤摸瓜，排查问题就靠这几样。
+
+## 参考资料
+
+- [Lua 5.4 官方手册](https://www.lua.org/manual/5.4/manual.html#2.4)
+- [Lua 5.4 官方手册](https://www.lua.org/manual/5.4/manual.html#2.5)
+- [Exception_handling](https://en.wikipedia.org/wiki/Exception_handling)
+- [Stack_trace](https://en.wikipedia.org/wiki/Stack_trace)
+
+<!-- BACKLINKS-AUTO -->
+## 相关页面
+
+- [glossary](/glossary.md)
+- [README](/knowledge/README.md)
+- [core-concepts](/knowledge/core-concepts.md)

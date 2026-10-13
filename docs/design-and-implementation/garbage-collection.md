@@ -52,3 +52,15 @@ Lua 5.4 也支持用一条调用同时设置这两个参数：`collectgarbage("i
 ## 总结
 
 标记-清除负责判断哪些对象可回收，增量收集把回收摊平成小步骤。理解这两层，再用 `collectgarbage` 调参数，就能在程序性能和内存占用之间找到适合自己负载的平衡点。
+
+## 参考资料
+
+- [Lua 5.4 官方手册](https://www.lua.org/manual/5.4/manual.html#2.7)
+- [Lua 5.4 官方手册](https://www.lua.org/manual/5.4/manual.html#2.9)
+- [Garbage_collection_(computer_science)](https://en.wikipedia.org/wiki/Garbage_collection_(computer_science))
+
+<!-- BACKLINKS-AUTO -->
+## 相关页面
+
+- [glossary](/glossary.md)
+- [core-concepts](/knowledge/core-concepts.md)

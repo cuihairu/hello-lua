@@ -48,3 +48,14 @@ LocalAssignment
 ## 总结
 
 词法分析把源代码字符流转换为记号序列，语法分析再按文法规则把记号组织成程序结构。Lua 采用单遍递归下降解析，在解析的同时直接生成字节码，这是源码到字节码的完整通路。
+
+## 参考资料
+
+- [Lexical_analysis](https://en.wikipedia.org/wiki/Lexical_analysis)
+- [Abstract_syntax_tree](https://en.wikipedia.org/wiki/Abstract_syntax_tree)
+- [Lua 官方源码仓 github.com/lua/lua](https://github.com/lua/lua)
+
+<!-- BACKLINKS-AUTO -->
+## 相关页面
+
+- [core-concepts](/knowledge/core-concepts.md)

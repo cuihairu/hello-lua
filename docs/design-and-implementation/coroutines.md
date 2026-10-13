@@ -90,3 +90,13 @@ end
 ## 总结
 
 协程在一个线程内实现多任务处理，创建、使用、状态管理和调度都围绕 `coroutine` 库的几个函数展开，够用来写非阻塞的程序设计。
+
+## 参考资料
+
+- [Lua 5.4 官方手册](https://www.lua.org/manual/5.4/manual.html#2.5)
+- [Coroutine](https://en.wikipedia.org/wiki/Coroutine)
+- [Lua 官方源码仓 github.com/lua/lua](https://github.com/lua/lua)
+
+## 相关页面
+
+- [coroutines-design](coroutines-design.md)

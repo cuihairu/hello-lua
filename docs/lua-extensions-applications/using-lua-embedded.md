@@ -169,3 +169,13 @@ if (lua_pcall(L, 1, 1, 0) != LUA_OK) {
 ### 5.3 调试
 
 调试Lua脚本和C代码的结合可能会比较复杂。利用日志和调试工具（如GDB）来帮助定位和解决问题。
+
+## 参考资料
+
+- [Lua 5.4 官方手册](https://www.lua.org/manual/5.4/manual.html#4)
+- [Resource_acquisition_is_initialization](https://en.wikipedia.org/wiki/Resource_acquisition_is_initialization)
+
+<!-- BACKLINKS-AUTO -->
+## 相关页面
+
+- [core-concepts](/knowledge/core-concepts.md)

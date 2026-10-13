@@ -65,3 +65,14 @@ ACM TOPLAS，2009。讨论对称与非对称协程的语义差异。
 ## 来源
 
 书籍与论文信息取自附录的[相关资源与社区](/appendix/resources)与[扩展阅读与学习资源](/appendix/further-reading)；作者与出版信息以这两页所载为准。
+
+## 参考资料
+
+- [PIL · 起步](https://www.lua.org/pil/1.html)
+- [Lua 官方文档索引](https://www.lua.org/docs.html)
+- [Lua_(programming_language)](https://en.wikipedia.org/wiki/Lua_(programming_language))
+
+<!-- BACKLINKS-AUTO -->
+## 相关页面
+
+- [README](README.md)

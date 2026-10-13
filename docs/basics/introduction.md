@@ -20,3 +20,13 @@
    - Web 开发与自动化脚本
 
 三部分读完，就能解释 Lua 为什么会被嵌进游戏引擎和各类设备里。
+
+## 参考资料
+
+- [Lua_(programming_language)](https://en.wikipedia.org/wiki/Lua_(programming_language))
+- [Lua 5.4 官方手册](https://www.lua.org/manual/5.4/manual.html#2.2)
+- [PIL · 起步](https://www.lua.org/pil/1.html)
+
+## 相关页面
+
+- [philosophy-and-features](philosophy-and-features.md)

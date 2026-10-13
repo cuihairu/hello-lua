@@ -183,3 +183,16 @@ f()
 ## 总结
 
 Lua 5.4 的标准库刻意保持精简：基础能力放在 `base`，其余按职责分库，且都可以用 `require` 按需加载（`base`、`coroutine`、`package`、`string`、`table` 除外，它们在 `luaL_openlibs` 中总是可用）。除以上十个库外，Lua 5.4 不再提供 `bit32` 库，位运算已由 `& | ~ << >>` 等语言运算符承担。
+
+## 参考资料
+
+- [Lua 5.4 官方手册](https://www.lua.org/manual/5.4/manual.html#6.1)
+- [Lua 5.4 官方手册](https://www.lua.org/manual/5.4/manual.html#6.2)
+- [Lua 5.4 官方手册](https://www.lua.org/manual/5.4/manual.html#6.3)
+- [Lua 5.4 官方手册](https://www.lua.org/manual/5.4/manual.html#6.6)
+- [Lua 5.4 官方手册](https://www.lua.org/manual/5.4/manual.html#6.8)
+
+<!-- BACKLINKS-AUTO -->
+## 相关页面
+
+- [pitfalls](/knowledge/pitfalls.md)

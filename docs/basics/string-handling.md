@@ -156,3 +156,15 @@ print(email)  -- 输出 "support@example.com"
 ## 7. 总结
 
 拼接 `..`、取长度 `#`、查找 `string.find`、提取 `string.match`、拆分靠 `string.gmatch`、合并靠 `table.concat`、格式化走 `string.format`。日常处理文本，翻来覆去就是这几个函数。
+
+## 参考资料
+
+- [Lua 5.4 官方手册](https://www.lua.org/manual/5.4/manual.html#6.1)
+- [Hash_function](https://en.wikipedia.org/wiki/Hash_function)
+
+<!-- BACKLINKS-AUTO -->
+## 相关页面
+
+- [data-structures](data-structures.md)
+- [core-concepts](/knowledge/core-concepts.md)
+- [pitfalls](/knowledge/pitfalls.md)

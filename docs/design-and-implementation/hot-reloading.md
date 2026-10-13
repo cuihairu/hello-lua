@@ -92,3 +92,15 @@ watch_file_changes()
 ## 总结
 
 Lua 的热加载机制本体很小：清 `package.loaded`、重新 `require`。工程上的功夫花在状态恢复、依赖管理和更新频率控制上，这三件事做稳了，热加载才可靠。
+
+## 参考资料
+
+- [Lua 5.4 官方手册](https://www.lua.org/manual/5.4/manual.html)
+- [Dynamic_linking](https://en.wikipedia.org/wiki/Dynamic_linking)
+
+<!-- BACKLINKS-AUTO -->
+## 相关页面
+
+- [modules-and-packages](/advanced/modules-and-packages.md)
+- [core-concepts](/knowledge/core-concepts.md)
+- [pitfalls](/knowledge/pitfalls.md)

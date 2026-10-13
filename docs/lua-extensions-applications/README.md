@@ -119,3 +119,14 @@ print(mylib.add(10, 20))  -- 输出 30
 - `ffi.cdef` 用于声明C函数。
 - `ffi.load` 加载C动态库。
 - 直接调用C函数而无需编写C扩展。
+
+## 参考资料
+
+- [Lua 官方文档索引](https://www.lua.org/docs.html)
+- [Lua 5.4 官方手册](https://www.lua.org/manual/5.4/manual.html#4)
+- [Resource_acquisition_is_initialization](https://en.wikipedia.org/wiki/Resource_acquisition_is_initialization)
+
+<!-- BACKLINKS-AUTO -->
+## 相关页面
+
+- [applications](/knowledge/applications.md)

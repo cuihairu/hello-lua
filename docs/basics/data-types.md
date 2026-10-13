@@ -142,3 +142,16 @@ end
 ## 结语
 
 八种类型里，能装别的值的只有 table；剩下的要么是 nil、boolean、number、string 这类原子值，要么是 function、userdata、thread 这样的执行单元。
+
+## 参考资料
+
+- [Lua 5.4 官方手册](https://www.lua.org/manual/5.4/manual.html#2.2)
+- [First-class_function](https://en.wikipedia.org/wiki/First-class_function)
+- [Dynamic_typing](https://en.wikipedia.org/wiki/Dynamic_typing)
+
+<!-- BACKLINKS-AUTO -->
+## 相关页面
+
+- [glossary](/glossary.md)
+- [books](/knowledge/books.md)
+- [core-concepts](/knowledge/core-concepts.md)

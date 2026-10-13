@@ -8,3 +8,13 @@
 ## 结语
 
 临时看个变量，`print` 就够；要断点和单步，上 ZeroBrane Studio 或 luadebug；查性能瓶颈，用 LuaJIT 分析器或 LuaProfiler。
+
+## 参考资料
+
+- [Lua 5.4 官方手册](https://www.lua.org/manual/5.4/manual.html#2.4)
+- [Stack_trace](https://en.wikipedia.org/wiki/Stack_trace)
+
+<!-- BACKLINKS-AUTO -->
+## 相关页面
+
+- [README](/knowledge/README.md)

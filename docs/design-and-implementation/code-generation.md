@@ -47,3 +47,17 @@ main <t.lua:0,0> (3 instructions)
 ## 总结
 
 代码生成与寄存器分配由 `lcode.c` 完成，在语法分析的同时逐条发出字节码，不经过 AST。编译期的优化以常量折叠、立即数指令编码、跳转回填和寄存器复用为主，并不包含公共子表达式消除或循环不变代码外提等重量级优化。
+
+## 参考资料
+
+- [Compiler](https://en.wikipedia.org/wiki/Compiler)
+- [Abstract_syntax_tree](https://en.wikipedia.org/wiki/Abstract_syntax_tree)
+- [Lua 官方源码仓 github.com/lua/lua](https://github.com/lua/lua)
+
+<!-- BACKLINKS-AUTO -->
+## 相关页面
+
+- [lua55-source](lua55-source.md)
+- [glossary](/glossary.md)
+- [core-concepts](/knowledge/core-concepts.md)
+- [pitfalls](/knowledge/pitfalls.md)

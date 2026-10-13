@@ -25,3 +25,14 @@ Lua 通过协作式调度管理协程的执行，核心工作是保存和恢复�
 ## 总结
 
 协作式调度加上轻量的上下文切换，构成了 Lua 协程的成本模型：切换只交换栈指针和 `CallInfo`，不碰 CPU 寄存器，也没有系统调用。应用层要做的事是管理好协程的数量和挂起时机。
+
+## 参考资料
+
+- [Lua 5.4 官方手册](https://www.lua.org/manual/5.4/manual.html#2.5)
+- [Coroutine](https://en.wikipedia.org/wiki/Coroutine)
+- [Call_stack](https://en.wikipedia.org/wiki/Call_stack)
+
+<!-- BACKLINKS-AUTO -->
+## 相关页面
+
+- [core-concepts](/knowledge/core-concepts.md)

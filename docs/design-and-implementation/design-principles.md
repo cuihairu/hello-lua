@@ -33,3 +33,14 @@ Lua 的主要目标是作为轻量级语言嵌入到其他应用程序中，核�
 ## 总结
 
 轻量级、高效、灵活、可嵌入是 Lua 设计原理的落点：简洁语法加可扩展性，让 Lua 同时适合嵌入式系统和应用程序脚本。
+
+## 参考资料
+
+- [Lua_(programming_language)](https://en.wikipedia.org/wiki/Lua_(programming_language))
+- [Lua 5.4 官方手册](https://www.lua.org/manual/5.4/manual.html#2.2)
+
+<!-- BACKLINKS-AUTO -->
+## 相关页面
+
+- [books](/knowledge/books.md)
+- [core-concepts](/knowledge/core-concepts.md)

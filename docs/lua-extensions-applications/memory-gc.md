@@ -43,3 +43,13 @@ Lua提供了`collectgarbage`函数用于手动控制垃圾回收。常用的操�
 ## 7. LuaJIT的垃圾回收
 
 如果使用LuaJIT，垃圾回收机制会有所不同。LuaJIT有自己的垃圾回收器，功能与Lua类似，但性能特性和优化策略可能不一样。LuaJIT的FFI库（Foreign Function Interface）允许直接调用C函数，也会影响内存管理的方式。
+
+## 参考资料
+
+- [Lua 5.4 官方手册](https://www.lua.org/manual/5.4/manual.html#2.9)
+- [Memory_management](https://en.wikipedia.org/wiki/Memory_management)
+- [LuaJIT profiler 文档](https://luajit.org/ext_profiler.html)
+
+## 相关页面
+
+- [luajit-optimization](luajit-optimization.md)

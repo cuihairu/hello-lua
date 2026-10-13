@@ -410,3 +410,18 @@ Lua 的面向对象没有关键字加持，全部建立在一条 `__index` 索�
 - [self 的作用](./self.md)
 - [基于表的对象系统](./object-system.md)
 - [继承与多态](./inheritance-and-polymorphism.md)
+
+## 参考资料
+
+- [Lua 5.4 官方手册](https://www.lua.org/manual/5.4/manual.html#2.6)
+- [Prototype-based_programming](https://en.wikipedia.org/wiki/Prototype-based_programming)
+- [Metaprogramming](https://en.wikipedia.org/wiki/Metaprogramming)
+
+<!-- BACKLINKS-AUTO -->
+## 相关页面
+
+- [README](README.md)
+- [object-oriented](object-oriented.md)
+- [glossary](/glossary.md)
+- [core-concepts](/knowledge/core-concepts.md)
+- [pitfalls](/knowledge/pitfalls.md)

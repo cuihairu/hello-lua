@@ -81,3 +81,15 @@
 - 「Lua 内部值类型叫 TaggedValue」是讹传，5.4/5.5 源码里是 `TValue`。
 
 来源：[协程的底层实现](/design-and-implementation/coroutines-implementation)、[字节码与虚拟机](/design-and-implementation/bytecode-and-vm)、[跨平台发布Lua应用](/lua-best-practices/cross-platform-deployment)、[Lua 5.5 源码解析](/design-and-implementation/lua55-source)、[沙箱与不可信代码](/advanced/sandboxing)。
+
+## 参考资料
+
+- [Lua 5.4 官方手册](https://www.lua.org/manual/5.4/manual.html#2.4)
+- [Exception_handling](https://en.wikipedia.org/wiki/Exception_handling)
+- [Hash_table](https://en.wikipedia.org/wiki/Hash_table)
+
+<!-- BACKLINKS-AUTO -->
+## 相关页面
+
+- [glossary](/glossary.md)
+- [README](README.md)

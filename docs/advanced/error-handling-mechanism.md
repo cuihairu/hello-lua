@@ -100,3 +100,17 @@ Lua 的错误消息通常包括错误类型和描述信息。可以用 `error` �
 ## 总结
 
 两个函数的分工很清楚：`pcall` 只报告错误，`xpcall` 多给一次在错误现场加工信息的机会。Lua 异常处理的基本面就是这两个函数，再加上主动抛错的 `error`。
+
+## 参考资料
+
+- [Lua 5.4 官方手册](https://www.lua.org/manual/5.4/manual.html#2.4)
+- [Exception_handling](https://en.wikipedia.org/wiki/Exception_handling)
+- [Continuation](https://en.wikipedia.org/wiki/Continuation)
+
+<!-- BACKLINKS-AUTO -->
+## 相关页面
+
+- [README](README.md)
+- [error-handling](error-handling.md)
+- [core-concepts](/knowledge/core-concepts.md)
+- [pitfalls](/knowledge/pitfalls.md)

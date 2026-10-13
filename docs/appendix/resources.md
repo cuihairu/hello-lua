@@ -38,3 +38,18 @@ lua-users wiki（<http://lua-users.org/wiki/>）是社区维护的知识库，�
 ## 总结
 
 建议的学习路径：先通读官方手册的第 1~3 章（语言、标准库、C API），再用 LuaRocks 安装一两个库完成小项目，最后结合 `lua-users wiki` 与源码深入虚拟机与垃圾回收等内部机制。遇到具体问题时，官方手册与 lua-l 邮件列表的存档通常是最可靠的答案来源。想从“会用”进到“理解”，源码阅读路线与论文清单见[扩展阅读与学习资源](/appendix/further-reading)。
+
+## 参考资料
+
+- [Lua 官方文档索引](https://www.lua.org/docs.html)
+- [Lua 下载页](https://www.lua.org/download.html)
+- [LuaRocks 包管理器首页](https://luarocks.org/)
+
+<!-- BACKLINKS-AUTO -->
+## 相关页面
+
+- [further-reading](further-reading.md)
+- [glossary](/glossary.md)
+- [README](/knowledge/README.md)
+- [books](/knowledge/books.md)
+- [official-docs](/knowledge/official-docs.md)

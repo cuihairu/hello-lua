@@ -25,3 +25,14 @@ Lua 的垃圾回收采用增量式标记-清除算法（Incremental Mark-and-Swe
 ## 总结
 
 增量式标记-清除负责回收，统一的分配函数加字符串内部化降低分配开销和内存占用，剩下的工作是把参数调到与应用的内存特征匹配。
+
+## 参考资料
+
+- [Lua 5.4 官方手册](https://www.lua.org/manual/5.4/manual.html#2.9)
+- [Memory_management](https://en.wikipedia.org/wiki/Memory_management)
+- [Lua 官方源码仓 github.com/lua/lua](https://github.com/lua/lua)
+
+<!-- BACKLINKS-AUTO -->
+## 相关页面
+
+- [core-concepts](/knowledge/core-concepts.md)

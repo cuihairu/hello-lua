@@ -109,3 +109,19 @@ makeAnimalSpeak(myCat)  -- 输出: Whiskers meows.
 ## 3. 总结
 
 继承通过设置元表的 `__index` 指向父类实现，子类由此拿到父类的方法和属性。多态通过方法重写实现，不同的类定义相同的方法名，各自给出实现。两者都不需要语言层的额外支持，表和元表就够了。
+
+## 参考资料
+
+- [Lua 5.4 官方手册](https://www.lua.org/manual/5.4/manual.html#2.6)
+- [Object-oriented_programming](https://en.wikipedia.org/wiki/Object-oriented_programming)
+- [Operator_overloading](https://en.wikipedia.org/wiki/Operator_overloading)
+- [Prototype-based_programming](https://en.wikipedia.org/wiki/Prototype-based_programming)
+
+<!-- BACKLINKS-AUTO -->
+## 相关页面
+
+- [README](README.md)
+- [object-oriented](object-oriented.md)
+- [oop-implementation](oop-implementation.md)
+- [glossary](/glossary.md)
+- [core-concepts](/knowledge/core-concepts.md)

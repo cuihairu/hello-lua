@@ -235,3 +235,14 @@ print(string.format("分配了 %.1f KB", after - before))
 ## 总结
 
 以上问题覆盖了作用域、表、字符串、模块、错误处理和内存管理等高频场景。遇到问题时建议先复现最小示例，再用 `pcall` 与 `collectgarbage("count")` 定位，多数情况都能快速找到原因。
+
+## 参考资料
+
+- [LuaJIT FAQ](https://luajit.org/faq.html)
+- [lua-users 维基](http://lua-users.org/wiki/)
+
+<!-- BACKLINKS-AUTO -->
+## 相关页面
+
+- [README](README.md)
+- [pitfalls](/knowledge/pitfalls.md)

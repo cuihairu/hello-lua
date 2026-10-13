@@ -37,3 +37,17 @@ Copas 是协程驱动的异步网络库，支持 TCP 和 HTTP 服务器，非阻
 ## 总结
 
 这八个模块覆盖了数据结构、网络、文件系统、JSON、数据库和运行时。都能通过 LuaRocks 安装，平时按需取用即可。
+
+## 参考资料
+
+- [Lua 5.4 官方手册](https://www.lua.org/manual/5.4/manual.html#6.1)
+- [Lua 5.4 官方手册](https://www.lua.org/manual/5.4/manual.html#6.2)
+- [Lua 5.4 官方手册](https://www.lua.org/manual/5.4/manual.html#6.3)
+- [Lua 官方文档索引](https://www.lua.org/docs.html)
+
+<!-- BACKLINKS-AUTO -->
+## 相关页面
+
+- [README](README.md)
+- [modules-and-packages](modules-and-packages.md)
+- [official-docs](/knowledge/official-docs.md)

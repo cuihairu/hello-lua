@@ -224,3 +224,16 @@ print("Cost of milk coffee: " .. milkCoffee:cost())  -- 输出: Cost of milk cof
 ## 总结
 
 这五种模式没有用到表和元表之外的任何机制：单例靠缓存实例，工厂靠分支选择构造函数，观察者靠一张回调列表，策略靠把函数当字段存，装饰器靠包一层再转发调用。
+
+## 参考资料
+
+- [PIL · 面向对象](https://www.lua.org/pil/13.html)
+- [Object-oriented_programming](https://en.wikipedia.org/wiki/Object-oriented_programming)
+- [Prototype-based_programming](https://en.wikipedia.org/wiki/Prototype-based_programming)
+
+<!-- BACKLINKS-AUTO -->
+## 相关页面
+
+- [README](README.md)
+- [object-oriented](object-oriented.md)
+- [core-concepts](/knowledge/core-concepts.md)

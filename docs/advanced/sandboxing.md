@@ -111,3 +111,17 @@ end
 ## 结语
 
 环境用白名单，资源用钩子，边界要认清：沙箱能挡住的只有按 Lua 规则玩的代码，真正的隔离交给操作系统。
+
+## 参考资料
+
+- [Lua 5.4 官方手册](https://www.lua.org/manual/5.4/manual.html#2.7)
+- [Lua 5.4 官方手册](https://www.lua.org/manual/5.4/manual.html#2.8)
+- [Sandbox_(computer_security)](https://en.wikipedia.org/wiki/Sandbox_(computer_security))
+- [Principle_of_least_privilege](https://en.wikipedia.org/wiki/Principle_of_least_privilege)
+
+<!-- BACKLINKS-AUTO -->
+## 相关页面
+
+- [glossary](/glossary.md)
+- [core-concepts](/knowledge/core-concepts.md)
+- [pitfalls](/knowledge/pitfalls.md)

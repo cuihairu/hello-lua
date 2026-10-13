@@ -179,3 +179,17 @@ end
 ## 结语
 
 创建用 `{}`，访问用键，数组的索引从 1 开始，改表的行为用元表。表这一关过了，Lua 剩下的部分都不难。
+
+## 参考资料
+
+- [Lua 5.4 官方手册](https://www.lua.org/manual/5.4/manual.html#2.2)
+- [Associative_array](https://en.wikipedia.org/wiki/Associative_array)
+- [Hash_table](https://en.wikipedia.org/wiki/Hash_table)
+- [PIL · 表](https://www.lua.org/pil/12.html)
+
+<!-- BACKLINKS-AUTO -->
+## 相关页面
+
+- [data-structures](data-structures.md)
+- [glossary](/glossary.md)
+- [core-concepts](/knowledge/core-concepts.md)

@@ -130,3 +130,13 @@ print(safe_divide("x", 2))  -- Error: ...（pcall 捕获的算术错误）
 **4.3 代码审查**
 
 发布前过一遍代码审查，能提前发现错误和不一致。
+
+## 参考资料
+
+- [Lua 官方文档索引](https://www.lua.org/docs.html)
+- [Lua 5.4 官方手册](https://www.lua.org/manual/5.4/manual.html)
+- [lua-users 维基](http://lua-users.org/wiki/)
+
+## 相关页面
+
+- [code-style](code-style.md)

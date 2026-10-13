@@ -117,3 +117,13 @@ stack traceback:
 ## 结语
 
 测片段进交互模式，跑程序用 `lua script.lua`，出错先看错误信息第一行指到的位置。日常写 Lua 就是在这三步之间打转。
+
+## 参考资料
+
+- [Interpreter_(computing)](https://en.wikipedia.org/wiki/Interpreter_(computing))
+- [Virtual_machine](https://en.wikipedia.org/wiki/Virtual_machine)
+- [Lua 官方文档索引](https://www.lua.org/docs.html)
+
+## 相关页面
+
+- [interpreter-implementation](/design-and-implementation/interpreter-implementation.md)

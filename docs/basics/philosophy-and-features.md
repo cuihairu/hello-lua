@@ -44,3 +44,14 @@ Lua 的语法设计非常简单，类似于其他脚本语言如 Python 和 Java
 ## 结语
 
 不到 1MB 的运行时、唯一的复合结构表、原生协程和一套 C API，这几件事合起来解释了 Lua 为什么能嵌进那么多宿主程序。
+
+## 参考资料
+
+- [Lua_(programming_language)](https://en.wikipedia.org/wiki/Lua_(programming_language))
+- [Prototype-based_programming](https://en.wikipedia.org/wiki/Prototype-based_programming)
+- [PIL · 起步](https://www.lua.org/pil/1.html)
+
+## 相关页面
+
+- [introduction](introduction.md)
+- [history-and-development](history-and-development.md)

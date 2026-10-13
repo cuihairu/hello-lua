@@ -54,3 +54,18 @@ main <t.lua:0,0> (3 instructions)
 ## 总结
 
 字节码定义程序的操作，虚拟机解析并执行这些指令，同时负责内存管理和垃圾回收。了解这条链路，排查性能问题和调试字节码时就有据可依。
+
+## 参考资料
+
+- [Bytecode](https://en.wikipedia.org/wiki/Bytecode)
+- [Virtual_machine](https://en.wikipedia.org/wiki/Virtual_machine)
+- [Lua 官方源码仓 github.com/lua/lua](https://github.com/lua/lua)
+
+<!-- BACKLINKS-AUTO -->
+## 相关页面
+
+- [lua55-source](lua55-source.md)
+- [glossary](/glossary.md)
+- [books](/knowledge/books.md)
+- [core-concepts](/knowledge/core-concepts.md)
+- [pitfalls](/knowledge/pitfalls.md)

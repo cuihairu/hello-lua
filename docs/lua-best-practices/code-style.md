@@ -8,3 +8,14 @@
 ## 结语
 
 风格管的是代码长什么样，规范管的是怎么写才不容易出错。两页合起来：名字起得清楚、格式排得整齐、作用域收得干净。
+
+## 参考资料
+
+- [Lua 5.4 官方手册](https://www.lua.org/manual/5.4/manual.html)
+- [lua-users 维基](http://lua-users.org/wiki/)
+
+<!-- BACKLINKS-AUTO -->
+## 相关页面
+
+- [README](README.md)
+- [README](/knowledge/README.md)

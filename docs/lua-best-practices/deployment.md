@@ -71,3 +71,14 @@ Lua 项目从代码到上线，要过代码质量、构建打包、部署、测�
 ## 总结
 
 部署环节的多数事故来自手动操作和流程不固定。构建、部署、测试能自动化的都自动化，回滚机制提前备好，出问题才有退路。
+
+## 参考资料
+
+- [Lua 官方文档索引](https://www.lua.org/docs.html)
+- [Lua 下载页](https://www.lua.org/download.html)
+
+<!-- BACKLINKS-AUTO -->
+## 相关页面
+
+- [README](/knowledge/README.md)
+- [core-concepts](/knowledge/core-concepts.md)

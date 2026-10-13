@@ -11,3 +11,16 @@
 ## 结语
 
 模块的加载和缓存都由 `require` 一手包办，平时需要干预的地方通常只有路径配置和缓存清理。
+
+## 参考资料
+
+- [Lua 5.4 官方手册](https://www.lua.org/manual/5.4/manual.html#6.3)
+- [Module_(computer_science)](https://en.wikipedia.org/wiki/Module_(computer_science))
+- [Package_(software)](https://en.wikipedia.org/wiki/Package_(software))
+
+<!-- BACKLINKS-AUTO -->
+## 相关页面
+
+- [glossary](/glossary.md)
+- [README](/knowledge/README.md)
+- [core-concepts](/knowledge/core-concepts.md)

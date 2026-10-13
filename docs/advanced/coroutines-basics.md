@@ -70,3 +70,15 @@ print(gen())  -- 输出 9
 ## 结语
 
 协程的核心只有三个动作：`create` 创建、`resume` 恢复、`yield` 挂起，再加上 `status` 查看状态和 `wrap` 做轻量包装。挂起时保存现场，恢复时继续执行，`resume`/`yield` 之间双向传值。后面的调度器、异步封装，都是这几个动作的组合。
+
+## 参考资料
+
+- [Lua 5.4 官方手册](https://www.lua.org/manual/5.4/manual.html#2.5)
+- [Coroutine](https://en.wikipedia.org/wiki/Coroutine)
+- [PIL · 协程](https://www.lua.org/pil/10.html)
+
+<!-- BACKLINKS-AUTO -->
+## 相关页面
+
+- [coroutines](coroutines.md)
+- [core-concepts](/knowledge/core-concepts.md)

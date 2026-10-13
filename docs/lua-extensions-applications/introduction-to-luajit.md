@@ -34,3 +34,15 @@ FFI 库负责 Lua 与 C 的互操作，省掉了写扩展的环节，调用开�
 ## LuaJIT 的应用场景
 
 游戏开发、实时数据处理这类对性能敏感的应用用得多。嵌入式系统和资源受限的环境也合适，看中的是它执行快、内存占用低。需要和现有 C 库打交道的场景，FFI 正好派上用场。
+
+## 参考资料
+
+- [LuaJIT 官方首页](https://luajit.org/luajit.html)
+- [LuaJIT 扩展文档](https://luajit.org/extensions.html)
+- [LuaJIT](https://en.wikipedia.org/wiki/LuaJIT)
+
+<!-- BACKLINKS-AUTO -->
+## 相关页面
+
+- [glossary](/glossary.md)
+- [core-concepts](/knowledge/core-concepts.md)

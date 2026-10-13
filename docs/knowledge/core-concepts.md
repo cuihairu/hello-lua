@@ -219,3 +219,15 @@ FFI 让 Lua 脚本直接调用 C 函数、使用 C 数据结构，省掉写一�
 变量尽量局部化；多个字符串拼接交给 `table.concat`；GC 用 `collectgarbage("setpause"/"setstepmul")` 按实际分配节奏调参；脚本可在打包前用 `luac` 预编译成字节码。性能关键的部分再交给 C 或 LuaJIT。
 
 来源：[Lua代码的优化技巧](/lua-best-practices/optimization-techniques)、[部署与发布](/lua-best-practices/deployment)。
+
+## 参考资料
+
+- [Lua 5.4 官方手册](https://www.lua.org/manual/5.4/manual.html#2.2)
+- [Lua 5.4 官方手册](https://www.lua.org/manual/5.4/manual.html#2.6)
+- [Lua_(programming_language)](https://en.wikipedia.org/wiki/Lua_(programming_language))
+
+<!-- BACKLINKS-AUTO -->
+## 相关页面
+
+- [README](README.md)
+- [glossary](/glossary.md)

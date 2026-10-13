@@ -153,3 +153,17 @@ bark2(dog)   -- 输出 Rex says: Woof!
 ## 结语
 
 `self` 没有任何魔法，它只是冒号语法糖自动传入的第一个参数。三条规则避开绝大多数问题：冒号定义配冒号调用；跨类复用方法时显式传递 `self`（如 `Account.withdraw(self, amount)`）；把方法作为回调传递时用闭包绑定对象。
+
+## 参考资料
+
+- [Lua 5.4 官方手册](https://www.lua.org/manual/5.4/manual.html#2.6)
+- [Metaprogramming](https://en.wikipedia.org/wiki/Metaprogramming)
+
+<!-- BACKLINKS-AUTO -->
+## 相关页面
+
+- [README](README.md)
+- [object-oriented](object-oriented.md)
+- [oop-implementation](oop-implementation.md)
+- [core-concepts](/knowledge/core-concepts.md)
+- [pitfalls](/knowledge/pitfalls.md)

@@ -37,3 +37,14 @@
 ## 来源
 
 链接与用途取自站内的[相关资源与社区](/appendix/resources)、[扩展阅读与学习资源](/appendix/further-reading)、[环境搭建](/basics/setup)、[集成开发环境（IDE）推荐](/basics/ide-recommendations)、[常用 Lua 模块介绍](/advanced/common-modules)。
+
+## 参考资料
+
+- [Lua 官方文档索引](https://www.lua.org/docs.html)
+- [Lua 5.4 官方手册](https://www.lua.org/manual/5.4/manual.html)
+- [Lua 下载页](https://www.lua.org/download.html)
+
+<!-- BACKLINKS-AUTO -->
+## 相关页面
+
+- [README](README.md)

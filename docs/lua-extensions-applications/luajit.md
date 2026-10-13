@@ -64,3 +64,15 @@ luajit your_script.lua
 ## 6. LuaJIT 的最佳实践
 
 用 `luajit -jdump` 这类性能分析工具盯住编译情况，性能问题才有得查。C 函数调用能少则少，跨语言交互本身有成本。迁移到 LuaJIT 前先验证脚本的兼容性，尤其是依赖特定 Lua 5.1 版本特性的部分。
+
+## 参考资料
+
+- [LuaJIT 官方首页](https://luajit.org/luajit.html)
+- [LuaJIT](https://en.wikipedia.org/wiki/LuaJIT)
+- [Just-in-time_compilation](https://en.wikipedia.org/wiki/Just-in-time_compilation)
+
+<!-- BACKLINKS-AUTO -->
+## 相关页面
+
+- [glossary](/glossary.md)
+- [core-concepts](/knowledge/core-concepts.md)

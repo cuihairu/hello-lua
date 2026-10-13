@@ -260,3 +260,16 @@ GC 参数从编译期宏改成运行时可调的字节表 `gcparams[]`(lstate.h:
 - [垃圾回收的优化策略](/design-and-implementation/gc-optimization)
 - [垃圾回收的实现细节](/design-and-implementation/gc-implementation)
 - [Lua 5.5 官方手册](https://www.lua.org/manual/5.5/)
+
+## 参考资料
+
+- [Lua 官方源码仓 github.com/lua/lua](https://github.com/lua/lua)
+
+<!-- BACKLINKS-AUTO -->
+## 相关页面
+
+- [further-reading](/appendix/further-reading.md)
+- [README](README.md)
+- [books](/knowledge/books.md)
+- [core-concepts](/knowledge/core-concepts.md)
+- [pitfalls](/knowledge/pitfalls.md)

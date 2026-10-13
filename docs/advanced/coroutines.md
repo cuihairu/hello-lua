@@ -109,3 +109,16 @@ scheduler({
 ## 结语
 
 协程让 Lua 用很小的代价拿到结构化的并发：它是把"交替执行的任务"写成清晰顺序代码的控制结构，拉高计算吞吐是并行的事，与协程无关。同一个 Lua 状态里任意时刻只有一个协程在跑，所以共享数据不需要加锁。
+
+## 参考资料
+
+- [Lua 5.4 官方手册](https://www.lua.org/manual/5.4/manual.html#2.5)
+- [Coroutine](https://en.wikipedia.org/wiki/Coroutine)
+- [PIL · 协程](https://www.lua.org/pil/10.html)
+
+<!-- BACKLINKS-AUTO -->
+## 相关页面
+
+- [glossary](/glossary.md)
+- [books](/knowledge/books.md)
+- [core-concepts](/knowledge/core-concepts.md)

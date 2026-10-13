@@ -100,3 +100,15 @@ print(coroutine.status(co))  -- 输出 dead
 ## 结语
 
 协程的状态机并不复杂：`suspended` 与 `running` 之间靠 `resume`/`yield` 来回切换，`dead` 是唯一不可逆的终点。写代码时不要恢复已死亡的协程；需要提前结束时调用 `close`，让 to-be-closed 变量完成清理。
+
+## 参考资料
+
+- [Lua 5.4 官方手册](https://www.lua.org/manual/5.4/manual.html#2.5)
+- [Coroutine](https://en.wikipedia.org/wiki/Coroutine)
+- [Call_stack](https://en.wikipedia.org/wiki/Call_stack)
+
+<!-- BACKLINKS-AUTO -->
+## 相关页面
+
+- [coroutines](coroutines.md)
+- [core-concepts](/knowledge/core-concepts.md)

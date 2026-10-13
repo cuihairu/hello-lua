@@ -152,3 +152,18 @@ print(t.otherKey)         -- 键不存在，触发 __index
 ## 结语
 
 读键、写键、运算、转字符串、当函数调用，这些触发点全部挂在元表上。把它们串起来，表的行为就基本由你定义了。
+
+## 参考资料
+
+- [Lua 5.4 官方手册](https://www.lua.org/manual/5.4/manual.html#2.6)
+- [Metaprogramming](https://en.wikipedia.org/wiki/Metaprogramming)
+- [PIL · 元表](https://www.lua.org/pil/11.html)
+
+<!-- BACKLINKS-AUTO -->
+## 相关页面
+
+- [data-structures](data-structures.md)
+- [glossary](/glossary.md)
+- [books](/knowledge/books.md)
+- [core-concepts](/knowledge/core-concepts.md)
+- [pitfalls](/knowledge/pitfalls.md)

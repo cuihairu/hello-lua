@@ -11,3 +11,16 @@ Lua 没有内建的类和继承机制，对象、继承、多态都靠表加元�
 ## 结语
 
 `setmetatable` 造实例，`__index` 挂继承，方法重写实现多态。Lua 的面向对象没有新机制，全是表和元表的约定。
+
+## 参考资料
+
+- [Lua 5.4 官方手册](https://www.lua.org/manual/5.4/manual.html#2.6)
+- [Object-oriented_programming](https://en.wikipedia.org/wiki/Object-oriented_programming)
+- [PIL · 面向对象](https://www.lua.org/pil/13.html)
+
+<!-- BACKLINKS-AUTO -->
+## 相关页面
+
+- [glossary](/glossary.md)
+- [README](/knowledge/README.md)
+- [core-concepts](/knowledge/core-concepts.md)

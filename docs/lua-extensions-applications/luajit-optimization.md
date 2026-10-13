@@ -29,3 +29,15 @@ FFI 让 Lua 直接调用 C 函数、使用 C 数据结构，Lua 与 C 之间的�
 ## 7. 特定于平台的优化
 
 LuaJIT 为不同硬件平台和操作系统准备了专用的机器码后端（x86、x64、ARM 等），生成的指令遵循对应平台的调用约定，可能时还会用上平台的指令特性（例如 x64 下的 SSE2 浮点运算）。
+
+## 参考资料
+
+- [LuaJIT 优化文档](https://luajit.org/ext_jit.html)
+- [Tracing_just-in-time_compilation](https://en.wikipedia.org/wiki/Tracing_just-in-time_compilation)
+
+<!-- BACKLINKS-AUTO -->
+## 相关页面
+
+- [memory-gc](memory-gc.md)
+- [glossary](/glossary.md)
+- [core-concepts](/knowledge/core-concepts.md)

@@ -76,3 +76,17 @@ print(coroutine.resume(co))   -- 输出 true	simulated blocking result
 ## 结语
 
 协程与线程解决的是两个不同层面的问题：线程解决"如何同时执行"，协程解决"如何把交替执行写成清晰的顺序代码"。Lua 把协程做成语言内建，为的是给宿主程序一个可控的、确定性的多任务模型，切换只在用户态发生。
+
+## 参考资料
+
+- [Lua 5.4 官方手册](https://www.lua.org/manual/5.4/manual.html#2.5)
+- [Coroutine](https://en.wikipedia.org/wiki/Coroutine)
+- [Continuation](https://en.wikipedia.org/wiki/Continuation)
+
+<!-- BACKLINKS-AUTO -->
+## 相关页面
+
+- [coroutines](coroutines.md)
+- [applications](/knowledge/applications.md)
+- [core-concepts](/knowledge/core-concepts.md)
+- [pitfalls](/knowledge/pitfalls.md)

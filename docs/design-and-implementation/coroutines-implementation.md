@@ -33,3 +33,16 @@ Lua 的协程通过虚拟机中的底层机制实现轻量级的协作式线程�
 ## 总结
 
 协程的全部状态都放在 `lua_State` 里，切换只交换栈指针和 `CallInfo`，不碰 CPU 寄存器。这套设计让 Lua 用很小的代价实现了协作式线程，代价是只能同线程协作切换。
+
+## 参考资料
+
+- [Lua 5.4 官方手册](https://www.lua.org/manual/5.4/manual.html#2.5)
+- [Coroutine](https://en.wikipedia.org/wiki/Coroutine)
+- [Lua 官方源码仓 github.com/lua/lua](https://github.com/lua/lua)
+
+<!-- BACKLINKS-AUTO -->
+## 相关页面
+
+- [lua55-source](lua55-source.md)
+- [core-concepts](/knowledge/core-concepts.md)
+- [pitfalls](/knowledge/pitfalls.md)

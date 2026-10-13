@@ -8,3 +8,13 @@ Lua 程序的开销大头通常在全局变量查找、表的创建和字符串�
 ## 结语
 
 先测量再动手：用性能分析工具找到热点，改完再测一遍，确认优化真的有效。
+
+## 参考资料
+
+- [Lua 5.4 官方手册](https://www.lua.org/manual/5.4/manual.html#2.9)
+- [Tracing_just-in-time_compilation](https://en.wikipedia.org/wiki/Tracing_just-in-time_compilation)
+
+<!-- BACKLINKS-AUTO -->
+## 相关页面
+
+- [README](/knowledge/README.md)

@@ -144,3 +144,18 @@ myCar:describe()
 ## 5. 总结
 
 尽管 Lua 没有内建的类和继承机制，但表和元表的组合就能实现类的定义、实例的创建、继承和组合。全篇用到的原语只有 `setmetatable` 和 `__index`，其余都是约定。
+
+## 参考资料
+
+- [Lua 5.4 官方手册](https://www.lua.org/manual/5.4/manual.html#2.6)
+- [Object-oriented_programming](https://en.wikipedia.org/wiki/Object-oriented_programming)
+- [Metaprogramming](https://en.wikipedia.org/wiki/Metaprogramming)
+
+<!-- BACKLINKS-AUTO -->
+## 相关页面
+
+- [README](README.md)
+- [object-oriented](object-oriented.md)
+- [oop-implementation](oop-implementation.md)
+- [glossary](/glossary.md)
+- [core-concepts](/knowledge/core-concepts.md)

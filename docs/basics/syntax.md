@@ -219,3 +219,18 @@ print(sayHello())  -- 输出 Hello, World
 ## 结语
 
 八种数据类型、三组操作符、三种循环和一种条件语句，这就是 Lua 语法的骨架，剩下的靠写。
+
+## 参考资料
+
+- [Lua 5.4 官方手册](https://www.lua.org/manual/5.4/manual.html#2.2)
+- [Lua 5.4 官方手册](https://www.lua.org/manual/5.4/manual.html#2.3)
+- [PIL · 词法与句法](https://www.lua.org/pil/2.html)
+- [Lexical_analysis](https://en.wikipedia.org/wiki/Lexical_analysis)
+
+<!-- BACKLINKS-AUTO -->
+## 相关页面
+
+- [setup](setup.md)
+- [glossary](/glossary.md)
+- [README](/knowledge/README.md)
+- [books](/knowledge/books.md)

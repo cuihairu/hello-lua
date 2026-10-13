@@ -75,3 +75,17 @@ local math_utils = require("math_utils")  -- 重新加载模块
 ## 总结
 
 定义模块就是建一个表并返回；加载靠 `require`，它按 `package.path` 和 `package.cpath` 查找文件，并把结果缓存到 `package.loaded`。缓存清掉，下次 `require` 就会重新执行文件。
+
+## 参考资料
+
+- [Lua 5.4 官方手册](https://www.lua.org/manual/5.4/manual.html)
+- [Lua 官方文档索引](https://www.lua.org/docs.html)
+
+<!-- BACKLINKS-AUTO -->
+## 相关页面
+
+- [README](README.md)
+- [modules-and-packages](modules-and-packages.md)
+- [glossary](/glossary.md)
+- [core-concepts](/knowledge/core-concepts.md)
+- [pitfalls](/knowledge/pitfalls.md)

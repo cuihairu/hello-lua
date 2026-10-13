@@ -204,3 +204,16 @@ end
 ## 总结
 
 先测量再优化：用分析工具确认热点，改完再测，确认有收益。为微不足道的提升牺牲可读性，不划算。
+
+## 参考资料
+
+- [Lua 5.4 官方手册](https://www.lua.org/manual/5.4/manual.html)
+- [Just-in-time_compilation](https://en.wikipedia.org/wiki/Just-in-time_compilation)
+
+<!-- BACKLINKS-AUTO -->
+## 相关页面
+
+- [README](/knowledge/README.md)
+- [core-concepts](/knowledge/core-concepts.md)
+- [pitfalls](/knowledge/pitfalls.md)
+- [performance-optimization](performance-optimization.md)

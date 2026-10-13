@@ -118,3 +118,15 @@ print(a)  -- 输出 nil
 ## 结语
 
 能用 `local` 就用 `local`：作用域小，命名冲突少，出问题也好查。不带 `local` 就成了全局变量，这是 Lua 的默认行为，别把它当成习惯。
+
+## 参考资料
+
+- [Lua 5.4 官方手册](https://www.lua.org/manual/5.4/manual.html#2.2)
+- [PIL · 局部变量](https://www.lua.org/pil/2.html)
+- [Scope_(computer_science)](https://en.wikipedia.org/wiki/Scope_(computer_science))
+
+<!-- BACKLINKS-AUTO -->
+## 相关页面
+
+- [glossary](/glossary.md)
+- [core-concepts](/knowledge/core-concepts.md)

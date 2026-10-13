@@ -137,3 +137,16 @@ end
 ## 总结
 
 FFI 用起来就一条主线：`ffi.cdef` 声明，`ffi.load` 加载，然后直接调用。要盯住的是声明必须和真实签名一致，类型和内存出错就是崩溃或未定义行为。
+
+## 参考资料
+
+- [Lua 5.4 官方手册](https://www.lua.org/manual/5.4/manual.html#4)
+- [LuaJIT FFI 文档](https://luajit.org/ext_ffi.html)
+- [LuaJIT FFI API](https://luajit.org/ext_ffi_api.html)
+
+<!-- BACKLINKS-AUTO -->
+## 相关页面
+
+- [glossary](/glossary.md)
+- [applications](/knowledge/applications.md)
+- [core-concepts](/knowledge/core-concepts.md)

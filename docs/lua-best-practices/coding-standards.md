@@ -138,3 +138,15 @@ end
 
 return MathUtils
 ```
+
+## 参考资料
+
+- [Lua 5.4 官方手册](https://www.lua.org/manual/5.4/manual.html#2.2)
+- [lua-users 维基](http://lua-users.org/wiki/)
+
+<!-- BACKLINKS-AUTO -->
+## 相关页面
+
+- [README](/knowledge/README.md)
+- [pitfalls](/knowledge/pitfalls.md)
+- [code-style](code-style.md)

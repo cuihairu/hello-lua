@@ -125,3 +125,17 @@ Lua 提供了一些内建的调试工具和库，帮助开发者跟踪和修复�
 5. 错误处理策略：用 `pcall` 和 `xpcall` 包住可能出错的调用，把异常情况拦在自己的处理逻辑里。
 
 语法错误在加载时就会被拦下；运行时错误会带出错位置和原因；逻辑错误不报错，只能靠断言、日志和逐步调试把它找出来。
+
+## 参考资料
+
+- [Lua 5.4 官方手册](https://www.lua.org/manual/5.4/manual.html#2.4)
+- [Exception_handling](https://en.wikipedia.org/wiki/Exception_handling)
+- [Recursion_(computer_science)](https://en.wikipedia.org/wiki/Recursion_(computer_science))
+
+<!-- BACKLINKS-AUTO -->
+## 相关页面
+
+- [README](README.md)
+- [error-handling](error-handling.md)
+- [glossary](/glossary.md)
+- [core-concepts](/knowledge/core-concepts.md)

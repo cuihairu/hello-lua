@@ -153,3 +153,14 @@ if (lua_pcall(L, 1, 1, 0) != LUA_OK) {
 ## 4. 嵌入式开发中的挑战
 
 首先要盯住内存：Lua 的堆栈和内存使用不能超出嵌入式系统的限制。性能关键的应用里，光靠 Lua 不够，热点部分要用 C 代码实现。调试也不轻松，Lua 和 C 混合的代码排错比较麻烦，日志和调试工具能帮上忙。
+
+## 参考资料
+
+- [Lua 5.4 官方手册](https://www.lua.org/manual/5.4/manual.html#4)
+- [Dynamic_linking](https://en.wikipedia.org/wiki/Dynamic_linking)
+
+<!-- BACKLINKS-AUTO -->
+## 相关页面
+
+- [applications](/knowledge/applications.md)
+- [core-concepts](/knowledge/core-concepts.md)

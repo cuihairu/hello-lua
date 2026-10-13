@@ -217,3 +217,14 @@ end)
 coroutine.resume(co1)
 coroutine.resume(co2)
 ```
+
+## 参考资料
+
+- [Lua 5.4 官方手册](https://www.lua.org/manual/5.4/manual.html#2.4)
+- [Exception_handling](https://en.wikipedia.org/wiki/Exception_handling)
+
+<!-- BACKLINKS-AUTO -->
+## 相关页面
+
+- [pitfalls](/knowledge/pitfalls.md)
+- [code-style](code-style.md)

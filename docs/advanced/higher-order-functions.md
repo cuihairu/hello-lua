@@ -109,3 +109,17 @@ print(table.concat(evenNumbers, ", "))  -- 输出 2, 4
 ## 4. 总结
 
 高阶函数就是"参数或返回值里有函数"的函数。函数组合、`filter` 这样的数据处理、`makeAdder` 这样的函数工厂，都靠它实现。
+
+## 参考资料
+
+- [Lua 5.4 官方手册](https://www.lua.org/manual/5.4/manual.html#2.4)
+- [Higher-order_function](https://en.wikipedia.org/wiki/Higher-order_function)
+- [First-class_function](https://en.wikipedia.org/wiki/First-class_function)
+- [Partial_application](https://en.wikipedia.org/wiki/Partial_application)
+
+<!-- BACKLINKS-AUTO -->
+## 相关页面
+
+- [README](README.md)
+- [glossary](/glossary.md)
+- [core-concepts](/knowledge/core-concepts.md)

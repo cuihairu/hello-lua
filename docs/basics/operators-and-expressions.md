@@ -195,3 +195,15 @@ print(result)  -- 输出 10.0
 ## 结语
 
 算术七种、比较六种、逻辑三种，再加 `..` 连接和 `=` 赋值，Lua 的操作符就这些。
+
+## 参考资料
+
+- [Lua 5.4 官方手册](https://www.lua.org/manual/5.4/manual.html#2.2)
+- [Lua 5.4 官方手册](https://www.lua.org/manual/5.4/manual.html#2.3)
+- [PIL · 运算符](https://www.lua.org/pil/2.html)
+
+<!-- BACKLINKS-AUTO -->
+## 相关页面
+
+- [core-concepts](/knowledge/core-concepts.md)
+- [pitfalls](/knowledge/pitfalls.md)
