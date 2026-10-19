@@ -4,7 +4,7 @@
 
 - [模块的定义与加载](/advanced/module-definition)：模块怎么写、`require` 怎么查路径和缓存。
 - [Lua的包管理](/advanced/package-management)：`package` 库四个字段、LuaRocks 与依赖处理。
-- [常用Lua模块介绍](/advanced/common-modules)：Penlight、LuaSocket、LuaFileSystem 等第三方库。
+- [常用 Lua 模块](/advanced/common-modules)：Penlight、LuaSocket、LuaFileSystem 等第三方库。
 
 标准库自带的 `table`、`string`、`math`、`io`、`os` 五个模块在基础篇各有专页；运行时更新模块的做法见[热加载与动态更新](/design-and-implementation/hot-reloading)。
 

@@ -6,14 +6,14 @@
 
 ### 1.1 简介
 
-Visual Studio Code 是一个免费的、开源的代码编辑器，支持多种编程语言，包括 Lua。通过安装插件，你可以增强其对 Lua 的支持。
+Visual Studio Code 是一个免费的、开源的代码编辑器，支持多种编程语言，包括 Lua。安装插件后可以补上 Lua 支持。
 
 ### 1.2 安装与配置
 
 1. 下载并安装 [Visual Studio Code](https://code.visualstudio.com/)。
 2. 打开 VSCode，进入扩展市场（Extensions）。
 3. 搜索并安装 Lua 插件，如 "Lua"（作者：sumneko）或 "Lua Plus"。
-4. 配置插件设置以适应你的开发需求。例如，你可以配置 Lua 语言服务器以提供智能感知和代码提示。
+4. 插件设置可按项目调整；配置 Lua 语言服务器后，可以获得智能感知和代码提示。
 
 ### 1.3 特色功能
 
@@ -31,7 +31,7 @@ ZeroBrane Studio 是专为 Lua 开发设计的轻量级 IDE，该有的功能都
 ### 2.2 安装与配置
 
 1. 下载并安装 [ZeroBrane Studio](https://studio.zerobrane.com/)。
-2. 启动 ZeroBrane Studio，你可以直接开始编写 Lua 代码，不需要额外配置。
+2. ZeroBrane Studio 启动后即可编写 Lua 代码，无需额外配置。
 
 ### 2.3 特色功能
 

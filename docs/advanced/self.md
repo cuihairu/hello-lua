@@ -26,7 +26,7 @@ Dog.bark(dog)       -- 等价写法：显式地把 dog 作为第一个参数传�
 -- Rex says: Woof!
 ```
 
-也就是说，`obj:method(a)` 与 `obj.method(obj, a)` 完全等价，`self` 只是被隐藏起来的第一个参数。理解了这一点，冒号与点号的选择就不再神秘：**定义和调用都用冒号，`self` 就会自动就位**。
+`obj:method(a)` 与 `obj.method(obj, a)` 完全等价，`self` 是隐式传入的第一个参数。因此同一方法的定义和调用都使用冒号时，`self` 会自动就位。
 
 ## 2. self 让方法操作各自的数据
 

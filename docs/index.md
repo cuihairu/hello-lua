@@ -3,11 +3,11 @@ layout: home
 
 hero:
   name: Hello Lua
-  text: Lua 知识手册
-  tagline: 从基础语法、表与元表、协程，到虚拟机实现、C 扩展、LuaJIT 与最佳实践，把这门小巧而强大的脚本语言讲全讲透。
+  text: Lua 开发者笔记
+  tagline: 游戏项目里的 Lua 用法、踩坑记录，以及我读语言实现时留下的观察。
   actions:
     - theme: brand
-      text: 开始阅读
+      text: 浏览笔记
       link: /basics/README
     - theme: alt
       text: GitHub
@@ -23,7 +23,7 @@ features:
   - title: 扩展与最佳实践
     details: C 扩展编写与混合编程、嵌入式开发、LuaJIT 与 FFI，以及代码风格、性能优化、测试部署。
   - title: 知识点总览
-    details: 把全站内容收拢成概念、书籍、官方文档、应用与坑五类清单，条条回链原文。
+    details: 收拢概念、书籍、官方文档、应用与踩坑记录，条目均可回到相关笔记。
 ---
 
 ## 参考资料

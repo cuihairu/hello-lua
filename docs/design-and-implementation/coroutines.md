@@ -4,7 +4,7 @@
 
 ## 阅读边界
 
-本文聚焦 Lua 协程的实现专题索引。协作式执行、`create`/`resume`/`yield` 的使用方式与状态说明见[进阶协程笔记](/advanced/coroutines)，避免在这里重复讲解。
+这页收录 Lua 协程实现相关笔记。协作式执行、`create`/`resume`/`yield` 的使用方式与状态记录见[进阶协程笔记](/advanced/coroutines)。
 
 实现方向继续看[协程的设计理念](./coroutines-design.md)、[协程的底层实现](./coroutines-implementation.md)和[协程的调度与切换](./coroutines-scheduling.md)。
 
@@ -18,7 +18,7 @@
 
 ## 应用与实践
 
-协程在任务调度中的使用经验见[协程应用场景与最佳实践](/advanced/coroutine-best-practices)。本文只保留实现相关入口，不重复应用层示例。
+我在任务调度里用协程的经验见[协程应用场景与最佳实践](/advanced/coroutine-best-practices)；这里集中放实现相关入口。
 
 ## 参考资料
 

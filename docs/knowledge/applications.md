@@ -1,6 +1,6 @@
 # 应用场景
 
-站内 [Lua的应用场景](/basics/applications) 按领域介绍常见用法，[Lua的扩展与应用](/lua-extensions-applications/README) 补充了嵌入式与 C 互操作。这里合并成条目，每条给实际项目名或用法，再回链原页。
+我把 [Lua的应用场景](/basics/applications) 与 [Lua的扩展与应用](/lua-extensions-applications/README) 里的领域、嵌入式和 C 互操作案例合在这份索引里，每条附项目或用法线索并回链原页。
 
 ## 游戏开发
 
@@ -65,7 +65,7 @@
 
 ## 相关角度
 
-本文是带项目案例和来源的横向速查；各领域的背景介绍见[Lua 的应用场景](/basics/applications)。
+这里是带项目案例和出处的横向索引；各领域的背景记录见[Lua 的应用场景](/basics/applications)。
 
 ## 参考资料
 

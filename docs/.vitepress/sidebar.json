@@ -186,7 +186,7 @@
             "link": "/advanced/package-management"
           },
           {
-            "text": "常用Lua模块介绍",
+            "text": "常用 Lua 模块",
             "link": "/advanced/common-modules"
           }
         ]
@@ -459,7 +459,7 @@
         "link": "/appendix/resources"
       },
       {
-        "text": "扩展阅读与学习资源",
+        "text": "延伸阅读与参考资料",
         "link": "/appendix/further-reading"
       }
     ]

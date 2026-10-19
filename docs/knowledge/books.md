@@ -1,12 +1,12 @@
-# 权威书籍要点
+# 书籍与论文记录
 
-站内对书籍与论文的引用集中在附录两页，正文里零散提到。这里按条目收拢：书名（或论文名）、作者、它对应的知识点，再给回站内相关章节。
+书籍与论文的引用散见正文和附录，我把出处、作者、相关知识点和站内对应笔记放在一处，方便回查。
 
 ## 书籍
 
 ### 《Programming in Lua》（第 4 版）
 
-Lua 官方作者 Roberto Ierusalimschy 写的语言教程，第 4 版对应 Lua 5.3。第 1 版在官网免费阅读：<https://www.lua.org/pil/>。
+Lua 官方作者 Roberto Ierusalimschy 所著的语言类书籍，第 4 版对应 Lua 5.3。第 1 版在官网免费阅读：<https://www.lua.org/pil/>。
 
 对应知识点：语言层细节——数据类型、表与元表、闭包、协程、模块。
 
@@ -14,9 +14,9 @@ Lua 官方作者 Roberto Ierusalimschy 写的语言教程，第 4 版对应 Lua 
 
 ### 《Lua 程序设计（第 2 版）》
 
-《Programming in Lua》第 1 版的中译本，面向入门读者。
+《Programming in Lua》第 1 版的中译本。
 
-对应知识点：语言基础入门。
+对应知识点：语言基础。
 
 站内相关：[基本语法](/basics/syntax)。
 
@@ -64,7 +64,7 @@ ACM TOPLAS，2009。讨论对称与非对称协程的语义差异。
 
 ## 来源
 
-书籍与论文信息取自附录的[相关资源与社区](/appendix/resources)与[扩展阅读与学习资源](/appendix/further-reading)；作者与出版信息以这两页所载为准。
+书籍与论文信息取自附录的[相关资源与社区](/appendix/resources)与[延伸阅读与参考资料](/appendix/further-reading)；作者与出版信息以这两页所载为准。
 
 ## 参考资料
 

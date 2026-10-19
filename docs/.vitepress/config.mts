@@ -5,7 +5,7 @@ import sidebar from './sidebar.json'
 export default defineConfig({
   lang: 'zh-CN',
   title: 'Hello Lua',
-  description: 'Lua 知识手册——基础语法、进阶编程、设计与实现、扩展应用与最佳实践',
+  description: '游戏开发者的 Lua 经验记录：项目用法、踩坑笔记、源码观察与工程取舍',
   base: '/hello-lua/',
   cleanUrls: true,
   lastUpdated: true,

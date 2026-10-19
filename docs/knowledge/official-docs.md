@@ -6,7 +6,7 @@
 
 - **官方网站** <https://www.lua.org/>：发布版本、新闻与官方文档。
 - **Lua 5.4 参考手册** <https://www.lua.org/manual/5.4/>：语言与标准库的权威定义，站内所有 API 以此为准。覆盖数据类型、元表、标准库。
-- **Lua 5.5 参考手册** <https://www.lua.org/manual/5.5/>：第 2 章（语言）与第 3 章（标准库）值得反复读；旧版手册（如 5.4）仍在原地址维护。覆盖 5.5 新增特性。
+- **Lua 5.5 参考手册** <https://www.lua.org/manual/5.5/>：第 2 章（语言）与第 3 章（标准库）记录 5.5 新增特性；旧版手册（如 5.4）仍在原地址维护。
 - **源码下载** <https://www.lua.org/ftp/>：各版本源码包，站内示例用 lua-5.4.8 与 lua-5.5.1。
 - **源码在线浏览** <https://www.lua.org/source/>，GitHub 镜像 <https://github.com/lua/lua>。覆盖解释器实现、虚拟机、GC。
 - **在线演示** <https://www.lua.org/demo.html>：快速验证小段代码。
@@ -24,7 +24,7 @@
 
 ## 第三方模块仓库
 
-[常用 Lua 模块介绍](/advanced/common-modules)引用的仓库都在 GitHub：
+[常用 Lua 模块](/advanced/common-modules)引用的仓库都在 GitHub：
 
 - Penlight <https://github.com/lunarmodules/Penlight>
 - LuaSocket <https://github.com/lunarmodules/luasocket>
@@ -36,7 +36,7 @@
 
 ## 来源
 
-链接与用途取自站内的[相关资源与社区](/appendix/resources)、[扩展阅读与学习资源](/appendix/further-reading)、[环境搭建](/basics/setup)、[集成开发环境（IDE）推荐](/basics/ide-recommendations)、[常用 Lua 模块介绍](/advanced/common-modules)。
+链接与用途取自站内的[相关资源与社区](/appendix/resources)、[延伸阅读与参考资料](/appendix/further-reading)、[环境搭建](/basics/setup)、[集成开发环境（IDE）推荐](/basics/ide-recommendations)、[常用 Lua 模块](/advanced/common-modules)。
 
 ## 参考资料
 

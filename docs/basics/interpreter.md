@@ -14,14 +14,14 @@ Lua 5.4.8  Copyright (C) 1994-2025 Lua.org, PUC-Rio
 
 ## 2. 交互式编程
 
-在 Lua 提示符下，你可以直接输入 Lua 代码并按回车键执行。例如：
+Lua 提示符接受直接输入的代码，按回车即可执行：
 
 ```text
 > print("Hello, Lua!")
 Hello, Lua!
 ```
 
-你可以执行任意 Lua 代码，例如定义变量、编写函数等：
+交互环境可执行 Lua 代码，例如定义变量或函数：
 
 ```text
 > x = 10
@@ -37,7 +37,7 @@ Hello, World!
 
 ## 3. 运行 Lua 脚本
 
-你可以通过 Lua 解释器运行 Lua 脚本文件。假设你有一个名为 `script.lua` 的文件，内容如下：
+Lua 解释器也能运行脚本文件。以下是 `script.lua` 的内容：
 
 ```lua
 -- script.lua
@@ -47,7 +47,7 @@ for i = 1, 5 do
 end
 ```
 
-在终端中，你可以使用以下命令运行脚本：
+在终端运行脚本：
 
 ```sh
 $ lua script.lua
