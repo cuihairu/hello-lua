@@ -102,3 +102,29 @@
 1. 安装锁文件中声明的依赖并跑 `npm run docs:build`，补齐死链/渲染验证；目前只能标为未核实。
 2. 确定 `docs/SUMMARY.md` 的未来角色，让目录映射成为可生成或可校验的单一事实来源。
 3. 在协程与 GC 的主题页补清楚“概念/使用/实现/调优”边界和互链；先改善读者定位，再依据内容重复度决定是否合并。
+
+## 收口执行记录（2026-10-19）
+
+执行口径：页面保留原路径；同一事实只在权威页完整维护，其他页用要点摘要并链接；不同阅读角度保留各页并互链。导航权威源是 `docs/.vitepress/sidebar.json`。
+
+### A：导航单一来源
+
+- `docs/SUMMARY.md` 改为维护说明，不再复制导航树；说明侧栏是真源、目录变更只改侧栏，未来若恢复 mdBook 导出应从侧栏生成并校验。
+- `docs/.vitepress/config.mts` 注释说明 SUMMARY 的说明页身份，并把侧栏数量改为 7 个主题轴。
+- 侧栏链接按路由去重检查；本次未改侧栏条目或跨侧栏复用关系。
+
+### B：跨轴重复判定与证据
+
+| 组 | 类型 | 文本对照证据 | 收口动作 |
+|---|---|---|---|
+| 协程基础概念与使用（`advanced/coroutines.md`、`design-and-implementation/coroutines.md`） | 真重复 | 前者 `## 结语` 概括“同一个 Lua 状态机中任意时刻只有一个协程在跑”；后者原 `## 1. 协程的基本概念` 同样写“在一个线程中执行多个任务”，原 `## 2` 又重复 `create`、`resume`、`yield` 示例与说明。 | `design-and-implementation/coroutines.md` 改为实现专题入口，基础用法/状态/应用分别链接进阶专题；相关实现子页仍保留入口。 |
+| GC 算法与参数事实（`design-and-implementation/garbage-collection.md`、`gc-optimization.md`、`lua-best-practices/gc-tuning.md`） | 真重复 | 总览页 `## 2-4` 已解释标记-清除、增量/分代及 `collectgarbage` 参数；优化页原 `## 1-3` 重述“增量收集把过程分成多个小步骤”及相同参数；调优页原 `## 1` 重述标记和清除阶段。 | 总览页作为 GC 机制事实权威页；优化页和调优页改成要点摘要与完整链接，各自保留对象分配、模式实测、应用侧操作与观测内容。 |
+| 应用场景介绍与速查（`basics/applications.md`、`knowledge/applications.md`、`lua-extensions-applications/embedded-development.md`） | 不同角度，保留 | 基础应用页按领域展开游戏、嵌入式、Web、配置等背景；知识页逐条列项目名、来源与交叉条目（如 OpenResty 异步 I/O、C API/FFI）；嵌入式页含 `make generic CC=arm-none-eabi-gcc` 集成细节。 | 应用介绍与知识速查互链并标注角度；嵌入式工程步骤仍由专题页承载，不硬并。 |
+| 协程概念与运行时实现（`advanced/coroutines.md`、`design-and-implementation/coroutines-implementation.md`、`coroutines-scheduling.md`） | 不同角度，保留 | 进阶页讨论协作并发、生产者消费者和调度器用法；实现子页按 Lua 源码/栈切换展开，调度子页记录实现策略，问题层次不同。 | 由实现专题入口互链，不搬并实现内容。 |
+
+### C：描述与口径
+
+- 根 `README.md`、`README.zh.md` 改为个人开发者笔记/分享描述；现有覆盖主题描述与仓库目录一致，没有虚报篇数或列出不存在目录。
+- `docs/knowledge/applications.md` 将“九个领域”改为不带错误数量的“按领域”，对应基础应用页现有七个顶层领域。
+- `docs/appendix/README.md`、`docs/appendix/resources.md`、`docs/appendix/further-reading.md` 和 `docs/basics/README.md` 清理“本书/学习路径/读完”的课程口吻。
+- sidebar 的每个配置目标与 Markdown 文件逐项核对；未发现死条目，`docs/index.md` 仍由首页路由承载，无需加入侧栏。

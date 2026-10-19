@@ -1,6 +1,6 @@
 # 应用场景
 
-站内 [Lua的应用场景](/basics/applications) 按九个领域列了用法，[Lua的扩展与应用](/lua-extensions-applications/README) 补充了嵌入式与 C 互操作。这里合并成条目，每条给实际项目名或用法，再回链原页。
+站内 [Lua的应用场景](/basics/applications) 按领域介绍常见用法，[Lua的扩展与应用](/lua-extensions-applications/README) 补充了嵌入式与 C 互操作。这里合并成条目，每条给实际项目名或用法，再回链原页。
 
 ## 游戏开发
 
@@ -62,6 +62,10 @@
 - 性能关键的部分用 C 实现，非关键部分用 Lua。
 
 来源：[Lua的扩展与应用](/lua-extensions-applications/README)、[编写Lua C扩展](/lua-extensions-applications/writing-c-extensions)、[使用 LuaJIT 的 FFI 库](/lua-extensions-applications/ffi-library)。
+
+## 相关角度
+
+本文是带项目案例和来源的横向速查；各领域的背景介绍见[Lua 的应用场景](/basics/applications)。
 
 ## 参考资料
 

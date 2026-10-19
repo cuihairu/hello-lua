@@ -62,6 +62,10 @@ Lua 也常被用来写自动化测试脚本。用户界面测试、API 测试都
 
 游戏引擎、机顶盒、API 网关、Neovim 配置、Torch。这些场景的共同点是需要一个小而能嵌入宿主的脚本语言，Lua 正是为此设计的。
 
+## 相关角度
+
+本文从领域介绍 Lua 的常见用法；带项目案例、出处与 C/FFI 互操作条目的横向速查见[应用场景总览](/knowledge/applications)。
+
 ## 参考资料
 
 - [Lua_(programming_language)](https://en.wikipedia.org/wiki/Lua_(programming_language))
