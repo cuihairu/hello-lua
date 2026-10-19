@@ -23,7 +23,7 @@ export default defineConfig({
     ['link', { rel: 'icon', type: 'image/svg+xml', href: '/hello-lua/favicon.svg' }]
   ],
 
-  // mdbook 遗留的目录文件保留在仓库作映射底稿，不作为页面构建
+  // SUMMARY.md 是维护说明页；唯一导航映射由 sidebar.json 提供
   srcExclude: ['**/SUMMARY.md'],
 
   ignoreDeadLinks: false,
@@ -43,8 +43,7 @@ export default defineConfig({
       { text: '知识点', link: '/knowledge/README' }
     ],
 
-    // 与 docs/SUMMARY.md 映射底稿一一对应，
-    // 6 个部分，附录组含 FAQ/标准库/资源/扩展阅读四页
+    // 7 个主题轴的站点导航；维护规则见 docs/SUMMARY.md
     sidebar: sidebar as never,
 
     socialLinks: [
