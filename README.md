@@ -13,7 +13,7 @@
   <img src="docs/public/badges/langs.svg" alt="langs" />
 </p>
 
-Lua Knowledge Handbook · [Read online](https://cuihairu.github.io/hello-lua/)
+Lua developer notes · [Read online](https://cuihairu.github.io/hello-lua/)
 
 Knowledge Points · [Browse](https://cuihairu.github.io/hello-lua/knowledge/README)
 
@@ -21,7 +21,7 @@ Knowledge Points · [Browse](https://cuihairu.github.io/hello-lua/knowledge/READ
 
 ---
 
-A Chinese-language knowledge site covering Lua fundamentals, advanced programming (closures, object-oriented programming, coroutines), language design and virtual machine implementation, C extensions and LuaJIT, and best practices.
+Personal notes and experience shared from a game developer’s perspective, covering Lua fundamentals, advanced programming (closures, object-oriented programming, coroutines), language design and virtual machine implementation, C extensions and LuaJIT, and best practices.
 
 ## Local Development
 

@@ -43,4 +43,4 @@ Lua 没有内置的面向对象机制，类、继承、多态都要靠表（Tabl
 
 ## 相关页面
 
-- [anonymous-functions](anonymous-functions.md)
+- [匿名函数](anonymous-functions.md)

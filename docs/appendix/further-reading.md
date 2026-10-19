@@ -1,10 +1,10 @@
 # 扩展阅读与学习资源
 
-如果想从“会用 Lua”进阶到“理解 Lua”，下面这些材料按照主题整理，可以作为本书的延伸阅读。
+如果想从“会用 Lua”进阶到“理解 Lua”，下面这些材料按照主题整理，可作为相关主题的延伸阅读。
 
 ## 1. 论文：理解设计决策
 
-The Evolution of Lua（Roberto Ierusalimschy 等，HOPL III, 2007）讲 Lua 从 1993 年到 2005 年的演化，解释了为什么 Lua 选择表作为唯一的数据结构、为什么嵌入式优先。The Implementation of Lua 5.0（JUCS, 2005）系统介绍 Lua 的寄存器虚拟机、哈希表实现与函数调用约定，是理解字节码与虚拟机章节的经典文献：<https://www.lua.org/doc/jucs05.pdf>。Revisiting Coroutines（ACM TOPLAS, 2009）讨论对称与非对称协程的语义差异，对应本书协程相关章节。
+The Evolution of Lua（Roberto Ierusalimschy 等，HOPL III, 2007）讲 Lua 从 1993 年到 2005 年的演化，解释了为什么 Lua 选择表作为唯一的数据结构、为什么嵌入式优先。The Implementation of Lua 5.0（JUCS, 2005）系统介绍 Lua 的寄存器虚拟机、哈希表实现与函数调用约定，是理解字节码与虚拟机章节的经典文献：<https://www.lua.org/doc/jucs05.pdf>。Revisiting Coroutines（ACM TOPLAS, 2009）讨论对称与非对称协程的语义差异，与站内协程主题相关。
 
 ## 2. 官方手册与源码阅读
 
@@ -39,7 +39,7 @@ lua-users wiki 的 LuaImplementations 条目（<http://lua-users.org/wiki/LuaImp
 
 ## 总结
 
-建议的进阶顺序：先用 `luac -l -l` 建立对字节码的直观认识，再读《The Implementation of Lua 5.0》补齐原理，然后按“解析器 → 虚拟机 → GC → C API”的顺序阅读源码，遇到疑问回到官方手册核对。这样能把本书各章节的内容串成一条完整的主线。工具安装与社区求助渠道见[Lua相关资源与社区](/appendix/resources)。
+一种源码阅读顺序：先用 `luac -l -l` 建立对字节码的直观认识，再读《The Implementation of Lua 5.0》补齐原理，然后按“解析器 → 虚拟机 → GC → C API”的顺序阅读源码，遇到疑问回到官方手册核对。这条顺序把解析器、虚拟机、GC 与 C API 几个实现主题串联起来。工具安装与社区求助渠道见[Lua相关资源与社区](/appendix/resources)。
 
 ## 参考资料
 

@@ -13,7 +13,7 @@
   <img src="docs/public/badges/langs.svg" alt="langs" />
 </p>
 
-Lua 知识手册 · [在线阅读](https://cuihairu.github.io/hello-lua/)
+Lua 开发者笔记 · [在线阅读](https://cuihairu.github.io/hello-lua/)
 
 知识点总览 · [在线阅读](https://cuihairu.github.io/hello-lua/knowledge/README)
 
@@ -21,7 +21,7 @@ Lua 知识手册 · [在线阅读](https://cuihairu.github.io/hello-lua/)
 
 ---
 
-覆盖 Lua 基础语法、进阶编程（闭包/面向对象/协程）、语言设计与虚拟机实现、C 扩展与 LuaJIT，以及最佳实践的中文知识站点。
+以游戏开发者分享视角记录 Lua 的学习笔记、心得与经验，涉及基础语法、进阶编程、语言设计与虚拟机实现、C 扩展、LuaJIT 和实践经验。
 
 ## 本地开发
 

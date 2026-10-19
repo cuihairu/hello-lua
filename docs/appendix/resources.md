@@ -4,7 +4,7 @@
 
 ## 1. 官方资源
 
-Lua 官方网站 <https://www.lua.org/> 发布版本、新闻与官方文档。Lua 5.4 参考手册 <https://www.lua.org/manual/5.4/> 是语言与标准库的权威定义，本书所有 API 均以此为准。各版本源码压缩包在 <https://www.lua.org/ftp/>，也可以到 <https://www.lua.org/source/> 在线浏览核心源码；GitHub 镜像在 <https://github.com/lua/lua>。
+Lua 官方网站 <https://www.lua.org/> 发布版本、新闻与官方文档。Lua 5.4 参考手册 <https://www.lua.org/manual/5.4/> 是语言与标准库的权威定义，本站涉及的 API 均以此为准。各版本源码压缩包在 <https://www.lua.org/ftp/>，也可以到 <https://www.lua.org/source/> 在线浏览核心源码；GitHub 镜像在 <https://github.com/lua/lua>。
 
 ## 2. 文档与学习站点
 
@@ -37,7 +37,7 @@ lua-users wiki（<http://lua-users.org/wiki/>）是社区维护的知识库，�
 
 ## 总结
 
-建议的学习路径：先通读官方手册的第 1~3 章（语言、标准库、C API），再用 LuaRocks 安装一两个库完成小项目，最后结合 `lua-users wiki` 与源码深入虚拟机与垃圾回收等内部机制。遇到具体问题时，官方手册与 lua-l 邮件列表的存档通常是最可靠的答案来源。想从“会用”进到“理解”，源码阅读路线与论文清单见[扩展阅读与学习资源](/appendix/further-reading)。
+个人整理时，我会先查官方手册的语言、标准库和 C API 部分，再用 LuaRocks 安装库做小项目，之后结合 `lua-users wiki` 与源码查看虚拟机、垃圾回收等内部机制。遇到具体问题时，官方手册与 lua-l 邮件列表存档是可靠的核对来源。想从“会用”进到“理解”，源码阅读路线与论文清单见[扩展阅读与学习资源](/appendix/further-reading)。
 
 ## 参考资料
 
