@@ -1,0 +1,32 @@
+# 简介
+
+本小节围绕 Lua 的三个侧面展开：历史与发展、设计哲学与特点、应用场景。轻量级和可嵌入这两条线索贯穿始终。
+
+## 章节概览
+
+1. **Lua 的历史和发展**
+   - Lua 语言的起源与演变
+   - Lua 在全球范围内的发展历程
+   - Lua 的主要版本更新与重要特性
+
+2. **Lua 的设计哲学和特点**
+   - Lua 的轻量级设计
+   - 可嵌入性与扩展性
+   - 简洁而强大的语法与特性
+
+3. **Lua 的应用场景**
+   - 游戏开发中的 Lua
+   - 脚本语言与嵌入式系统
+   - Web 开发与自动化脚本
+
+这三部分记录了 Lua 的来历、设计取舍与典型应用场景。
+
+## 参考资料
+
+- [Lua_(programming_language)](https://en.wikipedia.org/wiki/Lua_(programming_language))
+- [Lua 5.4 官方手册](https://www.lua.org/manual/5.4/manual.html#2.2)
+- [PIL · 起步](https://www.lua.org/pil/1.html)
+
+## 相关页面
+
+- [philosophy-and-features](philosophy-and-features.md)

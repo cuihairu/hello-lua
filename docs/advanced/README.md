@@ -1,46 +1,40 @@
-# 进阶Lua编程
+# Advanced Lua Programming
 
-我把项目里常碰到的进阶主题分成四组：函数编程、面向对象编程、模块与包、错误处理。Lua 语言本身很小，这些用法大多由表和函数两个基础构件组合而成。
+I split the advanced topics I actually hit in projects into four groups: functional programming, object-oriented programming, modules and packages, and error handling. The Lua language itself is tiny, so most of these techniques are combinations of the two basic building blocks — tables and functions.
 
-## 1. 函数编程
+## 1. Functional Programming
 
-Lua 中函数是一等值，可以存进变量、当参数传、当返回值返回。闭包、高阶函数、匿名函数都建立在这之上。
+In Lua a function is a first-class value: you can store it in a variable, pass it as an argument, and return it as a result. Closures, higher-order functions and anonymous functions all build on that.
 
-- [闭包（Closures）](./closures.md)
-- [高阶函数](./higher-order-functions.md)
-- [匿名函数](./anonymous-functions.md)
+- [Closures](./closures.md)
+- [Higher-order functions](./higher-order-functions.md)
+- [Anonymous functions](./anonymous-functions.md)
 
-## 2. 面向对象编程
+## 2. Object-Oriented Programming
 
-Lua 没有内置的面向对象机制，类、继承、多态都要靠表（Tables）和元表（Metatables）自己搭。这一组文章讲的就是怎么搭。
+Lua has no built-in object system. Classes, inheritance and polymorphism are all your own construction on top of tables and metatables. This group is about how to build that.
 
-- [self 的作用](./self.md)
-- [基于表的对象系统](./object-system.md)
-- [继承与多态](./inheritance-and-polymorphism.md)
-- [面向对象设计模式](./design-patterns.md)
-- [面向对象的实现](./oop-implementation.md)
+- [The role of self](./self.md)
+- [Table-based object systems](./object-system.md)
+- [Inheritance and polymorphism](./inheritance-and-polymorphism.md)
+- [OOP design patterns](./design-patterns.md)
+- [Implementing OOP in Lua](./oop-implementation.md)
 
-## 3. 模块与包
+## 3. Modules and Packages
 
-这一部分讲代码组织：模块怎么定义、怎么加载，第三方包怎么安装和管理。
+This part is about organizing code: how modules are defined and loaded, and how third-party packages are installed and managed.
 
-- [模块的定义与加载](./module-definition.md)
-- [Lua的包管理](./package-management.md)
-- [常用 Lua 模块](./common-modules.md)
+- [Defining and loading modules](./module-definition.md)
+- [Package management](./package-management.md)
+- [Common Lua modules](./common-modules.md)
 
-## 4. 错误处理
+## 4. Error Handling
 
-程序跑起来总会出错。这一部分讲错误怎么抛出、怎么捕获，以及出错之后有哪些类型可查、怎么调试。
+Programs run into errors. This part covers how errors are raised and caught, what kinds of error information you can inspect afterwards, and how to debug them.
 
-- [错误处理机制](./error-handling-mechanism.md)
-- [错误类型与调试](./error-types-debugging.md)
+- [How error handling works](./error-handling-mechanism.md)
+- [Error types and debugging](./error-types-debugging.md)
 
-## 参考资料
+## References
 
-- [Lua 官方文档索引](https://www.lua.org/docs.html)
-- [Lua 5.4 官方手册](https://www.lua.org/manual/5.4/manual.html#2.6)
-- [PIL · 元表](https://www.lua.org/pil/11.html)
-
-## 相关页面
-
-- [匿名函数](anonymous-functions.md)
+- [Lua official documentation index](https://www.lua.org/docs.html)

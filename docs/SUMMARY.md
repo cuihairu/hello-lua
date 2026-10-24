@@ -1,5 +1,17 @@
-# 导航维护说明
+# Navigation maintenance notes
 
-站点导航的唯一权威源是 `docs/.vitepress/sidebar.json`。VitePress 配置从该文件加载侧边栏；维护目录时只编辑侧边栏，并按其中的链接维护页面。
+The VitePress config loads the sidebars from two files, one per locale:
 
-本文件保留为 mdBook 遗留路径的说明入口，不再镜像目录，也不应手工添加页面映射。若未来恢复 mdBook 导出，应从侧边栏生成 SUMMARY，并在构建中校验生成结果；在此之前以 VitePress 侧边栏为准。
+- `docs/.vitepress/sidebar.json` — English, drives the root site (English lives at the repo root)
+- `docs/.vitepress/sidebar.zh.json` — Chinese, drives `/zh/`, so every link carries the `/zh/` prefix
+
+Locales are wired in `docs/.vitepress/config.mts` via the official VitePress `locales` map:
+
+```
+root = English  (lang: en-US)
+zh   = 简体中文 (lang: zh-CN, link: /zh/)
+```
+
+Each locale keeps its own `themeConfig` under `locales[...].themeConfig`. Note this is the supported shape — `themeConfig.locales` is not read by VitePress, so per-locale nav/sidebar/footer put there render as if they did not exist.
+
+This file is the legacy mdBook path. It is excluded from the build via `srcExclude` and no longer mirrors the directory tree. When maintaining pages, edit the sidebar for the matching locale and keep the page behind its link in step. If an mdBook export is ever restored, regenerate SUMMARY from the sidebars and validate the output in CI.

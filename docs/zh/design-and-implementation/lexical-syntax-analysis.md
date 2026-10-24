@@ -1,0 +1,61 @@
+# 词法分析与语法分析
+
+词法分析和语法分析是解释器的核心环节，负责把源代码转成可执行的字节码。
+
+## 1. 词法分析（Lexical Analysis）
+
+词法分析是将源代码转换为一系列记号（tokens）的过程。记号是源代码中最小的有意义的单位，如关键字、标识符、操作符和分隔符。
+
+实现上，Lua 的词法分析器（Lexer，也叫扫描器 Scanner）读取源代码并拆分成记号。记号按类别划分：关键字如 `if`、`while`、`function`；标识符是变量和函数名；操作符如 `+`、`-`、`*`、`/`；分隔符如 `(`、`)`、`,`、`;`、`=`（`{`、`}`、`[`、`]` 主要用于表构造器和索引）；常量包括数字和字符串。分析器用有限状态机（Finite State Machine）处理源代码字符流，根据当前字符及其上下文状态决定如何生成记号；空白字符和注释会被忽略，不构成记号的一部分。
+
+示例：
+
+```plaintext
+-- 源代码
+local a = 10 + 5
+
+-- 生成的记号
+local      -> keyword（保留字）
+a          -> name（标识符）
+=          -> 分隔符
+10         -> number（整数字面量）
++          -> operator（运算符）
+5          -> number（整数字面量）
+```
+
+## 2. 语法分析（Syntax Analysis）
+
+语法分析是根据语言的文法规则，把记号序列组织成程序的语法结构的过程。
+
+实现上，语法分析器（Parser）逐个消费记号，采用递归下降解析（Recursive Descent Parsing）：一组相互递归的函数解析不同的语法规则，例如 `subexpr`、`statement`、`exprstat`。递归下降要求文法是 LL(1) 的，而 LL(1) 方法本身不能处理左递归（否则会无限递归），所以 Lua 的文法经过改写避开了左递归：表达式解析采用“优先级爬升”（`subexpr` 中按优先级表依次尝试二元运算符），左结合运算符通过尾递归循环实现，`a - b - c` 因此被正确解析为 `(a - b) - c`。解析器是单遍的：识别出一个语句或表达式的同时就调用代码生成器（`lcode.c`）生成字节码，并不构造显式的 AST。语法错误（如不匹配的括号或缺失的关键字）也由解析器报告。
+
+示例：
+
+```plaintext
+-- 源代码
+local a = 10 + 5
+
+-- 语法结构示意图（Lua 实际不构建 AST，这里仅用于说明解析层次）
+LocalAssignment
+├── Variable: a
+└── Expression
+    ├── Number: 10
+    └── Binary Operation
+        ├── Operator: +
+        └── Number: 5
+```
+
+## 总结
+
+词法分析把源代码字符流转换为记号序列，语法分析再按文法规则把记号组织成程序结构。Lua 采用单遍递归下降解析，在解析的同时直接生成字节码，这是源码到字节码的完整通路。
+
+## 参考资料
+
+- [Lexical_analysis](https://en.wikipedia.org/wiki/Lexical_analysis)
+- [Abstract_syntax_tree](https://en.wikipedia.org/wiki/Abstract_syntax_tree)
+- [Lua 官方源码仓 github.com/lua/lua](https://github.com/lua/lua)
+
+<!-- BACKLINKS-AUTO -->
+## 相关页面
+
+- [core-concepts](/zh/knowledge/core-concepts.md)

@@ -1,0 +1,56 @@
+# 知识点总览
+
+全站 103 页按板块记录，这组页面把我整理的资料横向收拢成五类清单：概念、书籍、官方文档、应用和踩坑记录。每条附结论与站内回链，细节仍以原页为准。语言核心、运行时与实现、工程实践、LuaJIT 生态的中英术语和出处见[术语表](/zh/glossary)。
+
+## 主题页
+
+| 页面 | 收拢内容 | 条目 |
+| --- | --- | --- |
+| [核心概念](/zh/knowledge/core-concepts) | 语言基础、进阶抽象、设计与实现、扩展工程四组 | 35 |
+| [权威书籍要点](/zh/knowledge/books) | 4 本书与 3 篇论文：书名、作者、对应知识点 | 7 |
+| [官方文档要点](/zh/knowledge/official-docs) | lua.org 手册、源码、LuaJIT、LuaRocks 与第三方仓库 | 21 |
+| [应用场景](/zh/knowledge/applications) | 游戏、嵌入式、Web、配置等八个领域 | 21 |
+| [常见坑与误区](/zh/knowledge/pitfalls) | 语法、元表、协程、GC、实现层误传等八组 | 40 |
+
+## 口径
+
+- 来源以站内各页与附录资源页为准；查无实据的条目标「来源未考」。
+- 版本基线：语言示例以 Lua 5.4 为准，5.5 内容以 v5.5.1 源码实测为准。
+
+## 盘点修正记录
+
+整理过程顺带发现几处站内不一致，2026-10-10 已全部修复：
+
+- [设计与实现](/zh/design-and-implementation/README) 概览页的编译链路（误写 AST 与死代码消除）和 GC 表述（误列引用计数）已按专页实测结论改写。
+- [环境搭建](/zh/basics/setup) 已改为导览页，安装与 IDE 细节指向专页，补上缺失的结语。
+- [基本语法](/zh/basics/syntax) 的算术操作符已补上 `//`，与七种的说法对齐。
+- 「Lua代码的部署」与 [部署与发布](/zh/lua-best-practices/deployment) 高度重合，重复页已删除，主题统一到后者。
+- [Lua的历史和发展](/zh/basics/history-and-development) 的 5.5 年份已按官方 versions 页核实改为 2025 年。
+
+## 重叠页处置记录
+
+盘点发现的 8 组内容重叠页，2026-10-10 按下列口径处置：逐组核对是真重复还是互补；同题异稿且一方覆盖另一方，删被覆盖页；互补则把散页要点融合进主页面；带 sidebar 子页的组页不删，改写成导览页。逐组结论：
+
+| 组 | 页面 | 判定 | 处置 |
+| --- | --- | --- | --- |
+| 1 | [数据结构](/zh/basics/data-structures) | 组页四节与子页逐字重复 | 组页改导览，四个子页保留 |
+| 2 | [错误处理](/zh/advanced/error-handling) | 组页每节被子页覆盖（pcall/xpcall 同稿；错误类型与调试被专页更详尽覆盖） | 组页改导览；错误处理机制、错误类型与调试互补，均保留 |
+| 3 | [面向对象编程](/zh/advanced/object-oriented) | 组页三节分别被子页覆盖（Dog 类同稿、Animal/Cat 更详尽、设计模式少两种） | 组页改导览，五个子页保留 |
+| 4 | [模块与包](/zh/advanced/modules-and-packages) | 组页各节被子页与热加载专页覆盖 | 组页改导览；标准库五模块清单折进导览 |
+| 5 | [性能优化](/zh/lua-best-practices/performance-optimization) | 与优化技巧页七节同稿，但两页各有独有内容（互补） | 独有要点（`table.insert` 与预分配说明、元表开销）融入 [Lua代码的优化技巧](/zh/lua-best-practices/optimization-techniques)（扩为 11 节），组页改导览 |
+| 6 | [测试与调试](/zh/lua-best-practices/testing-debugging) | 组页四节被子页与错误处理机制页覆盖 | 组页改导览，两个子页保留 |
+| 7 | [代码风格与规范](/zh/lua-best-practices/code-style) | 与编码规范页四节同稿，组页另有零星独有细节（互补） | 独有细节（全局变量前缀、表名驼峰、函数拆分）融入 [Lua的编码规范](/zh/lua-best-practices/coding-standards)，组页改导览 |
+| 8 | [Lua相关资源与社区](/zh/appendix/resources)、[延伸阅读与参考资料](/zh/appendix/further-reading) | 互补：一页管安装与求助渠道，一页管论文、源码阅读记录与字节码实测工具，重叠仅限公认官方链接 | 两页保留，互加链接 |
+| 跨组 | Lua脚本的优化（已删） | 同题异稿且被覆盖：函数调用、字符串、GC、调试、LuaJIT 各节分散命中优化技巧页、调试工具页与 LuaJIT 性能优化页 | 独有真要点融入优化技巧页（表嵌套、对象池）；`luac` 预编译移入部署与发布页；「循环长度先缓存」一条与 for 循环边界只求值一次的语义不符（Lua 5.4 实测），弃用；知识库对应条目同步修正 |
+
+组页（sidebar 主链接且带子页的页面）不删改删的理由：它们是侧边栏的导航锚点，删除会破坏整组结构；正文与子页重复的部分删掉后，导览页保留组内入口和一句收束，导航职责不变。
+
+## 参考资料
+
+- [Lua 官方文档索引](https://www.lua.org/docs.html)
+- [Lua 5.4 官方手册](https://www.lua.org/manual/5.4/manual.html)
+- [PIL · 起步](https://www.lua.org/pil/1.html)
+
+## 相关页面
+
+- [core-concepts](core-concepts.md)

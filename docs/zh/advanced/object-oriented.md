@@ -1,0 +1,26 @@
+# 面向对象编程
+
+Lua 没有内建的类和继承机制，对象、继承、多态都靠表加元表搭出来。本组五页，从 `self` 到设计模式一路展开：
+
+- [self 的作用](/zh/advanced/self)：冒号语法糖隐式传入的 `self` 从哪来。
+- [基于表的对象系统](/zh/advanced/object-system)：用表和元表定义类、创建实例，继承与组合两种复用方式。
+- [继承与多态](/zh/advanced/inheritance-and-polymorphism)：`__index` 挂出原型链，方法重写实现多态。
+- [面向对象设计模式](/zh/advanced/design-patterns)：单例、工厂、观察者、策略、装饰器五种模式的 Lua 写法。
+- [面向对象的实现](/zh/advanced/oop-implementation)：从实现层面统一解释 `__index` 索引链这条主线。
+
+## 结语
+
+`setmetatable` 造实例，`__index` 挂继承，方法重写实现多态。Lua 的面向对象没有新机制，全是表和元表的约定。
+
+## 参考资料
+
+- [Lua 5.4 官方手册](https://www.lua.org/manual/5.4/manual.html#2.6)
+- [Object-oriented_programming](https://en.wikipedia.org/wiki/Object-oriented_programming)
+- [PIL · 面向对象](https://www.lua.org/pil/13.html)
+
+<!-- BACKLINKS-AUTO -->
+## 相关页面
+
+- [glossary](/zh/glossary.md)
+- [README](/zh/knowledge/README.md)
+- [core-concepts](/zh/knowledge/core-concepts.md)

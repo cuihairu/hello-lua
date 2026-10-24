@@ -1,0 +1,497 @@
+[
+  {
+    "text": "Lua基础",
+    "link": "/zh/basics/README",
+    "collapsed": true,
+    "items": [
+      {
+        "text": "简介",
+        "link": "/zh/basics/introduction",
+        "collapsed": true,
+        "items": [
+          {
+            "text": "Lua的历史和发展",
+            "link": "/zh/basics/history-and-development"
+          },
+          {
+            "text": "Lua的设计哲学和特点",
+            "link": "/zh/basics/philosophy-and-features"
+          },
+          {
+            "text": "Lua的应用场景",
+            "link": "/zh/basics/applications"
+          }
+        ]
+      },
+      {
+        "text": "环境搭建",
+        "link": "/zh/basics/setup",
+        "collapsed": true,
+        "items": [
+          {
+            "text": "安装Lua",
+            "link": "/zh/basics/install"
+          },
+          {
+            "text": "Lua解释器的使用",
+            "link": "/zh/basics/interpreter"
+          },
+          {
+            "text": "集成开发环境（IDE）推荐",
+            "link": "/zh/basics/ide-recommendations"
+          }
+        ]
+      },
+      {
+        "text": "基本语法",
+        "link": "/zh/basics/syntax",
+        "collapsed": true,
+        "items": [
+          {
+            "text": "数据类型",
+            "link": "/zh/basics/data-types"
+          },
+          {
+            "text": "变量和赋值",
+            "link": "/zh/basics/variables"
+          },
+          {
+            "text": "操作符和表达式",
+            "link": "/zh/basics/operators-and-expressions"
+          },
+          {
+            "text": "控制结构",
+            "link": "/zh/basics/control-structures"
+          },
+          {
+            "text": "函数定义与调用",
+            "link": "/zh/basics/functions"
+          }
+        ]
+      },
+      {
+        "text": "数据结构",
+        "link": "/zh/basics/data-structures",
+        "collapsed": true,
+        "items": [
+          {
+            "text": "表（Tables）",
+            "link": "/zh/basics/tables"
+          },
+          {
+            "text": "元表和元方法",
+            "link": "/zh/basics/metatables-and-metamethods"
+          },
+          {
+            "text": "字符串处理",
+            "link": "/zh/basics/string-handling"
+          },
+          {
+            "text": "数组和字典的使用",
+            "link": "/zh/basics/arrays-and-dictionaries"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "text": "进阶Lua编程",
+    "link": "/zh/advanced/README",
+    "collapsed": true,
+    "items": [
+      {
+        "text": "函数编程",
+        "link": "/zh/advanced/functional-programming",
+        "collapsed": true,
+        "items": [
+          {
+            "text": "闭包（Closures）",
+            "link": "/zh/advanced/closures"
+          },
+          {
+            "text": "高阶函数",
+            "link": "/zh/advanced/higher-order-functions"
+          },
+          {
+            "text": "匿名函数",
+            "link": "/zh/advanced/anonymous-functions"
+          }
+        ]
+      },
+      {
+        "text": "面向对象编程",
+        "link": "/zh/advanced/object-oriented",
+        "collapsed": true,
+        "items": [
+          {
+            "text": "self 的作用",
+            "link": "/zh/advanced/self"
+          },
+          {
+            "text": "基于表的对象系统",
+            "link": "/zh/advanced/object-system"
+          },
+          {
+            "text": "继承与多态",
+            "link": "/zh/advanced/inheritance-and-polymorphism"
+          },
+          {
+            "text": "面向对象设计模式",
+            "link": "/zh/advanced/design-patterns"
+          },
+          {
+            "text": "面向对象的实现",
+            "link": "/zh/advanced/oop-implementation"
+          }
+        ]
+      },
+      {
+        "text": "协程与并发编程",
+        "link": "/zh/advanced/coroutines",
+        "collapsed": true,
+        "items": [
+          {
+            "text": "协程的基本概念",
+            "link": "/zh/advanced/coroutines-basics"
+          },
+          {
+            "text": "协程的创建与使用",
+            "link": "/zh/advanced/creating-using-coroutines"
+          },
+          {
+            "text": "协程的状态与生命周期",
+            "link": "/zh/advanced/coroutine-lifecycle"
+          },
+          {
+            "text": "协程与线程的比较",
+            "link": "/zh/advanced/coroutines-vs-threads"
+          },
+          {
+            "text": "协程的应用场景与最佳实践",
+            "link": "/zh/advanced/coroutine-best-practices"
+          }
+        ]
+      },
+      {
+        "text": "模块与包",
+        "link": "/zh/advanced/modules-and-packages",
+        "collapsed": true,
+        "items": [
+          {
+            "text": "模块的定义与加载",
+            "link": "/zh/advanced/module-definition"
+          },
+          {
+            "text": "Lua的包管理",
+            "link": "/zh/advanced/package-management"
+          },
+          {
+            "text": "常用 Lua 模块",
+            "link": "/zh/advanced/common-modules"
+          }
+        ]
+      },
+      {
+        "text": "错误处理",
+        "link": "/zh/advanced/error-handling",
+        "collapsed": true,
+        "items": [
+          {
+            "text": "错误处理机制",
+            "link": "/zh/advanced/error-handling-mechanism"
+          },
+          {
+            "text": "错误类型与调试",
+            "link": "/zh/advanced/error-types-debugging"
+          },
+          {
+            "text": "沙箱与不可信代码",
+            "link": "/zh/advanced/sandboxing"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "text": "设计与实现",
+    "link": "/zh/design-and-implementation/README",
+    "collapsed": true,
+    "items": [
+      {
+        "text": "Lua语言的设计原理",
+        "link": "/zh/design-and-implementation/design-principles",
+        "collapsed": true,
+        "items": [
+          {
+            "text": "Lua的轻量级设计",
+            "link": "/zh/design-and-implementation/lightweight-design"
+          },
+          {
+            "text": "虚拟机架构",
+            "link": "/zh/design-and-implementation/vm-architecture"
+          },
+          {
+            "text": "内存管理机制",
+            "link": "/zh/design-and-implementation/memory-management"
+          }
+        ]
+      },
+      {
+        "text": "Lua解释器的实现",
+        "link": "/zh/design-and-implementation/interpreter-implementation",
+        "collapsed": true,
+        "items": [
+          {
+            "text": "词法分析与语法分析",
+            "link": "/zh/design-and-implementation/lexical-syntax-analysis"
+          },
+          {
+            "text": "代码生成与优化",
+            "link": "/zh/design-and-implementation/code-generation"
+          },
+          {
+            "text": "字节码与虚拟机",
+            "link": "/zh/design-and-implementation/bytecode-and-vm"
+          }
+        ]
+      },
+      {
+        "text": "协程的实现",
+        "link": "/zh/design-and-implementation/coroutines",
+        "collapsed": true,
+        "items": [
+          {
+            "text": "协程的设计理念",
+            "link": "/zh/design-and-implementation/coroutines-design"
+          },
+          {
+            "text": "协程的底层实现",
+            "link": "/zh/design-and-implementation/coroutines-implementation"
+          },
+          {
+            "text": "协程的调度与切换",
+            "link": "/zh/design-and-implementation/coroutines-scheduling"
+          }
+        ]
+      },
+      {
+        "text": "垃圾回收机制",
+        "link": "/zh/design-and-implementation/garbage-collection",
+        "collapsed": true,
+        "items": [
+          {
+            "text": "引用计数与标记-清除算法",
+            "link": "/zh/design-and-implementation/reference-counting"
+          },
+          {
+            "text": "垃圾回收的优化策略",
+            "link": "/zh/design-and-implementation/gc-optimization"
+          },
+          {
+            "text": "实现垃圾回收器的考虑",
+            "link": "/zh/design-and-implementation/gc-implementation"
+          }
+        ]
+      },
+      {
+        "text": "模块系统的实现",
+        "link": "/zh/design-and-implementation/module-system",
+        "collapsed": true,
+        "items": [
+          {
+            "text": "动态链接与模块加载",
+            "link": "/zh/design-and-implementation/dynamic-linking"
+          },
+          {
+            "text": "Lua模块系统的设计",
+            "link": "/zh/design-and-implementation/module-system-design"
+          },
+          {
+            "text": "热加载与动态更新",
+            "link": "/zh/design-and-implementation/hot-reloading"
+          }
+        ]
+      },
+      {
+        "text": "Lua 5.5 源码解析",
+        "link": "/zh/design-and-implementation/lua55-source"
+      }
+    ]
+  },
+  {
+    "text": "Lua的扩展与应用",
+    "link": "/zh/lua-extensions-applications/README",
+    "collapsed": true,
+    "items": [
+      {
+        "text": "C与Lua的交互",
+        "link": "/zh/lua-extensions-applications/c-interaction",
+        "collapsed": true,
+        "items": [
+          {
+            "text": "编写Lua C扩展",
+            "link": "/zh/lua-extensions-applications/writing-c-extensions"
+          },
+          {
+            "text": "在C中调用Lua代码",
+            "link": "/zh/lua-extensions-applications/calling-lua-from-c"
+          },
+          {
+            "text": "使用Lua与C语言混合编程",
+            "link": "/zh/lua-extensions-applications/mixed-programming"
+          }
+        ]
+      },
+      {
+        "text": "嵌入式开发",
+        "link": "/zh/lua-extensions-applications/embedded-development",
+        "collapsed": true,
+        "items": [
+          {
+            "text": "在嵌入式系统中使用Lua",
+            "link": "/zh/lua-extensions-applications/using-lua-embedded"
+          },
+          {
+            "text": "内存管理与垃圾回收",
+            "link": "/zh/lua-extensions-applications/memory-gc"
+          }
+        ]
+      },
+      {
+        "text": "LuaJIT",
+        "link": "/zh/lua-extensions-applications/luajit",
+        "collapsed": true,
+        "items": [
+          {
+            "text": "LuaJIT的简介",
+            "link": "/zh/lua-extensions-applications/introduction-to-luajit"
+          },
+          {
+            "text": "LuaJIT的性能优化",
+            "link": "/zh/lua-extensions-applications/luajit-optimization"
+          },
+          {
+            "text": "使用LuaJIT的FFI库",
+            "link": "/zh/lua-extensions-applications/ffi-library"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "text": "Lua的最佳实践",
+    "link": "/zh/lua-best-practices/README",
+    "collapsed": true,
+    "items": [
+      {
+        "text": "代码风格与规范",
+        "link": "/zh/lua-best-practices/code-style",
+        "collapsed": true,
+        "items": [
+          {
+            "text": "Lua的编码规范",
+            "link": "/zh/lua-best-practices/coding-standards"
+          },
+          {
+            "text": "常见的编码误区",
+            "link": "/zh/lua-best-practices/coding-mistakes"
+          }
+        ]
+      },
+      {
+        "text": "性能优化",
+        "link": "/zh/lua-best-practices/performance-optimization",
+        "collapsed": true,
+        "items": [
+          {
+            "text": "Lua代码的优化技巧",
+            "link": "/zh/lua-best-practices/optimization-techniques"
+          },
+          {
+            "text": "垃圾回收的调优",
+            "link": "/zh/lua-best-practices/gc-tuning"
+          }
+        ]
+      },
+      {
+        "text": "测试与调试",
+        "link": "/zh/lua-best-practices/testing-debugging",
+        "collapsed": true,
+        "items": [
+          {
+            "text": "Lua的单元测试框架",
+            "link": "/zh/lua-best-practices/unit-testing"
+          },
+          {
+            "text": "调试工具与技术",
+            "link": "/zh/lua-best-practices/debugging-tools"
+          }
+        ]
+      },
+      {
+        "text": "部署与发布",
+        "link": "/zh/lua-best-practices/deployment",
+        "collapsed": true,
+        "items": [
+          {
+            "text": "跨平台发布Lua应用",
+            "link": "/zh/lua-best-practices/cross-platform-deployment"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "text": "附录",
+    "link": "/zh/appendix/README",
+    "collapsed": true,
+    "items": [
+      {
+        "text": "常见问题与解决方案",
+        "link": "/zh/appendix/faq"
+      },
+      {
+        "text": "Lua标准库参考",
+        "link": "/zh/appendix/standard-library"
+      },
+      {
+        "text": "Lua相关资源与社区",
+        "link": "/zh/appendix/resources"
+      },
+      {
+        "text": "延伸阅读与参考资料",
+        "link": "/zh/appendix/further-reading"
+      }
+    ]
+  },
+  {
+    "text": "知识点总览",
+    "link": "/zh/knowledge/README",
+    "items": [
+      {
+        "text": "核心概念",
+        "link": "/zh/knowledge/core-concepts"
+      },
+      {
+        "text": "权威书籍要点",
+        "link": "/zh/knowledge/books"
+      },
+      {
+        "text": "官方文档要点",
+        "link": "/zh/knowledge/official-docs"
+      },
+      {
+        "text": "应用场景",
+        "link": "/zh/knowledge/applications"
+      },
+      {
+        "text": "常见坑与误区",
+        "link": "/zh/knowledge/pitfalls"
+      }
+    ]
+  },
+  {
+    "text": "术语表",
+    "link": "/zh/glossary"
+  }
+]

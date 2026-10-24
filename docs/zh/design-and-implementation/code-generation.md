@@ -1,0 +1,63 @@
+# 代码生成与优化
+
+代码生成把解析得到的程序结构转换成字节码，即虚拟机（VM）执行的低级指令集；编译阶段的优化则尽量减少生成的指令数，降低运行时的解释开销。
+
+## 1. 代码生成（Code Generation）
+
+Lua 的解析器不构建 AST，而是在解析每个语句、每个表达式的同时，由 `lcode.c` 中的代码生成例程（`luaK_*` 系列函数）立即发出字节码指令。代码生成器为每个函数维护一段栈槽作为寄存器，局部变量和表达式的中间结果都存放在这些寄存器中，用完即回收复用。每个函数对应一个独立的字节码序列（Lua 中函数即闭包原型），函数调用会生成 `CALL` 等指令，返回值通过寄存器传递。
+
+用 `luac -l -l` 查看 Lua 5.4 生成的真实字节码：
+
+```lua
+-- 源代码
+local a = 10 + 5
+```
+
+```plaintext
+main <t.lua:0,0> (3 instructions)
+	1	[1]	VARARGPREP	0
+	2	[1]	LOADI    	0 15     ; 10 + 5 已在编译期折叠为 15
+	3	[1]	RETURN   	1 1 1	; 0 out
+```
+
+## 2. 代码优化（Code Optimization）
+
+编译阶段的优化在 Lua 官方实现里只有四种：
+
+常量折叠对两个操作数都是常量的算术、比较等表达式直接求值，`10 + 5` 不会生成 `LOADI 10`、`LOADI 5`、`ADD` 三条指令，而是直接生成 `LOADI 0 15`。立即数指令把小整数和字节范围内的浮点数直接编码进指令的操作数（`LOADI`、`LOADF`），小整数运算用 `ADDI`，与局部变量相加减用 `ADDK`，避免额外的常量表访问。跳转指令回填在生成条件与循环语句时先发出占位的跳转指令，待目标位置确定后再回填偏移，`while`、`if` 的测试编译为 `TEST`/跳转组合，避免多余的标签运算。寄存器复用则在表达式求值结束后立即释放临时寄存器，供后续表达式继续使用，减少函数所需的总槽数。
+
+Lua 不做的优化也很明确：官方实现没有公共子表达式消除、循环不变代码外提或跨指令的死代码消除等传统编译器优化。这些工作留给了虚拟机的运行效率（寄存器式设计本身已经减少了指令条数）以及 LuaJIT 这类带 JIT 的实现。
+
+示例：
+
+```lua
+-- 源代码
+local a = (10 + 5) * 2
+```
+
+```plaintext
+main <t.lua:0,0> (3 instructions)
+	1	[1]	VARARGPREP	0
+	2	[1]	LOADI    	1 30     ; (10 + 5) * 2 整体折叠为 30
+	3	[1]	RETURN   	2 1 1	; 0 out
+```
+
+若把常量换成变量，折叠就不会发生，例如 `local x, a = 10, 0; a = x * 2` 会生成 `LOADI` 加 `MULK` 两条运算指令。
+
+## 总结
+
+代码生成与寄存器分配由 `lcode.c` 完成，在语法分析的同时逐条发出字节码，不经过 AST。编译期的优化以常量折叠、立即数指令编码、跳转回填和寄存器复用为主，并不包含公共子表达式消除或循环不变代码外提等重量级优化。
+
+## 参考资料
+
+- [Compiler](https://en.wikipedia.org/wiki/Compiler)
+- [Abstract_syntax_tree](https://en.wikipedia.org/wiki/Abstract_syntax_tree)
+- [Lua 官方源码仓 github.com/lua/lua](https://github.com/lua/lua)
+
+<!-- BACKLINKS-AUTO -->
+## 相关页面
+
+- [lua55-source](lua55-source.md)
+- [glossary](/zh/glossary.md)
+- [core-concepts](/zh/knowledge/core-concepts.md)
+- [pitfalls](/zh/knowledge/pitfalls.md)

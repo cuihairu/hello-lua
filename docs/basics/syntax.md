@@ -1,21 +1,21 @@
-# 基本语法
+# Syntax
 
-Lua 的语法由数据类型、变量、操作符、表达式、控制结构和函数这几块组成，这一节逐个过一遍。
+Lua's syntax is made up of a few blocks: data types, variables, operators, expressions, control structures and functions. This page goes through each one.
 
-## 1. 数据类型
+## 1. Data types
 
-Lua 主要支持以下几种数据类型：
+Lua mainly supports the following data types:
 
-- Nil：无值或不存在的值。
-- Boolean：真（`true`）和假（`false`）。
-- Number：数字，整数或浮点数。
-- String：字符串。
-- Table：主要数据结构，用来表示数组、字典等。
-- Function：函数。
-- Userdata：用户自定义数据。
-- Thread：协程。
+- Nil: the absence of a value.
+- Boolean: true (`true`) and false (`false`).
+- Number: a number, integer or floating point.
+- String: text.
+- Table: the primary data structure, used for arrays, dictionaries and so on.
+- Function: a function.
+- Userdata: user-defined data.
+- Thread: a coroutine.
 
-### 示例
+### Example
 
 ```lua
 -- Nil
@@ -40,88 +40,88 @@ local function greet(name)
 end
 ```
 
-## 2. 变量和赋值
+## 2. Variables and assignment
 
-在 Lua 中，变量声明和赋值是动态的，不需要指定类型。变量可以在使用时声明，并可以使用 `=` 进行赋值。
+In Lua, variables are declared and assigned dynamically, with no type annotation. A variable can be declared where you use it, and assigned with `=`.
 
-### 示例
+### Example
 
 ```lua
--- 声明变量并赋值
+-- Declare variables and assign
 local x = 10
 local y = 20
 
--- 多重赋值
+-- Multiple assignment
 x, y = y, x
 ```
 
-## 3. 操作符和表达式
+## 3. Operators and expressions
 
-Lua 支持多种操作符，包括算术操作符、关系操作符和逻辑操作符。
+Lua supports several kinds of operators: arithmetic, relational and logical.
 
-### 算术操作符
+### Arithmetic operators
 
-- `+`：加法
-- `-`：减法
-- `*`：乘法
-- `/`：除法
-- `%`：取余
-- `//`：整除（向下取整）
-- `^`：乘方
+- `+`: addition
+- `-`: subtraction
+- `*`: multiplication
+- `/`: division
+- `%`: modulus
+- `//`: integer division (rounds toward negative infinity)
+- `^`: exponentiation
 
-### 示例
+### Example
 
 ```lua
 local a = 10
 local b = 5
-print(a + b)  -- 输出 15
-print(a * b)  -- 输出 50
-print(a ^ b)  -- 输出 100000.0
+print(a + b)  -- 15
+print(a * b)  -- 50
+print(a ^ b)  -- 100000.0
 ```
 
-### 关系操作符
+### Relational operators
 
-- `==`：等于
-- `~=`：不等于
-- `<`：小于
-- `>`：大于
-- `<=`：小于等于
-- `>=`：大于等于
+- `==`: equal to
+- `~=`: not equal to
+- `<`: less than
+- `>`: greater than
+- `<=`: less than or equal to
+- `>=`: greater than or equal to
 
-### 示例
+### Example
 
 ```lua
 local x = 10
 local y = 20
-print(x == y)  -- 输出 false
-print(x < y)   -- 输出 true
+print(x == y)  -- false
+print(x < y)   -- true
 ```
 
-### 逻辑操作符
+### Logical operators
 
-- `and`：逻辑与
-- `or`：逻辑或
-- `not`：逻辑非
+- `and`: logical AND
+- `or`: logical OR
+- `not`: logical NOT
 
-### 示例
+### Example
 
 ```lua
 local a = true
 local b = false
-print(a and b)  -- 输出 false
-print(a or b)   -- 输出 true
-print(not a)    -- 输出 false
+print(a and b)  -- false
+print(a or b)   -- true
+print(not a)    -- false
 ```
 
-## 4. 控制结构
+## 4. Control structures
 
-Lua 支持基本的控制结构，包括条件语句和循环语句。
+Lua supports the usual control structures: conditionals and loops.
 
-### 条件语句
+### Conditionals
 
-使用 `if-then-else` 语句进行条件判断。
+Use `if-then-else` for branching.
 
-### 示例
+### Example
 
 ```lua
 local x = 10
@@ -134,15 +134,15 @@ else
 end
 ```
 
-### 循环语句
+### Loops
 
-Lua 提供了三种主要的循环结构：`for`、`while` 和 `repeat-until`。
+Lua provides three main loop forms: `for`, `while` and `repeat-until`.
 
-#### for 循环
+#### for loop
 
-数值循环按数值范围走。
+The numeric for loop walks a numeric range.
 
-### 示例
+### Example
 
 ```lua
 for i = 1, 5 do
@@ -150,9 +150,9 @@ for i = 1, 5 do
 end
 ```
 
-泛型循环用于遍历表中的元素。
+The generic for loop iterates over the elements of a table.
 
-### 示例
+### Example
 
 ```lua
 local tbl = {10, 20, 30}
@@ -161,11 +161,11 @@ for _, value in ipairs(tbl) do
 end
 ```
 
-#### while 循环
+#### while loop
 
-条件为真时，while 反复执行循环体。
+A while loop keeps running its body as long as the condition is true.
 
-### 示例
+### Example
 
 ```lua
 local x = 1
@@ -175,11 +175,11 @@ while x <= 5 do
 end
 ```
 
-#### repeat-until 循环
+#### repeat-until loop
 
-先执行循环体，再检查条件，直到条件为真才退出。
+A repeat-until loop runs its body first, then checks the condition, and only exits once it is true.
 
-### 示例
+### Example
 
 ```lua
 local x = 1
@@ -189,23 +189,23 @@ repeat
 until x > 5
 ```
 
-## 5. 函数定义与调用
+## 5. Defining and calling functions
 
-Lua 使用 `function` 关键字定义函数。函数可以具有多个返回值，并且支持匿名函数和闭包。
+Lua defines functions with the `function` keyword. Functions can return multiple values, and Lua supports anonymous functions and closures.
 
-### 示例
+### Example
 
 ```lua
--- 定义函数
+-- Define a function
 local function add(a, b)
     return a + b
 end
 
--- 调用函数
+-- Call it
 local result = add(10, 20)
-print(result)  -- 输出 30
+print(result)  -- 30
 
--- 匿名函数
+-- Anonymous function
 local function greet(name)
     return function()
         return "Hello, " .. name
@@ -213,22 +213,22 @@ local function greet(name)
 end
 
 local sayHello = greet("World")
-print(sayHello())  -- 输出 Hello, World
+print(sayHello())  -- Hello, World
 ```
 
-## 结语
+## Wrap-up
 
-八种数据类型、三组操作符、三种循环和一种条件语句，这就是 Lua 语法的骨架，剩下的靠写。
+Eight data types, three operator families, three loops and one conditional — that is the skeleton of Lua syntax. The rest is practice.
 
-## 参考资料
+## References
 
-- [Lua 5.4 官方手册](https://www.lua.org/manual/5.4/manual.html#2.2)
-- [Lua 5.4 官方手册](https://www.lua.org/manual/5.4/manual.html#2.3)
-- [PIL · 词法与句法](https://www.lua.org/pil/2.html)
+- [Lua 5.4 reference manual · 2.2 Expressions](https://www.lua.org/manual/5.4/manual.html#2.2)
+- [Lua 5.4 reference manual · 2.3 Operators](https://www.lua.org/manual/5.4/manual.html#2.3)
+- [PIL · Lexical and Syntax Analysis](https://www.lua.org/pil/2.html)
 - [Lexical_analysis](https://en.wikipedia.org/wiki/Lexical_analysis)
 
 <!-- BACKLINKS-AUTO -->
-## 相关页面
+## Related pages
 
 - [setup](setup.md)
 - [glossary](/glossary.md)

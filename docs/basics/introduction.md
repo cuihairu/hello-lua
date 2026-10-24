@@ -1,32 +1,32 @@
-# 简介
+# Introduction
 
-本小节围绕 Lua 的三个侧面展开：历史与发展、设计哲学与特点、应用场景。轻量级和可嵌入这两条线索贯穿始终。
+This group of notes covers three sides of Lua: its history and development, its design philosophy and features, and where it gets used. Two threads run through all of it — that the language is small, and that it is meant to be embedded.
 
-## 章节概览
+## What's in this section
 
-1. **Lua 的历史和发展**
-   - Lua 语言的起源与演变
-   - Lua 在全球范围内的发展历程
-   - Lua 的主要版本更新与重要特性
+1. **History and development**
+   - Where the Lua language came from and how it evolved
+   - How Lua developed and spread worldwide
+   - The main version releases and the features they brought
 
-2. **Lua 的设计哲学和特点**
-   - Lua 的轻量级设计
-   - 可嵌入性与扩展性
-   - 简洁而强大的语法与特性
+2. **Design philosophy and features**
+   - Lua's lightweight design
+   - Embeddability and extensibility
+   - Simple but capable syntax and features
 
-3. **Lua 的应用场景**
-   - 游戏开发中的 Lua
-   - 脚本语言与嵌入式系统
-   - Web 开发与自动化脚本
+3. **Use cases**
+   - Lua in game development
+   - Scripting languages and embedded systems
+   - Web development and automation scripts
 
-这三部分记录了 Lua 的来历、设计取舍与典型应用场景。
+Together these record where Lua came from, the trade-offs in its design, and the situations where it tends to show up.
 
-## 参考资料
+## References
 
 - [Lua_(programming_language)](https://en.wikipedia.org/wiki/Lua_(programming_language))
-- [Lua 5.4 官方手册](https://www.lua.org/manual/5.4/manual.html#2.2)
-- [PIL · 起步](https://www.lua.org/pil/1.html)
+- [Lua 5.4 reference manual](https://www.lua.org/manual/5.4/manual.html#2.2)
+- [PIL · First Steps](https://www.lua.org/pil/1.html)
 
-## 相关页面
+## Related pages
 
 - [philosophy-and-features](philosophy-and-features.md)

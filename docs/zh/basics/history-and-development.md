@@ -1,0 +1,49 @@
+# Lua的历史和发展
+
+Lua 是一门轻量级、高效、可嵌入的脚本语言。这一节讲它的起源、版本演变，以及如今被用在哪些地方。
+
+## 1. Lua 的起源
+
+Lua 诞生于 1993 年，由巴西里约热内卢天主教大学的计算机图形学组（Computer Graphics Technology Group，简称 Tecgraf）开发。Lua 的诞生背景可以追溯到两个早期项目：**数据输入描述语言（DEL）** 和 **简单定义语言（SOL）**。
+
+DEL 和 SOL 都是为 Petrobras（巴西国家石油公司）开发的，用于配置和扩展计算机应用程序。这两门语言的局限促使 Tecgraf 另起炉灶，这才有了 Lua。Lua 在葡萄牙语里是“月亮”，开发团队借这个名字寄托对轻量和灵活的期望。
+
+设计初衷很直接：让 Lua 能嵌进 C 程序，扩展应用的功能，而不必重写现有的 C 代码。
+
+## 2. Lua 的演变历程
+
+自 1993 年首次发布以来，Lua 更新过多个版本，各版本的改动沿着同一条线走：保持小，同时把嵌入能力做厚。
+
+1993 年的 Lua 1.0 提供基本语法和表这类简单数据结构，自动垃圾回收从诞生之初就是内置的。1994—1995 年的 2.x 引入后备函数（fallbacks）扩展语义，开始支持面向对象风格的编程。
+
+1997 年的 3.0 用标签方法（tag methods）取代了 fallbacks，这正是后来元方法（metamethods）机制的雏形，匿名函数与通过 upvalue 实现的闭包则在 3.1 加入。2000 年的 4.0 支持多个 Lua 状态（multiple states）、可重入的 C API，并首次加入了 `for` 语句。
+
+2003 年的 5.0 是一次大更新：协程（coroutines）、完整的词法作用域、元表（metatables）与布尔类型让 Lua 支持非阻塞编程，模块化机制也在这一版得到加强。2006 年的 5.1 带来新的模块系统（`module` 函数与 `package` 库）和增量式垃圾回收，元表机制扩展到了所有类型的值。2011 年的 5.2 引入 `_ENV` 环境机制、`goto` 语句和 ephemeron 表，支持可让渡的 `pcall` 与元方法。
+
+2015 年的 5.3 加入整数类型、位运算符和 utf-8 字符串库，应用范围随之变宽。2020 年的 5.4 为垃圾回收加入分代（generational）模式，新增 `const` 变量属性与 to-be-closed（待关闭）变量。
+
+2025 年的 5.5 把全局变量管理交给语言：`global` 语句支持显式声明与 `<const>` 只读，for 循环控制变量转为只读，可变参数可直接声明成表（`function f(... t)`）；垃圾回收改为增量与分代（小收/大收）三态运行，参数可运行时调整。
+
+## 3. Lua 用在哪里
+
+游戏是 Lua 最出名的应用场景，《World of Warcraft》、《Angry Birds》和《Dark Souls》都用它写脚本。游戏逻辑可以边跑边改，不必重新编译整个游戏，这是它被选中的主要原因。
+
+嵌入式系统看中的是它的内存占用和执行效率。路由器、家电设备的配置脚本里有 Lua，有的无人机飞行控制系统里也有。
+
+需要小而快、能嵌进宿主程序的脚本语言时，Lua 至今仍是常见选择。
+
+从 1993 年到现在，Lua 的版本一直在变，定位没变过：小、快、可嵌入。
+
+## 参考资料
+
+- [Lua_(programming_language)](https://en.wikipedia.org/wiki/Lua_(programming_language))
+- [Markup_language](https://en.wikipedia.org/wiki/Markup_language)
+- [Lua 5.4 官方手册](https://www.lua.org/manual/5.4/manual.html)
+
+<!-- BACKLINKS-AUTO -->
+## 相关页面
+
+- [philosophy-and-features](philosophy-and-features.md)
+- [README](/zh/knowledge/README.md)
+- [applications](/zh/knowledge/applications.md)
+- [books](/zh/knowledge/books.md)

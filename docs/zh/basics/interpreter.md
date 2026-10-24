@@ -1,0 +1,129 @@
+# Lua解释器的使用
+
+Lua 解释器是一个命令行工具：运行脚本、测试代码片段、交互式地一行行试代码，都通过它完成。
+
+## 1. 启动 Lua 解释器
+
+在终端或命令提示符中，输入 `lua` 以启动 Lua 解释器。如果安装成功，你会看到 Lua 提示符 `>`，这表示 Lua 解释器已准备好接受命令。
+
+```sh
+$ lua
+Lua 5.4.8  Copyright (C) 1994-2025 Lua.org, PUC-Rio
+> 
+```
+
+## 2. 交互式编程
+
+Lua 提示符接受直接输入的代码，按回车即可执行：
+
+```text
+> print("Hello, Lua!")
+Hello, Lua!
+```
+
+交互环境可执行 Lua 代码，例如定义变量或函数：
+
+```text
+> x = 10
+> y = 20
+> print(x + y)
+30
+> function greet(name)
+>>     return "Hello, " .. name
+>> end
+> print(greet("World"))
+Hello, World!
+```
+
+## 3. 运行 Lua 脚本
+
+Lua 解释器也能运行脚本文件。以下是 `script.lua` 的内容：
+
+```lua
+-- script.lua
+print("This is a Lua script.")
+for i = 1, 5 do
+    print("Number: " .. i)
+end
+```
+
+在终端运行脚本：
+
+```sh
+$ lua script.lua
+This is a Lua script.
+Number: 1
+Number: 2
+Number: 3
+Number: 4
+Number: 5
+```
+
+## 4. 使用命令行选项
+
+Lua 解释器支持一些命令行选项，常用选项包括：
+
+- `-e`：直接执行 Lua 代码。例如：
+    ```sh
+    $ lua -e 'print("Hello from command line!")'
+    Hello from command line!
+    ```
+
+- `-l`：加载 Lua 脚本文件。例如：
+    ```sh
+    $ lua -l script
+    ```
+
+  这将加载 `script.lua` 文件并执行其中的代码。
+
+- `-v`：显示 Lua 版本信息。例如：
+    ```sh
+    $ lua -v
+    Lua 5.4.8  Copyright (C) 1994-2025 Lua.org, PUC-Rio
+    ```
+
+## 5. 脚本的调试和错误处理
+
+当运行 Lua 脚本时，如果代码中有错误，Lua 解释器会显示错误信息和代码出错的位置。例如有如下 `script.lua`：
+
+```lua
+-- script.lua
+local t = {}
+print(t.x + 1)
+```
+
+运行它时会得到如下错误信息：
+
+```sh
+$ lua script.lua
+lua: script.lua:3: attempt to perform arithmetic on a nil value (field 'x')
+stack traceback:
+	script.lua:3: in main chunk
+	[C]: in ?
+```
+
+可以根据错误信息进行调试和修正。
+
+## 6. 退出 Lua 解释器
+
+要退出 Lua 解释器，可以输入 `os.exit()` 或按 `Ctrl+D`（在 Unix 系统上）或 `Ctrl+Z`（在 Windows 系统上）。
+
+```text
+> os.exit()
+```
+
+或者直接在提示符下按下 `Ctrl+D`，也可以退出解释器。
+
+## 结语
+
+测片段进交互模式，跑程序用 `lua script.lua`，出错先看错误信息第一行指到的位置。日常写 Lua 就是在这三步之间打转。
+
+## 参考资料
+
+- [Interpreter_(computing)](https://en.wikipedia.org/wiki/Interpreter_(computing))
+- [Virtual_machine](https://en.wikipedia.org/wiki/Virtual_machine)
+- [Lua 官方文档索引](https://www.lua.org/docs.html)
+
+## 相关页面
+
+- [interpreter-implementation](/zh/design-and-implementation/interpreter-implementation.md)
