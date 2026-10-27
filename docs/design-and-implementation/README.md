@@ -1,42 +1,42 @@
-# 设计与实现
+# Design and Implementation
 
-这里记录我读 Lua 内部实现时整理出的线索：语言设计原则、编译与解释链路、垃圾回收和模块系统，并尽量对应到具体机制与源码文件。
+This section collects the threads I organized while reading Lua's internals: language design principles, the compilation and interpretation pipeline, garbage collection, and the module system. Wherever possible, each topic is tied back to a concrete mechanism or source file.
 
-## 1. Lua语言的设计原理
+## 1. Design Principles of Lua
 
-Lua 的设计目标之一是轻量级，核心库小而高效，便于移植和定制；语法简洁、数据结构紧凑，以减少内存占用并提升执行速度。代码由虚拟机（VM）执行字节码，虚拟机是 Lua 的核心部分，负责解释和执行 Lua 代码，过程涉及解释、优化和执行多个阶段。内存管理采用自动机制，主要包括垃圾回收和内存分配策略，设计上要平衡性能与内存使用。
+One of Lua's design goals is to stay lightweight: its core library is small and efficient, easy to port, and easy to customize. The syntax is concise and the data structures are compact, reducing memory use and improving execution speed. Code runs as bytecode on a virtual machine (VM), the core of Lua responsible for interpreting and executing it through multiple stages of interpretation, optimization, and execution. Memory management is automatic, based mainly on garbage collection and allocation policy, and its design balances performance against memory use.
 
-## 2. Lua解释器的实现
+## 2. Implementing the Lua Interpreter
 
-词法分析将 Lua 源代码转换为词法单元（tokens），如关键字、操作符和标识符；语法分析用递归下降解析器处理这些词法单元，边解析边由代码生成器直接发出字节码，全程不构建显式 AST。编译期优化只有常量折叠、立即数指令编码、跳转指令回填、寄存器复用四种，不做死代码消除。字节码是一种中间表示形式，比源代码更接近机器语言，但仍需要虚拟机解释执行；虚拟机负责执行字节码，通过解释或 JIT 编译将字节码转换为机器指令。
+Lexical analysis converts Lua source into tokens such as keywords, operators, and identifiers. A recursive-descent parser consumes those tokens while the code generator emits bytecode directly; no explicit AST is built. Compiler optimization consists of four techniques—constant folding, immediate-operand instruction encoding, jump-instruction patching, and register reuse—and does not include dead-code elimination. Bytecode is an intermediate representation closer to machine language than source code but still interpreted by the VM, which converts it into machine instructions through interpretation or JIT compilation.
 
-## 3. 垃圾回收机制
+## 3. Garbage Collection
 
-Lua 的垃圾回收采用标记-清除算法：从根对象出发遍历所有可达对象并标记为活动对象，然后清除未标记的对象，循环引用因此能被正确处理；引用计数并未用于对象生命周期管理。优化手段包括增量垃圾回收（把回收过程分为多个小阶段，减少对程序性能的影响）和生成式垃圾回收（按对象年龄分代回收）。实现垃圾回收器时需要权衡内存使用、程序性能和回收效率，并处理内存碎片等问题。
+Lua's collector uses mark-and-sweep: starting from root objects, it traverses and marks every reachable object, then sweeps the objects that remain unmarked. This correctly handles reference cycles, and reference counting is not used to manage object lifetimes. Optimizations include incremental collection, which divides work into small steps to reduce its impact on the program, and generational collection, which reclaims objects by age. Implementing a collector requires balancing memory use, program performance, and reclamation efficiency, while also handling concerns such as fragmentation.
 
-## 4. 模块系统的实现
+## 4. Implementing the Module System
 
-动态链接支持在运行时动态加载和卸载模块；模块加载通过 `require` 函数完成，支持按需加载和依赖管理。模块系统设计简洁，通过表 (tables) 实现模块的定义和导出，便于组织代码。热加载允许在运行时替换模块而不需要重启程序，动态更新则让模块内容改动立即生效，升级和修复不必停机。
+Dynamic linking supports loading and unloading modules at run time. Modules are loaded through `require`, which supports on-demand loading and dependency management. The module-system design is simple: tables define and export modules, making code easier to organize. Hot reloading can replace a module without restarting the program, while dynamic updates make changed module content take effect immediately, allowing upgrades and fixes without downtime.
 
-## 5. Lua 5.5 源码解析
+## 5. Lua 5.5 Source Analysis
 
-- [Lua 5.5 源码解析](/design-and-implementation/lua55-source)：基于官方 v5.5.1 源码逐文件阅读，覆盖源码结构与构建、TValue/Table 等核心数据结构、解析器与字节码、虚拟机主循环、三态 GC、协程实现、标准库组织，以及与 5.4 的关键差异，所有结论附 文件:行号 引用。
+- [Lua 5.5 source analysis](/design-and-implementation/lua55-source): a file-by-file reading of the official v5.5.1 source, covering its structure and build, core data structures such as `TValue` and `Table`, the parser and bytecode, the VM main loop, the three-state GC, coroutine implementation, standard-library organization, and the key differences from 5.4. Every conclusion includes a `file:line` reference.
 
-## 相关资源
+## Related Resources
 
-- [Lua 5.4 官方手册](https://www.lua.org/manual/5.4/)
-- [Lua源代码](https://www.lua.org/source/)
-- [垃圾回收（手册 2.5 节）](https://www.lua.org/manual/5.4/manual.html#2.5)
-- [《The Implementation of Lua 5.0》论文](https://www.lua.org/doc/jucs05.pdf)
+- [Lua 5.4 official manual](https://www.lua.org/manual/5.4/)
+- [Lua source code](https://www.lua.org/source/)
+- [Garbage collection (manual §2.5)](https://www.lua.org/manual/5.4/manual.html#2.5)
+- [The Implementation of Lua 5.0 (paper)](https://www.lua.org/doc/jucs05.pdf)
 
-## 参考资料
+## References
 
-- [Lua 官方文档索引](https://www.lua.org/docs.html)
-- [Lua 5.4 官方手册](https://www.lua.org/manual/5.4/manual.html)
-- [Lua 官方源码仓 github.com/lua/lua](https://github.com/lua/lua)
+- [Lua official documentation index](https://www.lua.org/docs.html)
+- [Lua 5.4 official manual](https://www.lua.org/manual/5.4/manual.html)
+- [Official Lua source repository on GitHub](https://github.com/lua/lua)
 
 <!-- BACKLINKS-AUTO -->
-## 相关页面
+## Related pages
 
 - [README](/knowledge/README.md)
 - [books](/knowledge/books.md)

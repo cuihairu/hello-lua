@@ -1,37 +1,37 @@
-# Lua的轻量级设计
+# Lua's Lightweight Design
 
-轻量级是 Lua 作为嵌入式脚本语言的立身之本：既能在资源受限的环境中高效运行，也能嵌入到宿主应用程序中。
+Lightweight design is fundamental to Lua as an embedded scripting language: it runs efficiently in constrained environments and can be embedded in host applications.
 
-## 1. 小巧的核心库
+## 1. A Small Core Library
 
-Lua 的核心库只有几百千字节，这在嵌入式系统和低资源环境中是实打实的优势。核心库只保留语言的基本功能：表（tables）、函数、协程（coroutines）、基本输入输出（I/O）。正则表达式、文件系统访问这类附加功能做成独立模块，按需加载，核心库因此保持精简。
+Lua's core library is only a few hundred kilobytes, a concrete advantage in embedded and low-resource environments. The core keeps only fundamental language features: tables, functions, coroutines, and basic input/output (I/O). Additional features such as regular expressions and file-system access are separate modules loaded on demand, so the core remains lean.
 
-## 2. 低内存占用
+## 2. Low Memory Use
 
-内存占用低，对资源有限的环境（如嵌入式系统）至关重要。做法有两条：一是内存管理系统采用统一的分配函数加增量式垃圾回收，开销小、可替换，便于在受限环境中控制内存用量；二是对象模型简单，Lua 用表作为唯一的数据结构，表的实现针对内存使用和操作效率做了优化。
+Low memory use is critical in limited environments such as embedded systems. Lua takes two main approaches. First, memory management uses one unified allocation function plus incremental garbage collection, which has low overhead, is replaceable, and makes memory use easier to control. Second, the object model is simple: Lua uses the table as its sole data structure, and the table implementation is optimized for memory use and efficient operations.
 
-## 3. 轻量级虚拟机
+## 3. A Lightweight Virtual Machine
 
-虚拟机（VM）设计简单而高效，执行代码快，系统开销低。Lua 使用字节码作为中间表示，比直接执行源代码更接近机器语言，解释器的实现也因此更简洁。虚拟机通过简化指令集、优化执行路径来提高执行效率，减少了上下文切换和处理开销。
+The virtual machine (VM) is simple and efficient: it executes code quickly with low system overhead. Lua uses bytecode as an intermediate representation closer to machine language than direct source execution, which also keeps the interpreter implementation simple. The VM improves efficiency with a simplified instruction set and optimized execution paths, reducing context switching and processing overhead.
 
-## 4. 灵活的嵌入接口
+## 4. A Flexible Embedding Interface
 
-宿主程序通过 C API 与 Lua 脚本交互：调用 Lua 函数、访问 Lua 数据。这套接口在性能和易用性之间做了权衡，方便与 C/C++ 代码集成。扩展和插件以动态链接库的形式加入，成本不高。
+Host programs interact with Lua scripts through the C API: they call Lua functions and access Lua data. The interface balances performance and usability, making integration with C and C++ straightforward. Extensions and plugins can be added as dynamically linked libraries at low cost.
 
-## 5. 简洁的语法和功能
+## 5. Simple Syntax and Features
 
-语法设计简洁且一致，避开了复杂的语言特性，学习曲线平缓。表作为主要数据结构，简化了语言设计，同时保留了功能扩展能力。Lua 只保留最基本的编程构造：函数、表、协程，其余复杂特性一律不要，实现和学习的复杂性都因此下降。
+The syntax is concise and consistent, avoids complex language features, and has a gentle learning curve. Tables are the primary data structure, simplifying the language while preserving room for extension. Lua keeps only the most basic programming constructs—functions, tables, and coroutines—leaving out more elaborate features and reducing both implementation and learning complexity.
 
-## 总结
+## Summary
 
-几百千字节的核心库、低的内存占用、简洁的虚拟机、C API 嵌入接口、最小的语言特性集合，这五点合起来决定了 Lua 适合嵌入式系统和资源受限环境。
+A core library of a few hundred kilobytes, low memory use, a simple VM, a C embedding API, and a minimal language feature set together make Lua suitable for embedded systems and resource-constrained environments.
 
-## 参考资料
+## References
 
-- [Lua_(programming_language)](https://en.wikipedia.org/wiki/Lua_(programming_language))
-- [Lua 5.4 官方手册](https://www.lua.org/manual/5.4/manual.html#2.2)
+- [Lua (programming language)](https://en.wikipedia.org/wiki/Lua_(programming_language))
+- [Lua 5.4 official manual](https://www.lua.org/manual/5.4/manual.html#2.2)
 
 <!-- BACKLINKS-AUTO -->
-## 相关页面
+## Related pages
 
 - [core-concepts](/knowledge/core-concepts.md)

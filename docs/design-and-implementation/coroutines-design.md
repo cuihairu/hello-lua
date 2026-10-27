@@ -1,43 +1,43 @@
-# 协程的设计理念
+# The Design Behind Coroutines
 
-协程（coroutines）在一个线程中实现非抢占式的多任务处理。Lua 的协程设计围绕几条理念展开：轻量、协作式调度、状态保存与恢复、简化异步编程、可控、易集成。
+Coroutines implement non-preemptive multitasking within a single thread. Lua's coroutine design centers on several principles: lightness, cooperative scheduling, state saving and restoration, simplified asynchronous programming, controllability, and easy integration.
 
-## 1. 轻量级
+## 1. Lightweight
 
-设计目标是避免传统线程的开销。协程在同一线程中运行，没有上下文切换的代价，创建和销毁的成本都低：比线程更省内存和处理器资源，上下文切换发生在协程之间而不是线程之间，速度快得多。
+The design goal is to avoid the cost of traditional threads. Coroutines run in the same thread, so there is no context-switch penalty, and creation and destruction are both inexpensive: they use less memory and fewer processor resources than threads, and switching happens between coroutines rather than between threads, which is much faster.
 
-## 2. 协作式调度
+## 2. Cooperative Scheduling
 
-调度由程序员显式控制。与抢占式线程不同，协程需要在代码中显式地暂停和恢复，调度行为因此可预测、可控：`coroutine.yield()` 暂停，`coroutine.resume()` 恢复，协程不会被系统中断。
+Scheduling is explicitly controlled by the programmer. Unlike preemptive threads, a coroutine must explicitly suspend and resume in its own code, so scheduling behavior is predictable and controllable: `coroutine.yield()` suspends, `coroutine.resume()` resumes, and the coroutine is never interrupted by the system.
 
-## 3. 状态保存与恢复
+## 3. State Saving and Restoring
 
-协程暂停时保存执行状态，包括局部变量和调用栈，恢复时从暂停的位置继续。上下文的保存与恢复是协程能反复中断续跑的基础。
+When a coroutine suspends, it saves its execution state, including local variables and the call stack; on resume, it continues from the suspension point. Saving and restoring this context is the foundation for repeatedly interrupting and resuming a coroutine.
 
-## 4. 简化异步编程
+## 4. Simplified Asynchronous Programming
 
-协程让异步操作看起来像同步操作，代码更易理解和维护。异步代码可以写成顺序化的形式，避开回调地狱和复杂的异步编程模型；多个异步任务的管理也更简单，因为它们可以以串行的方式编写和调试。
+Coroutines make asynchronous operations look synchronous, so code is easier to understand and maintain. Asynchronous code can be written in sequential form, avoiding callback hell and complex asynchronous models; managing multiple asynchronous tasks is also simpler because they can be written and debugged in a linear fashion.
 
-## 5. 灵活性与控制
+## 5. Flexibility and Control
 
-开发者可以灵活控制协程的创建、执行和调度。协程有多种状态（如`suspended`、`running`、`dead`），管理起来足够灵活；何时暂停、何时恢复由开发者决定，适应各种并发编程需求。
+Developers control coroutine creation, execution, and scheduling. Since coroutines have multiple states (for example `suspended`, `running`, and `dead`), they are flexible enough to manage; when to suspend and when to resume is decided by the developer, fitting a range of concurrent programming needs.
 
-## 6. 易于集成
+## 6. Easy Integration
 
-协程设计与Lua的其他功能自然集成：与标准库函数（`coroutine.resume`、`coroutine.yield`）紧密配合，也与表（tables）、函数（functions）等核心语言特性兼容。
+Coroutines integrate naturally with the rest of Lua: they work closely with standard-library functions (`coroutine.resume`, `coroutine.yield`) and are compatible with core language features such as tables and functions.
 
-## 总结
+## Summary
 
-轻量级和协作式调度决定了协程的成本模型，状态保存与恢复决定了它能否正确续跑，简化异步编程则是它对使用者的直接价值。这几条理念合在一起，让 Lua 的协程成为易用的并发编程工具。
+Lightness and cooperative scheduling define the coroutine cost model; state saving and restoration decide whether it can resume correctly; simplified asynchronous programming is the direct benefit to users. Together these principles make Lua's coroutines a practical concurrent programming tool.
 
-## 参考资料
+## References
 
-- [Lua 5.4 官方手册](https://www.lua.org/manual/5.4/manual.html#2.5)
+- [Lua 5.4 official manual](https://www.lua.org/manual/5.4/manual.html#2.5)
 - [Coroutine](https://en.wikipedia.org/wiki/Coroutine)
 - [Continuation](https://en.wikipedia.org/wiki/Continuation)
 
 <!-- BACKLINKS-AUTO -->
-## 相关页面
+## Related pages
 
 - [coroutines](coroutines.md)
 - [glossary](/glossary.md)

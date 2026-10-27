@@ -1,61 +1,61 @@
-# 代码生成与优化
+# Code Generation and Optimization
 
-代码生成把解析得到的程序结构转换成字节码，即虚拟机（VM）执行的低级指令集；编译阶段的优化则尽量减少生成的指令数，降低运行时的解释开销。
+Code generation converts the parsed program structure into bytecode—the low-level instruction set executed by the virtual machine (VM)—while compile-time optimization minimizes the generated instruction count and reduces runtime interpretation overhead.
 
-## 1. 代码生成（Code Generation）
+## 1. Code Generation
 
-Lua 的解析器不构建 AST，而是在解析每个语句、每个表达式的同时，由 `lcode.c` 中的代码生成例程（`luaK_*` 系列函数）立即发出字节码指令。代码生成器为每个函数维护一段栈槽作为寄存器，局部变量和表达式的中间结果都存放在这些寄存器中，用完即回收复用。每个函数对应一个独立的字节码序列（Lua 中函数即闭包原型），函数调用会生成 `CALL` 等指令，返回值通过寄存器传递。
+Lua's parser does not build an AST. Instead, while it parses each statement and each expression, the code generation routines in `lcode.c` (the `luaK_*` family) emit bytecode instructions immediately. The generator assigns each function a group of stack slots as registers. Local variables and intermediate expression results live in those registers and are released and reused as soon as they are no longer needed. Each function corresponds to one bytecode sequence (in Lua a function is a closure prototype); function calls generate instructions such as `CALL`, and return values are passed through registers.
 
-用 `luac -l -l` 查看 Lua 5.4 生成的真实字节码：
+Use `luac -l -l` to inspect the real bytecode that Lua 5.4 generates for:
 
 ```lua
--- 源代码
+-- source code
 local a = 10 + 5
 ```
 
 ```plaintext
 main <t.lua:0,0> (3 instructions)
 	1	[1]	VARARGPREP	0
-	2	[1]	LOADI    	0 15     ; 10 + 5 已在编译期折叠为 15
+	2	[1]	LOADI    	0 15     ; 10 + 5 folded to 15 at compile time
 	3	[1]	RETURN   	1 1 1	; 0 out
 ```
 
-## 2. 代码优化（Code Optimization）
+## 2. Code Optimization
 
-编译阶段的优化在 Lua 官方实现里只有四种：
+Compile-time optimization in the official Lua implementation uses only four techniques.
 
-常量折叠对两个操作数都是常量的算术、比较等表达式直接求值，`10 + 5` 不会生成 `LOADI 10`、`LOADI 5`、`ADD` 三条指令，而是直接生成 `LOADI 0 15`。立即数指令把小整数和字节范围内的浮点数直接编码进指令的操作数（`LOADI`、`LOADF`），小整数运算用 `ADDI`，与局部变量相加减用 `ADDK`，避免额外的常量表访问。跳转指令回填在生成条件与循环语句时先发出占位的跳转指令，待目标位置确定后再回填偏移，`while`、`if` 的测试编译为 `TEST`/跳转组合，避免多余的标签运算。寄存器复用则在表达式求值结束后立即释放临时寄存器，供后续表达式继续使用，减少函数所需的总槽数。
+Constant folding evaluates such expressions as arithmetic and comparisons when both operands are constants, so `10 + 5` does not generate `LOADI 10`, `LOADI 5`, and `ADD`; it generates only `LOADI 0 15`. Immediate-instruction encoding stores small integers and in-range floats directly in the instruction operands (`LOADI`, `LOADF`); small-integer arithmetic uses `ADDI`, and adding or subtracting a local variable uses `ADDK`, avoiding an extra constant-table lookup. Jump-instruction patching first emits placeholder jump instructions when generating conditionals and loops, then fills in the offsets once targets are known; `while` and `if` tests compile to `TEST`/jump combinations, avoiding unnecessary label arithmetic. Register reuse releases temporary registers as soon as an expression is evaluated so that later expressions can use them, reducing the total number of slots a function needs.
 
-Lua 不做的优化也很明确：官方实现没有公共子表达式消除、循环不变代码外提或跨指令的死代码消除等传统编译器优化。这些工作留给了虚拟机的运行效率（寄存器式设计本身已经减少了指令条数）以及 LuaJIT 这类带 JIT 的实现。
+What Lua does not optimize is also explicit: the official implementation performs no common-subexpression elimination, loop-invariant code motion, or cross-instruction dead-code elimination. Those classic compiler optimizations are left to the runtime efficiency of the VM (the register-based design already reduces instruction count) and to JIT implementations such as LuaJIT.
 
-示例：
+Example:
 
 ```lua
--- 源代码
+-- source code
 local a = (10 + 5) * 2
 ```
 
 ```plaintext
 main <t.lua:0,0> (3 instructions)
 	1	[1]	VARARGPREP	0
-	2	[1]	LOADI    	1 30     ; (10 + 5) * 2 整体折叠为 30
+	2	[1]	LOADI    	1 30     ; (10 + 5) * 2 folded entirely to 30
 	3	[1]	RETURN   	2 1 1	; 0 out
 ```
 
-若把常量换成变量，折叠就不会发生，例如 `local x, a = 10, 0; a = x * 2` 会生成 `LOADI` 加 `MULK` 两条运算指令。
+If the constant is replaced with a variable, folding does not occur; `local x, a = 10, 0; a = x * 2` generates `LOADI` plus `MULK`, two arithmetic instructions.
 
-## 总结
+## Summary
 
-代码生成与寄存器分配由 `lcode.c` 完成，在语法分析的同时逐条发出字节码，不经过 AST。编译期的优化以常量折叠、立即数指令编码、跳转回填和寄存器复用为主，并不包含公共子表达式消除或循环不变代码外提等重量级优化。
+Code generation and register allocation are performed by `lcode.c`, which emits bytecode instruction by instruction during parsing and never goes through an AST. Compile-time optimization is mainly constant folding, immediate-instruction encoding, jump patching, and register reuse, and excludes such heavyweight passes as common-subexpression elimination and loop-invariant code motion.
 
-## 参考资料
+## References
 
 - [Compiler](https://en.wikipedia.org/wiki/Compiler)
-- [Abstract_syntax_tree](https://en.wikipedia.org/wiki/Abstract_syntax_tree)
-- [Lua 官方源码仓 github.com/lua/lua](https://github.com/lua/lua)
+- [Abstract syntax tree](https://en.wikipedia.org/wiki/Abstract_syntax_tree)
+- [Official Lua source repository on GitHub](https://github.com/lua/lua)
 
 <!-- BACKLINKS-AUTO -->
-## 相关页面
+## Related pages
 
 - [lua55-source](lua55-source.md)
 - [glossary](/glossary.md)

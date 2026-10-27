@@ -1,46 +1,46 @@
-# Lua语言的设计原理
+# Design Principles of Lua
 
-Lua 是轻量级脚本语言，设计原则围绕高效、灵活、易嵌入展开。
+Lua is a lightweight scripting language whose design principles center on efficiency, flexibility, and easy embedding.
 
-## 1. 轻量级设计
+## 1. Lightweight Design
 
-Lua 的主要目标是作为轻量级语言嵌入到其他应用程序中，核心库保持简洁，便于集成和定制。核心库非常小，减少了内存占用，适合嵌入式系统；功能以模块形式提供，用户按需选择和扩展。
+Lua's primary goal is to be embedded in other applications. Its core library stays small and simple, which makes integration and customization straightforward. The very small library reduces memory use and suits embedded systems, while additional functionality is supplied as modules that users choose and extend as needed.
 
-## 2. 简洁的语法
+## 2. Simple Syntax
 
-语法追求一致性和简洁性，减少语言复杂性和学习曲线，同时保持表达能力。表（tables）和元表（metatables）提供灵活性，支持多种编程范式。
+The syntax aims for consistency and simplicity, reducing language complexity and the learning curve without sacrificing expressiveness. Tables and metatables provide flexibility and support multiple programming paradigms.
 
-## 3. 高效的执行
+## 3. Efficient Execution
 
-虚拟机（VM）按字节码解释执行 Lua 代码，字节码是中间表示形式，比源代码更接近机器语言，配合代码生成优化和即时编译（JIT）技术（如 LuaJIT）提高执行效率，同时保持低内存占用。
+The virtual machine (VM) interprets Lua as bytecode. Bytecode is an intermediate representation closer to machine language than source code. Together with code-generation optimizations and just-in-time (JIT) implementations such as LuaJIT, it improves execution efficiency while keeping memory use low.
 
-## 4. 灵活的内存管理
+## 4. Flexible Memory Management
 
-内存管理支持自动垃圾回收（主要是标记-清除算法），减轻开发者负担，也允许手动管理。分配策略以高效为目标，减少碎片、提升分配性能。
+Memory management provides automatic garbage collection—primarily mark-and-sweep—which relieves developers of manual reclamation while still allowing manual management where needed. The allocation strategy prioritizes efficiency and reduces fragmentation while improving allocation performance.
 
-## 5. 支持多种编程范式
+## 5. Support for Multiple Paradigms
 
-命令式、函数式、面向对象编程都可以在 Lua 中表达。表是各种数据结构和范式的核心工具，既用作数组也用作字典；元表支持自定义操作，用于面向对象编程和运算符重载。
+Imperative, functional, and object-oriented programming can all be expressed in Lua. The table is the central tool for data structures and paradigms, serving as both array and dictionary; metatables support customized operations for object-oriented programming and operator overloading.
 
-## 6. 可扩展性和嵌入性
+## 6. Extensibility and Embeddability
 
-丰富的 C API 允许与 C/C++ 代码交互，实现扩展和嵌入；动态加载和卸载模块的能力则支撑插件机制和模块化开发。
+A rich C API supports interaction with C and C++ code for extension and embedding, while the ability to load and unload modules dynamically enables plugins and modular development.
 
-## 7. 便于调试和测试
+## 7. Debugging and Testing
 
-调试接口支持对 Lua 代码进行调试和分析；`pcall` 和 `xpcall` 提供安全调用和错误捕获，帮助开发者发现和解决问题。
+The debug interface supports debugging and profiling Lua code, while `pcall` and `xpcall` provide safe calls and error handling that help developers discover and resolve problems.
 
-## 总结
+## Summary
 
-轻量级、高效、灵活、可嵌入是 Lua 设计原理的落点：简洁语法加可扩展性，让 Lua 同时适合嵌入式系统和应用程序脚本。
+Lightweight, efficient, flexible, and embeddable are the landing points of Lua's design: simple syntax plus extensibility makes Lua suitable for both embedded systems and application scripting.
 
-## 参考资料
+## References
 
-- [Lua_(programming_language)](https://en.wikipedia.org/wiki/Lua_(programming_language))
-- [Lua 5.4 官方手册](https://www.lua.org/manual/5.4/manual.html#2.2)
+- [Lua (programming language)](https://en.wikipedia.org/wiki/Lua_(programming_language))
+- [Lua 5.4 official manual](https://www.lua.org/manual/5.4/manual.html#2.2)
 
 <!-- BACKLINKS-AUTO -->
-## 相关页面
+## Related pages
 
 - [books](/knowledge/books.md)
 - [core-concepts](/knowledge/core-concepts.md)

@@ -1,47 +1,47 @@
-# 协程的底层实现
+# Coroutines Under the Hood
 
-Lua 的协程通过虚拟机中的底层机制实现轻量级的协作式线程。下面按数据结构、状态管理、调度、切换机制、垃圾回收、调试几条线展开。
+Lua implements lightweight cooperative threads through low-level mechanisms in the virtual machine. What follows walks through the data structure, state management, scheduling, switching mechanism, garbage collection, and debugging.
 
-## 1. 协程的数据结构
+## 1. The Coroutine Data Structure
 
-每个协程都是一个独立的`lua_State`（即“线程”）结构体，保存了协程的执行状态和上下文信息：调用栈、当前调用信息（`CallInfo` 链）以及局部变量所在的栈槽。主协程也是一个`lua_State`，普通协程由 `lua_newthread` 创建。`coroutine.create` 底层就是调用 `lua_newthread` 得到一个新的 `lua_State`，并把入口函数压入其栈中。Lua 内部并没有独立的 “Coroutine” 结构体，协程的全部状态都记录在 `lua_State` 里。
+Each coroutine is an independent `lua_State` (that is, a "thread") structure that holds the coroutine's execution state and context: the call stack, the current call-information chain (`CallInfo`), and the stack slots where local variables live. The main coroutine is also a `lua_State`; ordinary coroutines are created by `lua_newthread`. Internally, `coroutine.create` calls `lua_newthread` to obtain a new `lua_State` and pushes the entry function onto its stack. Lua has no separate "Coroutine" structure; all coroutine state is recorded in `lua_State`.
 
-## 2. 协程的状态管理
+## 2. Coroutine State Management
 
-创建协程时，Lua 初始化一个新的`lua_State`并设置为协程的运行状态，包括设置初始的栈大小和其他运行时参数。暂停与恢复则通过保存和恢复`lua_State`的上下文实现：执行栈、局部变量和程序计数器都在保存范围内。
+When a coroutine is created, Lua initializes a new `lua_State` and sets it to the coroutine's running state, including the initial stack size and other runtime parameters. Suspending and resuming then save and restore the `lua_State` context: the execution stack, local variables, and program counter are all within the saved range.
 
-## 3. 协程的调度
+## 3. Coroutine Scheduling
 
-调度是协作式的，协程需要显式地暂停和恢复。协程调用`coroutine.yield()`时，Lua保存当前协程的上下文状态，把控制权交回调用协程的地方，其他协程得以继续运行；协程被`coroutine.resume()`恢复时，Lua从保存的上下文中恢复执行状态，从上次暂停的地方继续执行。
+Scheduling is cooperative, so a coroutine must explicitly suspend and resume. When a coroutine calls `coroutine.yield()`, Lua saves the current coroutine's context and returns control to the place that resumed it, allowing other coroutines to continue; when a coroutine is resumed by `coroutine.resume()`, Lua restores execution from the saved context and continues from the suspension point.
 
-## 4. 实现机制
+## 4. Implementation Mechanism
 
-栈操作是基础。每个协程拥有自己的栈；切换协程时，Lua 只是切换“当前使用的栈和 CallInfo”，原来协程的栈数据原样保留在内存中，恢复时无需重建，这保证了协程在暂停和恢复时保持一致。
+Stack handling is foundational. Each coroutine has its own stack; when switching coroutines, Lua only switches the currently active stack and `CallInfo`. The original coroutine's stack data remains untouched in memory and does not need to be rebuilt on resume, which keeps the coroutine consistent through suspend and resume.
 
-上下文切换完全在 C 语言层面完成，交换的是 `lua_State` 中的栈指针、当前调用信息（`CallInfo`，其中保存了指令指针 `savedpc`）等数据结构，并不保存或恢复 CPU 寄存器（`setjmp`/`longjmp` 只用于错误恢复，而不是协程切换）。因此 Lua 协程只能在同一个线程内协作切换，无法跨线程运行。
+The context switch happens entirely at the C level: it exchanges data structures inside `lua_State`, such as the stack pointer and the current call information (`CallInfo`, which holds the instruction pointer `savedpc`). CPU registers are never saved or restored (`setjmp`/`longjmp` are used only for error recovery, not coroutine switching). Lua coroutines therefore switch cooperatively only within the same thread and cannot run across threads.
 
-虚拟机提供对协程的底层支持：管理协程的执行、调度和状态切换，并提供相应的API来操作协程。
+The virtual machine supports coroutines at a low level: it manages their execution, scheduling, and state transitions, and exposes the API used to operate on them.
 
-## 5. 垃圾回收与协程
+## 5. Garbage Collection and Coroutines
 
-协程在执行过程中会创建和管理对象，这些对象需要被垃圾回收器处理，确保在协程结束时被正确回收。内存管理机制同样需要适应协程的创建和销毁，协程的内存开销在使用完毕后被释放。
+Coroutines create and manage objects while executing, and the garbage collector handles those objects so they are correctly reclaimed when a coroutine finishes. The memory manager also adapts to coroutine creation and destruction, releasing a coroutine's memory when it is no longer used.
 
-## 6. 协程的调试
+## 6. Debugging Coroutines
 
-调试库能够获取协程的状态信息，包括当前执行的函数、栈信息等，排查协程问题时用得上。调试工具还可以跟踪协程的执行流程，观察协程在不同状态下的行为。
+The debug library can retrieve a coroutine's state information, including the function currently executing and stack information, which helps when investigating coroutine problems. Debugging tools can also trace a coroutine's execution flow and observe its behavior in different states.
 
-## 总结
+## Summary
 
-协程的全部状态都放在 `lua_State` 里，切换只交换栈指针和 `CallInfo`，不碰 CPU 寄存器。这套设计让 Lua 用很小的代价实现了协作式线程，代价是只能同线程协作切换。
+All coroutine state lives in `lua_State`; switching exchanges only the stack pointer and `CallInfo` and never touches CPU registers. This design gives Lua cooperative threads at very little cost, at the price of switching cooperatively only within a single thread.
 
-## 参考资料
+## References
 
-- [Lua 5.4 官方手册](https://www.lua.org/manual/5.4/manual.html#2.5)
+- [Lua 5.4 official manual](https://www.lua.org/manual/5.4/manual.html#2.5)
 - [Coroutine](https://en.wikipedia.org/wiki/Coroutine)
-- [Lua 官方源码仓 github.com/lua/lua](https://github.com/lua/lua)
+- [Official Lua source repository on GitHub](https://github.com/lua/lua)
 
 <!-- BACKLINKS-AUTO -->
-## 相关页面
+## Related pages
 
 - [lua55-source](lua55-source.md)
 - [core-concepts](/knowledge/core-concepts.md)
