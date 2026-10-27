@@ -1,44 +1,44 @@
-# 错误类型与调试
+# Error Types and Debugging
 
-Lua 的错误大致分四种：语法错误、运行时错误、逻辑错误和类型错误。这一页先看它们的成因和例子，再看内建与第三方的调试工具。
+Lua errors fall into roughly four kinds: syntax errors, runtime errors, logic errors, and type errors. This page first looks at their causes and examples, then at the built-in and third-party debugging tools.
 
-## 1. 错误类型
+## 1. Error Types
 
-1. 语法错误：缺少关键字、括号不匹配等都属于这一类。这类错误在加载阶段就会被 `luac -p` 或解释器发现，代码根本跑不起来。例如：
+1. Syntax errors: missing keywords, mismatched parentheses, and the like all belong to this category. These are caught at load time by `luac -p` or the interpreter, so the code never gets to run at all. For example:
      ```lua
      local x = 10
-     -- 下面的调用缺少右括号，会引发语法错误，无法通过语法检查：
+     -- The call below is missing a closing parenthesis, which causes a syntax error and fails the syntax check:
      -- print(x
      ```
 
-2. 运行时错误：程序运行中才暴露的错误，如整数除以零、对 `nil` 值进行索引或算术运算。例如：
+2. Runtime errors: errors that only surface while the program runs, such as integer division by zero, or indexing and arithmetic operations on a `nil` value. For example:
      ```lua
-     local x = 10 // 0  -- 整数除以零，会引发运行时错误（10 / 0 则返回 inf，并不报错）
+     local x = 10 // 0  -- integer division by zero causes a runtime error (10 / 0 returns inf and does not raise an error)
      ```
 
-3. 逻辑错误：代码能够运行，但不按预期工作，通常难以通过错误消息直接识别。例如：
+3. Logic errors: the code runs but does not behave as expected, and is usually hard to spot directly from an error message. For example:
      ```lua
      local function is_even(n)
-         return n % 2 == 1  -- 逻辑写反了，判断偶数应为 n % 2 == 0
+         return n % 2 == 1  -- the logic is backwards; checking for even should be n % 2 == 0
      end
-     print(is_even(4))  -- 输出 false，但 4 是偶数，预期应为 true
+     print(is_even(4))  -- false, but 4 is even, so the expected result should be true
      ```
 
-4. 类型错误：传给函数或操作符的参数类型不正确。例如：
+4. Type errors: the type of an argument passed to a function or operator is wrong. For example:
      ```lua
      local function add(a, b)
          return a + b
      end
-     print(add("Hello", 5))  -- 字符串与数字相加
+     print(add("Hello", 5))  -- adding a string and a number
      ```
 
-## 2. 调试工具
+## 2. Debugging Tools
 
-Lua 提供了一些内建的调试工具和库，帮助开发者跟踪和修复代码中的问题。
+Lua provides some built-in debugging tools and libraries to help developers trace and fix problems in their code.
 
-1. `debug` 库：提供对 Lua 程序内部状态的访问和控制。常用的两个函数：
+1. The `debug` library: provides access to and control over the internal state of a Lua program. Two commonly used functions:
 
-     - `debug.traceback([message[, level]])`：获取调用堆栈的跟踪信息。
+     - `debug.traceback([message[, level]])`: gets trace information for the call stack.
        ```lua
        local function foo()
            error("Something went wrong")
@@ -53,13 +53,13 @@ Lua 提供了一些内建的调试工具和库，帮助开发者跟踪和修复�
            print(debug.traceback(err))
        end
        ```
-     - `debug.getinfo([thread,] function[, what])`：获取有关函数的信息，如名称、源代码位置等。
+     - `debug.getinfo([thread,] function[, what])`: gets information about a function, such as its name and source location.
        ```lua
        local info = debug.getinfo(1, "S")
-       print(info.source)  -- 输出形如 "@demo.lua"（@ 开头表示代码来自脚本文件）
+       print(info.source)  -- something like "@demo.lua" (a leading @ means the code comes from a script file)
        ```
 
-2. `pcall` 和 `xpcall`：安全地调用函数并捕捉错误。
+2. `pcall` and `xpcall`: call a function safely and catch errors.
      ```lua
      local function riskyFunction()
          error("division by zero")
@@ -71,29 +71,29 @@ Lua 提供了一些内建的调试工具和库，帮助开发者跟踪和修复�
      end
      ```
 
-3. `assert`：强制检查条件，条件不满足时抛出错误。
+3. `assert`: enforces a condition check and raises an error when the condition is not met.
      ```lua
      local function divide(a, b)
          assert(b ~= 0, "Division by zero")
          return a / b
      end
 
-     print(divide(10, 0))  -- 抛出错误
+     print(divide(10, 0))  -- raises an error
      ```
 
-4. `print`：最基本的调试手段，打印变量值和程序状态。
+4. `print`: the most basic debugging means — print variable values and program state.
      ```lua
      local x = 10
      print("Value of x: ", x)
      ```
 
-5. 第三方调试工具：LuaDebug 和 ZeroBrane Studio 在内建工具之外补充了调试能力。
-   - ZeroBrane Studio：一个集成开发环境 (IDE)，调试功能比较完整。
-   - LuaDebug：提供更多的调试功能和图形化界面。
+5. Third-party debugging tools: LuaDebug and ZeroBrane Studio add debugging capability beyond the built-in tools.
+   - ZeroBrane Studio: an integrated development environment (IDE) with fairly complete debugging features.
+   - LuaDebug: offers more debugging features and a graphical interface.
 
-## 3. 错误调试实践
+## 3. Debugging Practice for Errors
 
-1. 使用断言：在代码中加入 `assert` 语句，确保参数和状态符合预期。
+1. Use assertions: add `assert` statements in your code to ensure arguments and state match what you expect.
      ```lua
      local function safeDivision(a, b)
          assert(type(a) == "number" and type(b) == "number", "Arguments must be numbers")
@@ -102,7 +102,7 @@ Lua 提供了一些内建的调试工具和库，帮助开发者跟踪和修复�
      end
      ```
 
-2. 跟踪错误：用 `debug.traceback` 捕捉并记录错误信息，发生错误时能追踪到出错的位置。
+2. Trace errors: use `debug.traceback` to capture and record error information so you can track down the location where it happened.
      ```lua
      local function foo()
          error("Something went wrong")
@@ -118,22 +118,22 @@ Lua 提供了一些内建的调试工具和库，帮助开发者跟踪和修复�
      end
      ```
 
-3. 逐步调试：使用 IDE 或调试工具逐步执行代码，检查每一步的状态和变量值。
+3. Step-by-step debugging: use an IDE or debugging tool to execute code one step at a time, inspecting state and variable values at each step.
 
-4. 日志记录：在关键部分记录日志，追踪程序的执行路径和状态。
+4. Logging: record logs at critical points to trace the program's execution path and state.
 
-5. 错误处理策略：用 `pcall` 和 `xpcall` 包住可能出错的调用，把异常情况拦在自己的处理逻辑里。
+5. Error-handling strategy: wrap calls that might fail with `pcall` and `xpcall`, and keep exceptional situations inside your own handling logic.
 
-语法错误在加载时就会被拦下；运行时错误会带出错位置和原因；逻辑错误不报错，只能靠断言、日志和逐步调试把它找出来。
+Syntax errors are caught at load time; runtime errors come with a location and a cause; logic errors raise no error at all and can only be found through assertions, logging, and step-by-step debugging.
 
-## 参考资料
+## References
 
-- [Lua 5.4 官方手册](https://www.lua.org/manual/5.4/manual.html#2.4)
+- [Lua 5.4 reference manual · 2.4 Statements](https://www.lua.org/manual/5.4/manual.html#2.4)
 - [Exception_handling](https://en.wikipedia.org/wiki/Exception_handling)
 - [Recursion_(computer_science)](https://en.wikipedia.org/wiki/Recursion_(computer_science))
 
 <!-- BACKLINKS-AUTO -->
-## 相关页面
+## Related pages
 
 - [README](README.md)
 - [error-handling](error-handling.md)

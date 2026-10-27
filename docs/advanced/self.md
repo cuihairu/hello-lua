@@ -1,10 +1,10 @@
-# self 的作用
+# The Role of `self`
 
-`self` 是 Lua 面向对象编程的核心概念：它指代"当前这个方法正在操作的那个对象"。Lua 本身并没有 `self` 关键字，我们看到的 `self` 只是一个约定俗成的参数名，由冒号（`:`）语法糖自动传入。
+`self` is a core concept of object-oriented programming in Lua: it refers to "the object the current method is operating on." Lua itself has no `self` keyword — the `self` we see is just a conventional parameter name, passed in automatically by the colon (`:`) syntactic sugar.
 
-## 1. 冒号语法糖与隐式 self
+## 1. The Colon Syntactic Sugar and the Implicit `self`
 
-用冒号定义方法时，Lua 会自动给函数加上一个名为 `self` 的隐藏参数；用冒号调用时，Lua 会自动把冒号前的对象作为第一个参数传进去：
+When you define a method with a colon, Lua automatically adds a hidden parameter named `self` to the function; when you call with a colon, Lua automatically passes the object before the colon in as the first argument:
 
 ```lua
 local Dog = {}
@@ -14,23 +14,23 @@ function Dog.new(name)
     return setmetatable({ name = name }, Dog)
 end
 
-function Dog:bark()           -- 等价于 function Dog.bark(self)
+function Dog:bark()           -- equivalent to function Dog.bark(self)
     print(self.name .. " says: Woof!")
 end
 
 local dog = Dog.new("Rex")
-dog:bark()          -- 常规写法：把 dog 作为 self 传入
-Dog.bark(dog)       -- 等价写法：显式地把 dog 作为第一个参数传入
--- 输出
+dog:bark()          -- the usual form: pass dog in as self
+Dog.bark(dog)       -- the equivalent form: pass dog explicitly as the first argument
+-- output
 -- Rex says: Woof!
 -- Rex says: Woof!
 ```
 
-`obj:method(a)` 与 `obj.method(obj, a)` 完全等价，`self` 是隐式传入的第一个参数。因此同一方法的定义和调用都使用冒号时，`self` 会自动就位。
+`obj:method(a)` and `obj.method(obj, a)` are completely equivalent; `self` is the first argument passed in implicitly. So when a method's definition and its call both use the colon, `self` lands in place on its own.
 
-## 2. self 让方法操作各自的数据
+## 2. `self` Lets a Method Operate on Its Own Data
 
-`self` 的意义在于让同一个方法服务于不同的对象。每个实例有自己的字段，方法通过 `self` 访问"自己的"那份：
+The point of `self` is to let one method serve different objects. Each instance has its own fields, and a method reaches its own copy through `self`:
 
 ```lua
 local Counter = {}
@@ -44,16 +44,16 @@ end
 local c1 = setmetatable({ count = 0 }, Counter)
 local c2 = setmetatable({ count = 100 }, Counter)
 
-print(c1:increment())    -- 输出 1
-print(c2:increment())    -- 输出 101
-print(c2:increment(10))  -- 输出 111
+print(c1:increment())    -- 1
+print(c2:increment())    -- 101
+print(c2:increment(10))  -- 111
 ```
 
-同一个 `increment` 函数，因为传入的 `self` 不同，操作的就是不同的计数器。如果没有 `self`，方法就无法知道自己该修改哪个对象的数据。
+The same `increment` function operates on a different counter each time, because the `self` passed in differs. Without `self`, a method could not know which object's data it should modify.
 
-## 3. 常见错误：点号与冒号混用
+## 3. A Common Error: Mixing the Dot and the Colon
 
-冒号定义的方法第一个参数是 `self`，若改用点号调用，这个参数不会被传入，函数内的 `self` 就是 `nil`：
+A method defined with a colon takes `self` as its first argument; if you call it with a dot instead, that argument is never passed in, and `self` inside the function is `nil`:
 
 ```lua
 local Counter = {}
@@ -63,16 +63,16 @@ function Counter:increment(step)
     return self.count
 end
 
-local ok, err = pcall(Counter.increment)   -- 忘了传 self
-print(ok)   -- 输出 false
-print(err)  -- 输出形如 "demo.lua:4: attempt to index a nil value (local 'self')"
+local ok, err = pcall(Counter.increment)   -- forgot to pass self
+print(ok)   -- false
+print(err)  -- something like "demo.lua:4: attempt to index a nil value (local 'self')"
 ```
 
-反过来，"点号定义、冒号调用"同样会出错。冒号会把对象本身当作第一个参数传进去，与函数定义的参数表错位。因此实战中的准则是：需要 `self` 的方法一律用冒号定义、用冒号调用；确实不需要 `self` 的函数（如构造函数 `Dog.new`）则用点号。
+Conversely, "defined with a dot, called with a colon" is equally broken. The colon passes the object itself in as the first argument, which misaligns with the parameter list the function was defined with. So the working rule in practice is: any method that needs `self` is defined with a colon and called with a colon; functions that genuinely do not need `self` (such as the constructor `Dog.new`) use the dot.
 
-## 4. self 与继承、多态
+## 4. `self` and Inheritance, Polymorphism
 
-在基于元表的继承体系中，`self` 是实现方法复用和多态的关键：子类方法中 `self` 仍指向实际的调用对象，因此父类逻辑操作的是子类实例的字段：
+In a metatable-based inheritance scheme, `self` is the key to method reuse and polymorphism: inside a subclass method, `self` still points at the actual calling object, so parent-class logic operates on the subclass instance's fields:
 
 ```lua
 local Account = {}
@@ -87,38 +87,38 @@ function Account:withdraw(amount)
     return self.balance
 end
 
--- LimitedAccount 继承 Account：找不到的方法会顺着 __index 找到 Account
+-- LimitedAccount inherits from Account: any method not found is located by following __index up to Account
 local LimitedAccount = setmetatable({}, { __index = Account })
 LimitedAccount.__index = LimitedAccount
 
 function LimitedAccount.new(balance, limit)
-    local obj = Account.new(balance)   -- obj 的元表先是 Account
+    local obj = Account.new(balance)   -- obj's metatable is Account at first
     obj.limit = limit
-    return setmetatable(obj, LimitedAccount)   -- 换成子类的元表
+    return setmetatable(obj, LimitedAccount)   -- swap in the subclass's metatable
 end
 
--- 重写（多态）：同名方法覆盖父类实现
+-- Override (polymorphism): a same-named method replaces the parent's implementation
 function LimitedAccount:withdraw(amount)
     if amount > self.limit then
         return nil, "over limit"
     end
-    return Account.withdraw(self, amount)   -- 显式把 self 传给父类方法
+    return Account.withdraw(self, amount)   -- pass self explicitly to the parent method
 end
 
 local acc = Account.new(100)
-print(acc:withdraw(30))          -- 输出 70
+print(acc:withdraw(30))          -- 70
 
 local lacc = LimitedAccount.new(100, 50)
-print(lacc:withdraw(30))         -- 输出 70（子类规则允许）
-print(lacc:withdraw(80))         -- 输出 nil	over limit
-print(lacc.balance)              -- 输出 70（前一次取款已生效）
+print(lacc:withdraw(30))         -- 70 (allowed by the subclass rule)
+print(lacc:withdraw(80))         -- nil	over limit
+print(lacc.balance)              -- 70 (the earlier withdrawal already took effect)
 ```
 
-注意 `Account.withdraw(self, amount)` 这种写法：在子类方法里调用父类的同名方法时，冒号语法糖不适用（写 `Account:withdraw(amount)` 会把 `Account` 表本身当作 `self`），必须显式地把 `self` 作为第一个参数传回去。
+Note the `Account.withdraw(self, amount)` form: when calling a parent's same-named method from inside a subclass method, the colon syntactic sugar does not apply (writing `Account:withdraw(amount)` would pass the `Account` table itself as `self`), so you must pass `self` back in as the first argument explicitly.
 
-## 5. 回调中丢失 self
+## 5. Losing `self` in a Callback
 
-把方法当作回调函数传递时（事件处理、定时器、排序比较函数等），方法会和它的对象"脱钩"，调用时 `self` 变成 `nil`：
+When you pass a method around as a callback (event handling, timers, sort comparison functions, etc.), the method becomes "detached" from its object, and `self` is `nil` at call time:
 
 ```lua
 local Dog = {}
@@ -134,33 +134,33 @@ end
 
 local dog = Dog.new("Rex")
 
--- 错误示范：把方法本身当普通函数传出去，调用时 self 丢了
+-- Wrong example: pass the method itself out as an ordinary function, and self is lost at call time
 local ok, err = pcall(dog.bark)
-print(ok)    -- 输出 false
-print(err)   -- 输出形如 "demo.lua:9: attempt to index a nil value (local 'self')"
+print(ok)    -- false
+print(err)   -- something like "demo.lua:9: attempt to index a nil value (local 'self')"
 
--- 正确做法一：包一层闭包，把 self 捕获进来
+-- Correct approach 1: wrap it in a closure to capture self
 local bark = function() dog:bark() end
-bark()       -- 输出 Rex says: Woof!
+bark()       -- Rex says: Woof!
 
--- 正确做法二：调用时手动补上 self
+-- Correct approach 2: supply self manually at call time
 local bark2 = dog.bark
-bark2(dog)   -- 输出 Rex says: Woof!
+bark2(dog)   -- Rex says: Woof!
 ```
 
-两种做法中，闭包方式最常用，它把对象和方法一起"打包"，回调无论被谁调用都不会再丢失 `self`。
+Of the two approaches, the closure form is the most common: it "packages" the object and the method together, so the callback will not lose `self` no matter who calls it.
 
-## 结语
+## Wrap-up
 
-`self` 没有任何魔法，它只是冒号语法糖自动传入的第一个参数。三条规则避开绝大多数问题：冒号定义配冒号调用；跨类复用方法时显式传递 `self`（如 `Account.withdraw(self, amount)`）；把方法作为回调传递时用闭包绑定对象。
+`self` has no magic; it is just the first argument that the colon syntactic sugar passes in automatically. Three rules avoid the vast majority of problems: define with a colon and call with a colon; pass `self` explicitly when reusing a method across classes (as in `Account.withdraw(self, amount)`); and bind the object with a closure when passing a method around as a callback.
 
-## 参考资料
+## References
 
-- [Lua 5.4 官方手册](https://www.lua.org/manual/5.4/manual.html#2.6)
+- [Lua 5.4 reference manual · 2.6 Tables](https://www.lua.org/manual/5.4/manual.html#2.6)
 - [Metaprogramming](https://en.wikipedia.org/wiki/Metaprogramming)
 
 <!-- BACKLINKS-AUTO -->
-## 相关页面
+## Related pages
 
 - [README](README.md)
 - [object-oriented](object-oriented.md)

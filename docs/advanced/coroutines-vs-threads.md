@@ -1,29 +1,29 @@
-# 协程与线程的比较
+# Comparing coroutines and threads
 
-协程常被称为"用户态线程"，但它们与操作系统线程有本质区别。理解这些区别，才能明白什么场景该用协程、什么场景必须用线程。
+Coroutines are often called "user-space threads," but they differ from OS threads in fundamental ways. Understanding those differences is what tells you when to use a coroutine and when you must use a thread.
 
-## 1. 核心区别一览
+## 1. The core differences at a glance
 
-| 对比维度 | Lua 协程 | 操作系统线程 |
+| Dimension | Lua coroutine | OS thread |
 | --- | --- | --- |
-| 调度方式 | 协作式：仅在 `yield` 处主动让出 | 抢占式：由操作系统随时打断切换 |
-| 并行能力 | 无：同一时刻只有一个协程在运行 | 有：多线程可真正并行跑在多核上 |
-| 切换开销 | 极小：用户态切换，只保存协程栈 | 较大：陷入内核，保存完整上下文 |
-| 内存占用 | 每个协程只需很小的栈（KB 级） | 每个线程默认保留 MB 级的栈空间 |
-| 数量级 | 轻松创建数万乃至数十万个 | 通常几百上千个就会遇到瓶颈 |
-| 数据同步 | 无真正并行，一般不需要加锁 | 必须用锁、信号量等同步原语 |
-| 阻塞影响 | `yield` 不影响其他协程，但阻塞调用（如 `io.read`）会卡住整个状态机 | 一个线程阻塞不影响其他线程 |
-| 适用场景 | 迭代器、生产者-消费者、异步 I/O 封装、游戏帧逻辑 | CPU 密集型并行计算、真正的多任务 |
+| Scheduling | Cooperative: yields only at `yield` | Preemptive: the OS can interrupt and switch at any time |
+| Parallelism | None: only one coroutine runs at a time | Yes: multiple threads can truly run in parallel on multiple cores |
+| Switch cost | Tiny: a user-space switch that saves only the coroutine's stack | Larger: enters the kernel and saves the full context |
+| Memory use | Each coroutine needs only a small stack (KB range) | Each thread reserves an MB-range stack by default |
+| Scale | Tens of thousands, even hundreds of thousands, can be created easily | Usually hits a bottleneck in the hundreds or thousands |
+| Data synchronization | No true parallelism, so locking is generally unnecessary | Requires locks, semaphores, and other synchronization primitives |
+| Effect of blocking | `yield` does not affect other coroutines, but a blocking call (such as `io.read`) stalls the entire state | One blocked thread does not affect the others |
+| Best for | Iterators, producer-consumer, async I/O wrappers, game frame logic | CPU-bound parallel computation, real multitasking |
 
-## 2. 协作式意味着什么
+## 2. What cooperative means
 
-协程的切换点完全由代码决定：只有执行到 `coroutine.yield`，控制权才会交出去。因此两个协程的输出顺序是确定的、可复现的：
+Where a coroutine switches is decided entirely by code: control is handed off only when `coroutine.yield` runs. So the output order of two coroutines is deterministic and reproducible:
 
 ```lua
 local function worker(name)
     for i = 1, 2 do
         print(name, "step", i)
-        coroutine.yield()      -- 唯一可能被打断的位置
+        coroutine.yield()      -- the only place it can be interrupted
     end
 end
 
@@ -33,58 +33,58 @@ coroutine.resume(coA, "A")   -- A step 1
 coroutine.resume(coB, "B")   -- B step 1
 coroutine.resume(coA)        -- A step 2
 coroutine.resume(coB)        -- B step 2
--- 输出
+-- output
 -- A	step	1
 -- B	step	1
 -- A	step	2
 -- B	step	2
 ```
 
-线程则随时可能被操作系统打断，同样的代码若用两个线程执行，输出顺序是不确定的。确定性让协程代码更容易调试和推理，但也意味着协程不能利用多核。这是协作式换取的代价。
+Threads, by contrast, can be interrupted by the OS at any moment, so running the same code in two threads yields a nondeterministic output order. Determinism makes coroutine code easier to debug and reason about, but it also means coroutines cannot take advantage of multiple cores. That is the price of being cooperative.
 
-## 3. 阻塞调用是协程的天敌
+## 3. Blocking calls are a coroutine's nemesis
 
-协程的"并发"只存在于 Lua 世界内部。一旦协程里调用了真正阻塞的操作（读文件、网络请求、`os.execute` 等），整个进程都会被卡住，其他协程毫无办法：
+A coroutine's "concurrency" exists only inside the Lua world. The moment a coroutine calls something that truly blocks (reading a file, a network request, `os.execute`, etc.), the whole process stalls and there is nothing the other coroutines can do:
 
 ```lua
 local co = coroutine.create(function()
-    -- io.read() 这类阻塞调用会卡住整个程序，其他协程也无法运行
+    -- A blocking call such as io.read() stalls the entire program; other coroutines cannot run either
     local line = "simulated blocking result"
     coroutine.yield(line)
 end)
 
-print(coroutine.resume(co))   -- 输出 true	simulated blocking result
+print(coroutine.resume(co))   -- output true	simulated blocking result
 ```
 
-正因为如此，基于协程的异步框架（如 OpenResty/ngx_lua）都把网络 I/O 做成"非阻塞 + 协程挂起"的组合：请求发出后协程 `yield` 让出，数据到达后再由框架 `resume` 恢复协程，从协程的使用者视角看依然是顺序代码。
+This is exactly why coroutine-based async frameworks (such as OpenResty/ngx_lua) implement network I/O as a combination of "non-blocking + coroutine suspension": the request is sent, the coroutine `yield`s to give up, and when the data arrives the framework `resume`s the coroutine. From the coroutine user's point of view the code still reads as straight-line code.
 
-## 4. 不需要锁的"并发"
+## 4. "Concurrency" without locks
 
-因为同一时刻最多只有一个协程在运行，两个协程之间的数据访问天然是串行的。只要不在 `yield` 调用之间穿插共享状态的修改，就不会出现竞态条件。线程则不同，对共享数据的每次访问都可能与其他线程交错，必须靠锁来保护。
+Because at most one coroutine runs at any moment, data access between two coroutines is naturally serial. As long as you do not modify shared state between `yield` calls, there is no race condition. Threads are different: every access to shared data can interleave with another thread and must be protected by a lock.
 
-当然，如果宿主程序把同一个 Lua 状态机交给多个线程同时访问，Lua 状态机本身不是线程安全的，仍然需要外部加锁或为每个线程分配独立的状态机（Lua 4.0 起支持的 multiple states 就是为这类场景设计的）。
+Of course, if a host program hands the same Lua state to multiple threads at once, the Lua state itself is not thread-safe. You still need external locking, or one separate state per thread (Lua 4.0 introduced multiple states specifically for this kind of scenario).
 
-## 5. 什么时候用协程，什么时候用线程
+## 5. When to use coroutines, when to use threads
 
-选择依据可以归纳为一句话：**要并行用线程，要结构清晰用协程**。
+The choice rule boils down to one sentence: **use threads when you need parallelism, use coroutines when you need clear structure**.
 
-- 用协程：任务以等待 I/O 为主、需要把异步回调改写成顺序代码、需要生成器和惰性求值、单机游戏逻辑分帧处理。
-- 用线程：任务以 CPU 计算为主且机器多核、需要真正的并发吞吐、调用的库本身会阻塞。
+- Use coroutines: tasks are mostly waiting on I/O, you need to rewrite async callbacks as straight-line code, you need generators and lazy evaluation, or you are splitting single-machine game logic across frames.
+- Use threads: tasks are mostly CPU computation on a multicore machine, you need true concurrent throughput, or the libraries you call block by themselves.
 
-在嵌入式和游戏领域，最常见的组合是"少量系统线程 + 每个线程里跑一个 Lua 状态机 + 状态机内部用协程做逻辑调度"，两者互为补充。
+In embedded and game development the most common combination is "a small number of system threads + one Lua state per thread + coroutines inside the state for logic scheduling" — the two complement each other.
 
-## 结语
+## Wrap-up
 
-协程与线程解决的是两个不同层面的问题：线程解决"如何同时执行"，协程解决"如何把交替执行写成清晰的顺序代码"。Lua 把协程做成语言内建，为的是给宿主程序一个可控的、确定性的多任务模型，切换只在用户态发生。
+Coroutines and threads solve problems at two different levels: threads solve "how to run at the same time," coroutines solve "how to write alternating execution as clear straight-line code." Lua makes coroutines a language builtin so the host program gets a controllable, deterministic multitasking model whose switches happen only in user space.
 
-## 参考资料
+## References
 
-- [Lua 5.4 官方手册](https://www.lua.org/manual/5.4/manual.html#2.5)
+- [Lua 5.4 reference manual · 2.5 Coroutines](https://www.lua.org/manual/5.4/manual.html#2.5)
 - [Coroutine](https://en.wikipedia.org/wiki/Coroutine)
 - [Continuation](https://en.wikipedia.org/wiki/Continuation)
 
 <!-- BACKLINKS-AUTO -->
-## 相关页面
+## Related pages
 
 - [coroutines](coroutines.md)
 - [applications](/knowledge/applications.md)

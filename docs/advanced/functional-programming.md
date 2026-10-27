@@ -1,14 +1,14 @@
-# 函数编程
+# Functional Programming
 
-函数在 Lua 里是一等公民：可以赋值给变量、当参数传、当返回值返回。这一页讲函数编程的三个核心概念：闭包、高阶函数和匿名函数。
+In Lua, functions are first-class citizens: they can be assigned to variables, passed as arguments, and returned as return values. This page covers three core concepts of functional programming: closures, higher-order functions, and anonymous functions.
 
-## 1. 闭包（Closures）
+## 1. Closures
 
-闭包是一个函数，它能够访问其外部函数的局部变量。闭包在函数编程中非常重要，因为它允许你在函数外部保留和操作局部状态。
+A closure is a function that can access the local variables of its enclosing function. Closures are very important in functional programming, because they let you keep and manipulate local state outside of the function.
 
-### 创建闭包
+### Creating Closures
 
-闭包是通过嵌套函数来实现的，内层函数可以访问外层函数的局部变量。
+Closures are implemented with nested functions; the inner function can access the local variables of the outer function.
 
 ```lua
 function createCounter()
@@ -20,13 +20,13 @@ function createCounter()
 end
 
 local counter = createCounter()
-print(counter())  -- 输出 1
-print(counter())  -- 输出 2
+print(counter())  -- 1
+print(counter())  -- 2
 ```
 
-### 闭包的应用
+### Applying Closures
 
-闭包可以用来创建数据封装、实现工厂函数等。
+Closures can be used for data encapsulation, factory functions, and more.
 
 ```lua
 function makeMultiplier(factor)
@@ -36,16 +36,16 @@ function makeMultiplier(factor)
 end
 
 local double = makeMultiplier(2)
-print(double(5))  -- 输出 10
+print(double(5))  -- 10
 ```
 
-## 2. 高阶函数
+## 2. Higher-Order Functions
 
-高阶函数是指接受函数作为参数或返回函数的函数。高阶函数是函数编程的核心，能够使代码更加简洁和灵活。
+A higher-order function is one that takes a function as an argument or returns a function. Higher-order functions are the core of functional programming and make code more concise and flexible.
 
-### 作为参数的函数
+### Functions as Arguments
 
-函数可以作为其他函数的参数传递，用于处理不同的操作。
+Functions can be passed as arguments to other functions to handle different operations.
 
 ```lua
 function map(tbl, func)
@@ -58,12 +58,12 @@ end
 
 local numbers = {1, 2, 3, 4}
 local squared = map(numbers, function(x) return x * x end)
-print(table.concat(squared, ", "))  -- 输出 1, 4, 9, 16
+print(table.concat(squared, ", "))  -- 1, 4, 9, 16
 ```
 
-### 作为返回值的函数
+### Functions as Return Values
 
-函数可以返回其他函数，实现更加灵活的功能。
+Functions can return other functions, enabling more flexible behavior.
 
 ```lua
 function createAdder(x)
@@ -73,26 +73,26 @@ function createAdder(x)
 end
 
 local add5 = createAdder(5)
-print(add5(10))  -- 输出 15
+print(add5(10))  -- 15
 ```
 
-## 3. 匿名函数
+## 3. Anonymous Functions
 
-匿名函数是没有名称的函数，可以在需要函数作为参数的地方直接创建和使用。
+An anonymous function is a function without a name, which can be created and used directly wherever a function is expected as an argument.
 
-### 创建匿名函数
+### Creating Anonymous Functions
 
-匿名函数可以用于临时操作，例如作为函数参数传递。
+Anonymous functions can be used for temporary operations, for example when passing them as a function argument.
 
 ```lua
 local numbers = {1, 2, 3, 4}
 local result = map(numbers, function(x) return x * 2 end)
-print(table.concat(result, ", "))  -- 输出 2, 4, 6, 8
+print(table.concat(result, ", "))  -- 2, 4, 6, 8
 ```
 
-### 匿名函数的应用
+### Applying Anonymous Functions
 
-匿名函数常用于临时操作、事件处理等场景。
+Anonymous functions are commonly used for temporary operations, event handling, and similar scenarios.
 
 ```lua
 local function filter(tbl, predicate)
@@ -107,22 +107,22 @@ end
 
 local numbers = {1, 2, 3, 4, 5}
 local even = filter(numbers, function(x) return x % 2 == 0 end)
-print(table.concat(even, ", "))  -- 输出 2, 4
+print(table.concat(even, ", "))  -- 2, 4
 ```
 
-## 4. 总结
+## 4. Summary
 
-闭包把状态留在函数里，高阶函数把行为当参数传，匿名函数省掉不必要的命名。三者组合起来，就是 Lua 里函数编程的基础。
+Closures keep state inside a function, higher-order functions pass behavior as an argument, and anonymous functions skip unnecessary naming. Put the three together and you have the foundation of functional programming in Lua.
 
-## 参考资料
+## References
 
-- [Lua 5.4 官方手册](https://www.lua.org/manual/5.4/manual.html#2.4)
+- [Lua 5.4 reference manual · 2.4 Statements](https://www.lua.org/manual/5.4/manual.html#2.4)
 - [Functional_programming](https://en.wikipedia.org/wiki/Functional_programming)
 - [First-class_function](https://en.wikipedia.org/wiki/First-class_function)
 - [Higher-order_function](https://en.wikipedia.org/wiki/Higher-order_function)
 
 <!-- BACKLINKS-AUTO -->
-## 相关页面
+## Related pages
 
 - [glossary](/glossary.md)
 - [core-concepts](/knowledge/core-concepts.md)

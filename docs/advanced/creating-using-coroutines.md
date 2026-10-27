@@ -1,12 +1,12 @@
-# 协程的创建与使用
+# Creating and Using Coroutines
 
-我在项目里用协程时，主要会回查创建方式、参数传递和错误处理这些细节；相关操作由 Lua 的 `coroutine` 库提供。
+When I use coroutines in a project, what I mostly come back to check are the details of creation, argument passing, and error handling; the relevant operations are provided by Lua's `coroutine` library.
 
-## 1. 创建协程的两种方式
+## 1. Two Ways to Create a Coroutine
 
 ### 1.1 coroutine.create
 
-`coroutine.create(f)` 返回一个 `thread` 类型的协程对象，需要显式地调用 `coroutine.resume` 来启动或恢复它：
+`coroutine.create(f)` returns a coroutine object of type `thread`, which you have to start or resume explicitly with `coroutine.resume`:
 
 ```lua
 local co = coroutine.create(function(name)
@@ -14,15 +14,15 @@ local co = coroutine.create(function(name)
     return "finished"
 end)
 
-print(type(co))               -- 输出 thread
-print(coroutine.resume(co, "Lua"))   -- 输出 hello,	Lua 和 true	finished
+print(type(co))               -- thread
+print(coroutine.resume(co, "Lua"))   -- hello,	Lua  and true	finished
 ```
 
-第一次 `resume` 时，除了协程对象以外的参数会作为参数传给协程函数；函数的返回值则作为 `resume` 的返回值交还给调用者。
+On the first `resume`, the arguments other than the coroutine object are passed to the coroutine function; the function's return values are handed back to the caller as the return values of `resume`.
 
 ### 1.2 coroutine.wrap
 
-`coroutine.wrap(f)` 返回一个普通函数，调用它就相当于对协程执行一次 `resume`，并直接拿到 `yield` 出来的值：
+`coroutine.wrap(f)` returns an ordinary function; calling it is equivalent to one `resume` of the coroutine, and you get the `yield`ed value directly:
 
 ```lua
 local counter = coroutine.wrap(function()
@@ -31,42 +31,42 @@ local counter = coroutine.wrap(function()
     end
 end)
 
-print(counter())  -- 输出 1
-print(counter())  -- 输出 2
-print(counter())  -- 输出 3
+print(counter())  -- 1
+print(counter())  -- 2
+print(counter())  -- 3
 ```
 
-两种方式的取舍：`create` 返回的协程对象可以配合 `status`、`close` 等函数使用，且错误以返回值形式报告，更安全；`wrap` 更简洁，常用于把协程当作迭代器或生成器使用。
+The trade-off between the two: the coroutine object returned by `create` works with functions like `status` and `close`, and errors are reported as return values, which is safer. `wrap` is more concise and is often used to treat a coroutine as an iterator or generator.
 
-## 2. 与协程交换数据
+## 2. Exchanging Data with a Coroutine
 
-协程与调用者之间有两条数据通道，方向相反：
+There are two data channels between a coroutine and its caller, running in opposite directions:
 
-- `yield(args)` 的参数 → 作为这一次 `resume` 的返回值，从协程流向调用者。
-- `resume(co, args)` 的额外参数 → 作为上一次 `yield` 的返回值，从调用者流向协程。
+- The arguments of `yield(args)` → become the return values of this `resume`, flowing from the coroutine to the caller.
+- The extra arguments of `resume(co, args)` → become the return values of the previous `yield`, flowing from the caller to the coroutine.
 
 ```lua
 local co = coroutine.create(function(initial)
     local n = initial
     while true do
-        local step = coroutine.yield(n)   -- 交出当前值 n，等待调用者提供步长 step
+        local step = coroutine.yield(n)   -- hand out the current value n, wait for the caller to supply a step
         if not step then break end
         n = n + step
     end
     return n
 end)
 
-print(coroutine.resume(co, 100))   -- 输出 true	100
-print(coroutine.resume(co, 5))     -- 输出 true	105
-print(coroutine.resume(co, 20))    -- 输出 true	125
-print(coroutine.resume(co))        -- 输出 true	125
+print(coroutine.resume(co, 100))   -- true	100
+print(coroutine.resume(co, 5))     -- true	105
+print(coroutine.resume(co, 20))    -- true	125
+print(coroutine.resume(co))        -- true	125
 ```
 
-这个例子实现了一个可以由外部驱动步长的累加器：调用者每 `resume` 一次，协程就前进一步，并把中间结果交出来。
+This example implements an accumulator whose step is driven from the outside: every time the caller `resume`s, the coroutine advances one step and hands out the intermediate result.
 
-## 3. 协程中的错误处理
+## 3. Error Handling in Coroutines
 
-用 `create` 创建的协程内部发生错误时，错误不会终止整个程序，而是通过 `resume` 的返回值报告：
+When an error occurs inside a coroutine created with `create`, it does not terminate the whole program; it is reported through the return values of `resume`:
 
 ```lua
 local co = coroutine.create(function()
@@ -74,36 +74,36 @@ local co = coroutine.create(function()
 end)
 
 local ok, err = coroutine.resume(co)
-print(ok)   -- 输出 false
-print(err)  -- 输出形如 "demo.lua:2: something failed"（含出错位置）
+print(ok)   -- false
+print(err)  -- something like "demo.lua:2: something failed" (includes the error location)
 ```
 
-`wrap` 返回的函数则没有这层保护，协程内的错误会直接在调用处抛出，需要用 `pcall` 包裹：
+The function returned by `wrap` does not have this protection: errors inside the coroutine are thrown at the call site directly and need to be wrapped with `pcall`:
 
 ```lua
 local f = coroutine.wrap(function()
     error("boom", 0)
 end)
 
-print(pcall(f))   -- 输出 false	boom
+print(pcall(f))   -- false	boom
 ```
 
-发生错误后协程会直接进入死亡状态，不能再恢复：
+After an error the coroutine goes straight into the dead state and cannot be resumed again:
 
 ```lua
 local co = coroutine.create(function()
     error("oops")
 end)
 
-coroutine.resume(co)        -- 返回 false 和错误信息
-print(coroutine.status(co)) -- 输出 dead
+coroutine.resume(co)        -- returns false and the error message
+print(coroutine.status(co)) -- dead
 ```
 
-如果需要带完整调用栈的错误信息，可以在协程函数内部用 `xpcall` 包裹业务逻辑，或改用 `wrap` 并在外层配合 `pcall` 处理。
+If you need error messages with the full call stack, wrap the business logic inside the coroutine function with `xpcall`, or switch to `wrap` and handle it on the outside with `pcall`.
 
-## 4. 结束协程
+## 4. Ending a Coroutine
 
-协程函数返回后协程自然死亡，此外还可以用 `coroutine.close` 主动关闭一个挂起中的协程（Lua 5.4 新增）：
+A coroutine dies naturally once its coroutine function returns; you can also close a suspended coroutine explicitly with `coroutine.close` (new in Lua 5.4):
 
 ```lua
 local co = coroutine.create(function()
@@ -111,25 +111,25 @@ local co = coroutine.create(function()
     print("never reached")
 end)
 
-print(coroutine.resume(co))    -- 输出 true	working
-print(coroutine.close(co))     -- 输出 true（协程被关闭）
-print(coroutine.status(co))    -- 输出 dead
+print(coroutine.resume(co))    -- true	working
+print(coroutine.close(co))     -- true (the coroutine is closed)
+print(coroutine.status(co))    -- dead
 ```
 
-被 `close` 关闭的协程无法再恢复；若协程内部定义了待关闭变量（to-be-closed 变量），关闭时它们的 `__close` 元方法会被依次调用，适合用来释放资源。
+A coroutine closed by `close` cannot be resumed again; if to-be-closed variables are defined inside the coroutine, their `__close` metamethods are called in turn when it is closed, which makes this a good fit for releasing resources.
 
-## 结语
+## Wrap-up
 
-创建协程只需要 `create` 或 `wrap` 一行代码，真正的关键在于理解参数如何在 `resume` 与 `yield` 之间双向流动，以及 `create` 与 `wrap` 在错误处理上的差异。迭代器、任务调度这些结构，都是在这个基础上搭的。
+Creating a coroutine takes only one line of `create` or `wrap`; the real key is understanding how arguments flow in both directions between `resume` and `yield`, and how `create` and `wrap` differ in error handling. Iterators, task schedulers, and the like are all built on top of this.
 
-## 参考资料
+## References
 
-- [Lua 5.4 官方手册](https://www.lua.org/manual/5.4/manual.html#2.5)
+- [Lua 5.4 reference manual · 2.5 Functions](https://www.lua.org/manual/5.4/manual.html#2.5)
 - [Coroutine](https://en.wikipedia.org/wiki/Coroutine)
-- [PIL · 协程](https://www.lua.org/pil/10.html)
+- [PIL · Coroutines](https://www.lua.org/pil/10.html)
 
 <!-- BACKLINKS-AUTO -->
-## 相关页面
+## Related pages
 
 - [coroutines](coroutines.md)
 - [core-concepts](/knowledge/core-concepts.md)

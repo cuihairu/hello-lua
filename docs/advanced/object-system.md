@@ -1,18 +1,18 @@
-# 基于表的对象系统
+# A Table-Based Object System
 
-Lua 本身并没有内建的类和继承机制，但利用表（tables）和元表（metatables），可以搭出类、实例、继承这些面向对象的特性。
+Lua has no built-in class or inheritance mechanism, but using tables and metatables you can build up the object-oriented features of classes, instances, and inheritance.
 
-## 1. 基本概念
+## 1. Basic Concepts
 
-表是 Lua 的核心数据结构，数组、字典、对象都能用它表示，对象系统就建在表上。元表给表附加行为，比如操作符重载，或者在访问不存在的字段时执行特定操作。
+Tables are Lua's core data structure — arrays, dictionaries, and objects can all be represented with one. The object system is built right on top of tables. Metatables attach behavior to tables, such as operator overloading, or performing a specific operation when a nonexistent field is accessed.
 
-## 2. 定义类和创建实例
+## 2. Defining Classes and Creating Instances
 
-通过表和元表，可以模拟类和实例的概念。以下是一个简单的实现：
+With tables and metatables, you can simulate the concepts of classes and instances. Here is a simple implementation:
 
-### 2.1 定义类
+### 2.1 Defining a Class
 
-定义一个类通常涉及创建一个表并为其指定一个元表。这个元表会包含类的方法。
+Defining a class usually involves creating a table and assigning it a metatable. That metatable will contain the class's methods.
 
 ```lua
 local Dog = {}
@@ -30,29 +30,29 @@ function Dog:bark()
 end
 ```
 
-在这个例子中：
+In this example:
 
-- `Dog` 表代表一个类。
-- `Dog.__index = Dog` 使得 `Dog` 表的实例可以访问 `Dog` 表中定义的方法。
-- `Dog:new` 是一个构造函数，用来创建新的 `Dog` 实例。
-- `Dog:bark` 是一个实例方法，所有 `Dog` 实例都可以调用它。
+- The `Dog` table represents a class.
+- `Dog.__index = Dog` lets instances of the `Dog` table access the methods defined on the `Dog` table.
+- `Dog:new` is a constructor used to create a new `Dog` instance.
+- `Dog:bark` is an instance method that every `Dog` instance can call.
 
-### 2.2 创建实例
+### 2.2 Creating Instances
 
-创建实例是通过调用 `new` 方法完成的：
+An instance is created by calling the `new` method:
 
 ```lua
 local myDog = Dog:new("Rex", 5)
-myDog:bark()  -- 输出 Rex says: Woof!
+myDog:bark()  -- Rex says: Woof!
 ```
 
-## 3. 继承
+## 3. Inheritance
 
-Lua 支持基于原型的继承：创建一个新的表，把它作为已有表的扩展。
+Lua supports prototype-based inheritance: create a new table and use it as an extension of an existing one.
 
-### 3.1 定义继承
+### 3.1 Defining Inheritance
 
-下面的示例在 `Dog` 类的基础上创建一个 `Poodle` 类，并加上它特有的行为：
+The example below builds a `Poodle` class on top of the `Dog` class and adds behavior specific to it:
 
 ```lua
 local Poodle = setmetatable({}, { __index = Dog })
@@ -70,27 +70,27 @@ function Poodle:describe()
 end
 ```
 
-在这个例子中：
+In this example:
 
-- `Poodle` 表通过 `setmetatable` 继承了 `Dog` 表的方法和属性。
-- `Poodle:new` 方法调用了 `Dog:new` 方法来创建基本的 `Dog` 实例，并添加了 `size` 属性。
-- `Poodle:describe` 是 `Poodle` 类特有的方法，用来描述狗的大小。
+- The `Poodle` table inherits the methods and properties of the `Dog` table through `setmetatable`.
+- The `Poodle:new` method calls `Dog:new` to create a basic `Dog` instance and adds the `size` property.
+- `Poodle:describe` is a method unique to the `Poodle` class, used to describe the dog's size.
 
-### 3.2 使用继承
+### 3.2 Using Inheritance
 
-创建 `Poodle` 实例并使用其特有的方法：
+Create a `Poodle` instance and use its specific method:
 
 ```lua
 local myPoodle = Poodle:new("Fluffy", 3, "large")
-myPoodle:bark()      -- 输出 Fluffy says: Woof!
-myPoodle:describe()  -- 输出 Fluffy is a large poodle.
+myPoodle:bark()      -- Fluffy says: Woof!
+myPoodle:describe()  -- Fluffy is a large poodle.
 ```
 
-## 4. 组合
+## 4. Composition
 
-除了继承，Lua 中的对象系统还可以通过组合来实现复用。组合指的是将一个对象作为另一个对象的属性来实现功能的扩展。
+Besides inheritance, Lua's object system also achieves reuse through composition. Composition means extending functionality by making one object a property of another.
 
-### 4.1 组合示例
+### 4.1 A Composition Example
 
 ```lua
 local Engine = {}
@@ -124,35 +124,35 @@ function Car:describe()
 end
 ```
 
-在这个例子中：
+In this example:
 
-- `Engine` 表示一个引擎类。
-- `Car` 表示一个汽车类，包含一个 `Engine` 实例作为属性。
-- `Car:describe` 方法调用 `Engine:info` 方法，展示了组合的实现。
+- `Engine` represents an engine class.
+- `Car` represents a car class and contains an `Engine` instance as a property.
+- The `Car:describe` method calls the `Engine:info` method, demonstrating how composition is implemented.
 
-### 4.2 使用组合
+### 4.2 Using Composition
 
 ```lua
 local myEngine = Engine:new("V8", 400)
 local myCar = Car:new("Ford", "Mustang", myEngine)
 myCar:describe()
--- 输出：
+-- output:
 -- Car make: Ford, model: Mustang
 -- Engine type: V8, Horsepower: 400
 ```
 
-## 5. 总结
+## 5. Summary
 
-尽管 Lua 没有内建的类和继承机制，但表和元表的组合就能实现类的定义、实例的创建、继承和组合。全篇用到的原语只有 `setmetatable` 和 `__index`，其余都是约定。
+Although Lua has no built-in class or inheritance mechanism, the combination of tables and metatables is enough to implement defining classes, creating instances, inheritance, and composition. The only primitives used throughout are `setmetatable` and `__index`; everything else is convention.
 
-## 参考资料
+## References
 
-- [Lua 5.4 官方手册](https://www.lua.org/manual/5.4/manual.html#2.6)
+- [Lua 5.4 reference manual · 2.6 Tables](https://www.lua.org/manual/5.4/manual.html#2.6)
 - [Object-oriented_programming](https://en.wikipedia.org/wiki/Object-oriented_programming)
 - [Metaprogramming](https://en.wikipedia.org/wiki/Metaprogramming)
 
 <!-- BACKLINKS-AUTO -->
-## 相关页面
+## Related pages
 
 - [README](README.md)
 - [object-oriented](object-oriented.md)

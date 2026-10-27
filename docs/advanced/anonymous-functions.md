@@ -1,42 +1,42 @@
-# 匿名函数
+# Anonymous functions
 
-匿名函数（Anonymous Functions）是没有名字的函数，也称为 Lambda 函数。它适合那种只用一次、不值得单独命名的小函数：定义完就地传出去，或者赋给一个变量。
+Anonymous functions are functions without a name, also called lambda functions. They are a good fit for small functions used only once, not worth naming on their own: define them and pass them off right where you need them, or assign them to a variable.
 
-## 1. 匿名函数的定义
+## 1. Defining anonymous functions
 
-匿名函数的语法与普通函数类似，但是它没有名字。定义时可以直接将匿名函数传给其他函数，或赋值给变量。
+The syntax for an anonymous function is similar to that of a regular function, but it has no name. When defining one, you can pass the anonymous function directly to another function, or assign it to a variable.
 
-### 基本用法
+### Basic usage
 
 ```lua
 local result = (function(x, y)
     return x + y
 end)(10, 20)
 
-print(result)  -- 输出 30
+print(result)  -- output 30
 ```
 
-在这个例子中，匿名函数定义了两个参数 `x` 和 `y`，并返回它们的和。函数被直接调用，并传入了参数 10 和 20，结果为 30。
+In this example, the anonymous function defines two parameters, `x` and `y`, and returns their sum. The function is called immediately, with the arguments 10 and 20, giving a result of 30.
 
-### 赋值给变量
+### Assigning to a variable
 
 ```lua
 local multiply = function(x, y)
     return x * y
 end
 
-print(multiply(5, 6))  -- 输出 30
+print(multiply(5, 6))  -- output 30
 ```
 
-在这个例子中，匿名函数被赋值给变量 `multiply`，然后可以通过 `multiply` 变量来调用该函数。
+In this example, the anonymous function is assigned to the variable `multiply`, and can then be called through the `multiply` variable.
 
-## 2. 匿名函数的应用
+## 2. Uses of anonymous functions
 
-匿名函数最常见的用途，是定义只用一次的函数。典型的场景有回调、高阶函数的参数和事件处理。
+The most common use for anonymous functions is defining a function that is only used once. Typical scenarios include callbacks, arguments to higher-order functions, and event handlers.
 
-### 回调函数
+### Callback functions
 
-匿名函数常用于回调函数中，特别是在异步编程和事件处理的场景中。
+Anonymous functions are often used as callbacks, particularly in async programming and event handling.
 
 ```lua
 local function performAction(action)
@@ -45,14 +45,14 @@ end
 
 performAction(function()
     print("Action performed!")
-end)  -- 输出 Action performed!
+end)  -- output Action performed!
 ```
 
-在这个例子中，`performAction` 函数接受一个回调函数 `action`，并在内部调用它。传递的匿名函数在调用时会输出 "Action performed!"。
+In this example, the `performAction` function takes a callback `action` and calls it internally. The anonymous function passed in prints "Action performed!" when called.
 
-### 函数式编程
+### Functional programming
 
-在函数式编程中，匿名函数经常用于高阶函数，如 `map`、`filter` 和 `reduce`。
+In functional programming, anonymous functions are frequently used with higher-order functions such as `map`, `filter`, and `reduce`.
 
 ```lua
 local function map(tbl, func)
@@ -65,54 +65,54 @@ end
 
 local numbers = {1, 2, 3, 4, 5}
 local squaredNumbers = map(numbers, function(x) return x * x end)
-print(table.concat(squaredNumbers, ", "))  -- 输出 1, 4, 9, 16, 25
+print(table.concat(squaredNumbers, ", "))  -- output 1, 4, 9, 16, 25
 ```
 
-在这个例子中，`map` 函数接受一个列表 `tbl` 和一个函数 `func`，将 `func` 应用于列表中的每个元素。匿名函数用于定义如何对每个元素进行平方操作。
+In this example, the `map` function takes a list `tbl` and a function `func`, and applies `func` to every element of the list. The anonymous function defines how each element is squared.
 
-### 事件处理
+### Event handling
 
-匿名函数常用于事件处理程序中，如在用户界面编程中。
+Anonymous functions are commonly used in event handlers, such as in user interface programming.
 
 ```lua
 local function onClick(callback)
-    -- 模拟按钮点击事件
+    -- simulate a button click event
     callback()
 end
 
 onClick(function()
     print("Button clicked!")
-end)  -- 输出 Button clicked!
+end)  -- output Button clicked!
 ```
 
-在这个例子中，`onClick` 函数接受一个回调函数 `callback`，并在事件发生时调用它。传递的匿名函数会输出 "Button clicked!"。
+In this example, the `onClick` function takes a callback `callback` and calls it when the event fires. The anonymous function passed in prints "Button clicked!".
 
-## 3. 匿名函数的优势
+## 3. Advantages of anonymous functions
 
-### 简洁和灵活
+### Concise and flexible
 
-函数在哪里用，就在哪里定义，不用先声明一个命名函数再引用它。简单的操作一行就能写完。
+Define a function right where you use it, without first declaring a named function and then referencing it. Simple operations can be written in a single line.
 
-### 函数式编程支持
+### Functional programming support
 
-没有匿名函数，`map`、`filter` 这类高阶函数每次都得先给要传入的逻辑起个名字。有了它，函数作为参数传递才顺手。
+Without anonymous functions, every higher-order function like `map` or `filter` would require you to name the logic you want to pass in first. With them, passing functions as arguments becomes a natural fit.
 
-### 临时性使用
+### One-off use
 
-只在局部用一次的函数，没有必要给它起名字。少一个名字，就少一处要维护的东西。
+A function used only once in a local scope does not need a name. One fewer name means one fewer thing to maintain.
 
-## 4. 总结
+## 4. Summary
 
-匿名函数和普通函数在 Lua 里是同一种东西，只是定义时不绑定名字。回调、高阶函数的参数、事件处理器，这些只用一次的函数用匿名形式最省事。
+Anonymous functions and regular functions are the same thing in Lua, except that no name is bound at definition time. For callbacks, arguments to higher-order functions, and event handlers, the anonymous form is the most convenient for these one-off functions.
 
-## 参考资料
+## References
 
-- [Lua 5.4 官方手册](https://www.lua.org/manual/5.4/manual.html#2.4)
+- [Lua 5.4 reference manual · 2.4 Basic Functions](https://www.lua.org/manual/5.4/manual.html#2.4)
 - [First-class_function](https://en.wikipedia.org/wiki/First-class_function)
 - [Closure_(computer_programming)](https://en.wikipedia.org/wiki/Closure_(computer_programming))
 
 <!-- BACKLINKS-AUTO -->
-## 相关页面
+## Related pages
 
 - [README](README.md)
 - [glossary](/glossary.md)

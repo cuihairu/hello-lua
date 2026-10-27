@@ -1,16 +1,16 @@
-# 错误处理机制
+# Error handling mechanisms
 
-Lua 的运行时错误靠 `pcall` 和 `xpcall` 捕捉。这两个函数把"出错了"从程序崩溃变成一次带返回值的调用，这一页讲它们的使用方式和差别。
+Lua's runtime errors are caught by `pcall` and `xpcall`. These two functions turn "something went wrong" from a program crash into a call with return values. This page covers how they are used and how they differ.
 
-## 1. `pcall`（Protected Call）
+## 1. `pcall` (Protected Call)
 
-`pcall` 用于安全地调用一个可能发生错误的函数。函数执行中出现的错误会被它捕捉住，程序继续往下走。
+`pcall` is used to call a function that might raise an error safely. Any error that occurs while the function runs is caught, and the program keeps going.
 
-用法：
+Usage:
 
   ```lua
   local status, result = pcall(function()
-      -- 可能抛出错误的代码
+      -- code that may raise an error
       error("division by zero")
   end)
   
@@ -21,15 +21,15 @@ Lua 的运行时错误靠 `pcall` 和 `xpcall` 捕捉。这两个函数把"出�
   end
   ```
 
-参数：第一个是要执行的函数，其余参数原样传给它。
+Arguments: the first is the function to execute; the remaining arguments are passed to it unchanged.
 
-返回值有两个：`status` 为 `true` 表示执行成功，`false` 表示出错了；`result` 成功时是函数返回值，失败时是错误信息。
+There are two return values: `status` is `true` when execution succeeds and `false` when an error occurred; `result` is the function's return value on success and the error message on failure.
 
-## 2. `xpcall`（Extended Protected Call）
+## 2. `xpcall` (Extended Protected Call)
 
-`xpcall` 是 `pcall` 的扩展版本，多接收一个自定义的错误处理函数，出错时会先调用它。
+`xpcall` is an extended version of `pcall` that takes one extra argument: a custom error handler, which is called first when an error occurs.
 
-用法：
+Usage:
 
   ```lua
   local function errorHandler(err)
@@ -37,54 +37,54 @@ Lua 的运行时错误靠 `pcall` 和 `xpcall` 捕捉。这两个函数把"出�
   end
 
   local status, result = xpcall(function()
-      -- 可能抛出错误的代码
-      error("division by zero", 0)  -- 第二个参数为 0 表示不在消息前添加出错位置
+      -- code that may raise an error
+      error("division by zero", 0)  -- a second argument of 0 means do not prepend the error location
   end, errorHandler)
   
-  print(result)  -- 输出 "Caught an error: division by zero"
+  print(result)  -- output "Caught an error: division by zero"
   ```
 
-参数：第一个是要执行的函数，第二个是错误处理函数。
+Arguments: the first is the function to execute, the second is the error handler.
 
-返回值同样两个，区别在 `result`：失败时它是错误处理函数加工过的信息。
+The return values are the same two, with the difference being `result`: on failure it is the information processed by the error handler.
 
-## 3. 错误处理流程
+## 3. The error-handling flow
 
-错误处理的基本流程：先用 `pcall` 或 `xpcall` 包住可能出错的调用，再检查返回的 `status` 判断是否成功，出错时通过 `result` 或自定义的错误处理函数拿到错误信息。
+The basic error-handling flow: first wrap a potentially failing call in `pcall` or `xpcall`, then check the returned `status` to see whether it succeeded, and on failure retrieve the error message through `result` or a custom error handler.
 
-## 4. 错误消息
+## 4. Error messages
 
-Lua 的错误消息通常包括错误类型和描述信息。可以用 `error` 函数主动抛出错误：
+Lua error messages typically include the error type and a description. You can raise an error deliberately with the `error` function:
 
   ```lua
   error("An unexpected error occurred")
   ```
 
-它接收一个错误消息字符串，抛出错误并终止当前函数的执行，把错误消息沿调用栈向上传。
+It takes an error message string, raises the error and stops execution of the current function, propagating the message up the call stack.
 
-## 5. 自定义错误处理
+## 5. Custom error handling
 
-错误处理函数是做善后加工的地方：记日志、换一种错误消息格式，然后返回最终给调用者看的信息。
+The error handler is where the post-processing happens: log it, reformat the message, then return the final information for the caller to see.
 
   ```lua
   local function customErrorHandler(err)
-      -- 记录错误日志
+      -- record an error log
       print("Custom error log: " .. err)
-      -- 返回自定义的错误信息
+      -- return a custom error message
       return "Custom Error: " .. err
   end
 
   local status, result = xpcall(function()
-      -- 可能抛出错误的代码
+      -- code that may raise an error
       error("division by zero", 0)
   end, customErrorHandler)
   
-  print(result)  -- 输出 "Custom Error: division by zero"
+  print(result)  -- output "Custom Error: division by zero"
   ```
 
-## 6. 调试工具
+## 6. Debugging tools
 
-`debug.traceback` 返回当前调用堆栈的跟踪信息，出错时能定位到具体的调用链：
+`debug.traceback` returns tracing information for the current call stack, which lets you pinpoint the exact call chain when an error occurs:
 
   ```lua
   local function riskyFunction()
@@ -97,18 +97,18 @@ Lua 的错误消息通常包括错误类型和描述信息。可以用 `error` �
   end
   ```
 
-## 总结
+## Summary
 
-两个函数的分工很清楚：`pcall` 只报告错误，`xpcall` 多给一次在错误现场加工信息的机会。Lua 异常处理的基本面就是这两个函数，再加上主动抛错的 `error`。
+The division of labor between the two functions is clear: `pcall` only reports the error, while `xpcall` gives you one extra chance to process the information at the error site. The basics of Lua exception handling are these two functions, plus `error` for raising errors yourself.
 
-## 参考资料
+## References
 
-- [Lua 5.4 官方手册](https://www.lua.org/manual/5.4/manual.html#2.4)
+- [Lua 5.4 reference manual · 2.4 Basic Functions](https://www.lua.org/manual/5.4/manual.html#2.4)
 - [Exception_handling](https://en.wikipedia.org/wiki/Exception_handling)
 - [Continuation](https://en.wikipedia.org/wiki/Continuation)
 
 <!-- BACKLINKS-AUTO -->
-## 相关页面
+## Related pages
 
 - [README](README.md)
 - [error-handling](error-handling.md)

@@ -1,57 +1,57 @@
-# 协程的基本概念
+# Coroutine basics
 
-协程（coroutine）是一类特殊的函数：它可以在执行到一半时暂停（挂起），保存当前的执行状态，之后又可以从暂停的位置继续运行。Lua 通过标准库 `coroutine` 提供了对协程的完整支持，协程本身是 Lua 的一种原生数据类型（`thread` 类型）。
+A coroutine is a special kind of function: it can pause (suspend) halfway through its execution, saving its current execution state, and later resume from exactly where it paused. Lua provides full coroutine support through the standard library's `coroutine` module, and a coroutine is itself a native Lua data type (the `thread` type).
 
-## 1. 什么是协程
+## 1. What a coroutine is
 
-可以把协程理解为"可以暂停和恢复的函数"：
+You can think of a coroutine as "a function that can pause and resume":
 
-- 普通函数一旦被调用，就一定会从头执行到结束（或中途出错）。
-- 协程在执行过程中可以调用 `coroutine.yield` 主动挂起，把控制权交还给调用者；之后通过 `coroutine.resume` 从挂起点继续执行。
+- A normal function, once called, always runs from start to finish (or errors out partway).
+- A coroutine can call `coroutine.yield` during execution to suspend itself, handing control back to the caller; it later resumes from the suspension point via `coroutine.resume`.
 
-协程是协作式的：切换时机完全由代码决定，不存在被强制打断的情况。
+Coroutines are cooperative: when a switch happens is entirely up to the code — nothing is ever force-interrupted.
 
-## 2. 创建与恢复
+## 2. Creating and resuming
 
-使用 `coroutine.create` 创建一个协程，参数是协程的函数体。创建后协程并不会立即运行，需要用 `coroutine.resume` 来启动它：
+Use `coroutine.create` to create a coroutine; the argument is the coroutine's function body. A coroutine doesn't start running as soon as it's created — you need `coroutine.resume` to kick it off:
 
 ```lua
 local co = coroutine.create(function()
     print("running inside the coroutine")
 end)
 
-print(co)                  -- 输出形如 thread: 0x...（协程是 thread 类型的值）
-print(coroutine.resume(co))   -- 输出 true（成功启动，函数正常返回）
-print(coroutine.status(co))   -- 输出 dead（函数执行完毕，协程死亡）
+print(co)                  -- looks like thread: 0x... (a coroutine is a value of type thread)
+print(coroutine.resume(co))   -- prints true (started successfully, function returned normally)
+print(coroutine.status(co))   -- prints dead (function finished, coroutine is dead)
 ```
 
-`coroutine.resume` 的第一个返回值是状态：协程正常运行结束或正常挂起时为 `true`，协程内部发生错误时为 `false`，后跟错误信息。
+The first return value of `coroutine.resume` is the status: `true` if the coroutine ended normally or suspended normally, `false` if an error occurred inside the coroutine, followed by the error message.
 
-## 3. 让出与恢复的往返
+## 3. The back and forth between yield and resume
 
-协程内部通过 `coroutine.yield` 挂起自己。`yield` 可以带参数，这些参数会成为 `resume` 调用的返回值；反过来，下一次 `resume` 传入的额外参数又会成为 `yield` 的返回值，二者构成一条双向通道：
+Inside a coroutine, `coroutine.yield` suspends it. `yield` can take arguments, and those arguments become the return values of the `resume` call; conversely, extra arguments passed to the next `resume` become the return value of `yield`. The two form a bidirectional channel:
 
 ```lua
 local co = coroutine.create(function(a, b)
     print("coroutine started with", a, b)
-    local x = coroutine.yield(a + b)   -- 把 a+b 交给 resume 的调用者，并等待下一次恢复
+    local x = coroutine.yield(a + b)   -- hands a+b to the resume caller and waits for the next resume
     print("received", x)
     return "done"
 end)
 
-print(coroutine.resume(co, 10, 20))   -- 输出 true	30
-print(coroutine.resume(co, 99))       -- 输出 received	99 和 true	done
+print(coroutine.resume(co, 10, 20))   -- prints true	30
+print(coroutine.resume(co, 99))       -- prints received	99 and true	done
 ```
 
-上面这段代码完整地展示了协程中的数据流动：
+The code above shows the full flow of data through a coroutine:
 
-1. 第一次 `resume` 把 `10` 和 `20` 作为函数参数传入，函数执行到 `yield(a + b)` 时挂起，并把 `30` 返回给调用者。
-2. 第二次 `resume` 传入的 `99` 成为 `yield` 的返回值，协程继续执行到 `return` 结束。
-3. `return` 的值也会作为 `resume` 的返回值交还给调用者。
+1. The first `resume` passes `10` and `20` as function arguments. When the function reaches `yield(a + b)`, it suspends and returns `30` to the caller.
+2. The `99` passed to the second `resume` becomes the return value of `yield`, and the coroutine continues until it hits `return`.
+3. The value returned by `return` is also handed back to the caller as the return value of `resume`.
 
-## 4. coroutine.wrap：更轻量的使用方式
+## 4. coroutine.wrap: a lighter way to use coroutines
 
-`coroutine.wrap` 同样可以创建协程，但返回值是"恢复函数"，不是协程对象：每次调用这个函数相当于 `resume` 一次，协程 `yield` 出的值直接作为函数返回值返回：
+`coroutine.wrap` also creates coroutines, but returns a "resume function" instead of a coroutine object: each call to that function is equivalent to one `resume`, and the value the coroutine `yield`s is returned directly as the function's return value:
 
 ```lua
 local gen = coroutine.wrap(function()
@@ -60,25 +60,25 @@ local gen = coroutine.wrap(function()
     end
 end)
 
-print(gen())  -- 输出 1
-print(gen())  -- 输出 4
-print(gen())  -- 输出 9
+print(gen())  -- prints 1
+print(gen())  -- prints 4
+print(gen())  -- prints 9
 ```
 
-`wrap` 用起来更简洁，非常适合把协程包装成迭代器。区别在于：`wrap` 返回的函数在协程内部出错时会直接把错误抛给调用者，而 `create` + `resume` 会把错误作为返回值安静地交回来。需要检查错误时，用 `create` 更合适。
+`wrap` is more concise to use and is well suited to wrapping coroutines as iterators. The difference is that a function returned by `wrap` throws errors from inside the coroutine straight back to the caller, whereas `create` + `resume` quietly returns the error as a return value. When you need to check for errors, `create` is the better choice.
 
-## 结语
+## Wrap-up
 
-协程的核心只有三个动作：`create` 创建、`resume` 恢复、`yield` 挂起，再加上 `status` 查看状态和 `wrap` 做轻量包装。挂起时保存现场，恢复时继续执行，`resume`/`yield` 之间双向传值。后面的调度器、异步封装，都是这几个动作的组合。
+A coroutine boils down to three actions: `create` to make one, `resume` to continue it, `yield` to suspend it — plus `status` to check its state and `wrap` for lightweight wrapping. Suspend to save the scene, resume to continue, and pass values in both directions between `resume` and `yield`. The schedulers and async wrappers that come later are all combinations of these few actions.
 
-## 参考资料
+## References
 
-- [Lua 5.4 官方手册](https://www.lua.org/manual/5.4/manual.html#2.5)
+- [Lua 5.4 reference manual · 2.5 Error handling](https://www.lua.org/manual/5.4/manual.html#2.5)
 - [Coroutine](https://en.wikipedia.org/wiki/Coroutine)
-- [PIL · 协程](https://www.lua.org/pil/10.html)
+- [PIL · Coroutines](https://www.lua.org/pil/10.html)
 
 <!-- BACKLINKS-AUTO -->
-## 相关页面
+## Related pages
 
 - [coroutines](coroutines.md)
 - [core-concepts](/knowledge/core-concepts.md)

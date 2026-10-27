@@ -1,22 +1,22 @@
-# 协程与并发编程
+# Coroutines and concurrent programming
 
-协程（coroutine）是 Lua 提供的一种协作式多任务机制。与操作系统线程不同，协程之间的切换完全由程序显式控制：一个协程只有在调用 `coroutine.yield` 时才会主动让出执行权，其余时候会一直运行到结束。借助这一特性，Lua 可以用非常低的成本实现迭代器、生产者-消费者模型、协作式调度器以及异步 I/O 的封装。
+Coroutines are a cooperative multitasking mechanism provided by Lua. Unlike OS threads, switching between coroutines is controlled entirely by the program explicitly: a coroutine only gives up execution when it calls `coroutine.yield`, and otherwise keeps running until it finishes. With this property, Lua can implement iterators, the producer-consumer model, a cooperative scheduler, and async I/O wrappers at very low cost.
 
-## 1. 并发与并行的区别
+## 1. Concurrency vs. parallelism
 
-讨论协程之前，先区分两个容易混淆的概念。并行（parallelism）指多个任务在同一时刻真正地同时执行，需要多核或多处理器的硬件支持。并发（concurrency）指多个任务在一段时间内交替推进，宏观上看起来"同时"进行，微观上可能只有一个在执行。
+Before discussing coroutines, it is worth separating two easy-to-confuse concepts. Parallelism means multiple tasks truly execute at the same time, which requires multicore or multiprocessor hardware. Concurrency means multiple tasks make progress in turn over a period of time: they appear to happen "at the same time" at a macro level, while at a micro level only one may be executing.
 
-Lua 的协程属于并发而不是并行。在同一个 Lua 状态机中，任意时刻最多只有一个协程在运行，其余协程都处于挂起状态。由于不存在真正的并行执行，协程之间访问共享数据时不会产生竞态条件，通常也不需要加锁，这是协程相对线程的一大优势。
+Lua coroutines belong to concurrency rather than parallelism. In the same Lua state, at most one coroutine runs at any moment, and the rest are suspended. Because there is no true parallel execution, coroutines do not produce race conditions when accessing shared data and usually do not need locking — a major advantage of coroutines over threads.
 
-## 2. 用协程实现多任务交替
+## 2. Alternating multitasking with coroutines
 
-下面的例子创建了两个协程，由主程序交替恢复它们，模拟两个任务"并发"推进的效果：
+The following example creates two coroutines that the main program resumes alternately, simulating two tasks advancing "concurrently":
 
 ```lua
 local function task(name)
     for i = 1, 3 do
         print(name, "step", i)
-        coroutine.yield()   -- 让出执行权，等待下一次 resume
+        coroutine.yield()   -- give up execution, waiting for the next resume
     end
 end
 
@@ -27,7 +27,7 @@ for i = 1, 3 do
     coroutine.resume(coA, "A")
     coroutine.resume(coB, "B")
 end
--- 输出
+-- output
 -- A	step	1
 -- B	step	1
 -- A	step	2
@@ -36,16 +36,16 @@ end
 -- B	step	3
 ```
 
-可以看到，两个任务的执行是严格交替进行的：每次 `resume` 恢复一个任务，任务运行到 `yield` 处挂起，把控制权交还给主程序，主程序再决定接下来运行哪个任务。整个切换过程由代码显式控制，输出结果是确定的。
+You can see that the two tasks execute in strict alternation: each `resume` starts one task, the task runs until it suspends at `yield` and hands control back to the main program, and the main program then decides which task to run next. The entire switching process is controlled explicitly by code, so the output is deterministic.
 
-## 3. 生产者与消费者
+## 3. Producer and consumer
 
-生产者-消费者是协程最经典的应用之一。生产者在协程中生成数据，每生成一条就 `yield` 出去；消费者则通过 `resume` 索要数据：
+Producer-consumer is one of the most classic uses of coroutines. The producer generates data inside a coroutine and `yield`s each item as it is produced; the consumer requests data through `resume`:
 
 ```lua
 local producer = coroutine.create(function()
     for i = 1, 3 do
-        coroutine.yield("item-" .. i)   -- 生产一条数据并交给消费者
+        coroutine.yield("item-" .. i)   -- produce one item and hand it to the consumer
     end
 end)
 
@@ -53,17 +53,17 @@ for i = 1, 3 do
     local ok, item = coroutine.resume(producer)
     print("consumer got", item)
 end
--- 输出
+-- output
 -- consumer got	item-1
 -- consumer got	item-2
 -- consumer got	item-3
 ```
 
-与使用缓冲队列的传统写法相比，协程版本的代码是顺序书写的，不需要额外的同步机制，逻辑一目了然。
+Compared with the traditional buffered-queue approach, the coroutine version is written as straight-line code, needs no extra synchronization mechanism, and the logic is immediately clear.
 
-## 4. 简单的协作式调度器
+## 4. A simple cooperative scheduler
 
-把多个协程放进一个列表里轮流恢复，就得到了一个最简单的协作式调度器。协程在自己内部决定何时让出，调度器只负责"谁能继续运行"：
+Putting several coroutines into a list and resuming them in turn gives you the simplest cooperative scheduler. The coroutines decide for themselves when to yield; the scheduler is only responsible for "who gets to keep running":
 
 ```lua
 local function scheduler(tasks)
@@ -72,7 +72,7 @@ local function scheduler(tasks)
         for _, co in ipairs(tasks) do
             coroutine.resume(co)
             if coroutine.status(co) ~= "dead" then
-                table.insert(remaining, co)   -- 没跑完的任务留到下一轮
+                table.insert(remaining, co)   -- tasks that have not finished move to the next round
             end
         end
         tasks = remaining
@@ -88,7 +88,7 @@ scheduler({
         for i = 1, 2 do print("task B:", i); coroutine.yield() end
     end)
 })
--- 输出
+-- output
 -- task A:	1
 -- task B:	1
 -- task A:	2
@@ -96,28 +96,28 @@ scheduler({
 -- all tasks finished
 ```
 
-这种"任务轮转 + 主动让出"的模式是许多 Lua 框架实现异步 I/O、游戏帧逻辑的基础：把一次网络请求、一个动画步骤或一批数据处理封装成协程，在其等待点调用 `yield` 让出，宿主程序在合适的时机再恢复它。
+This "task rotation + voluntary yielding" pattern is the basis for how many Lua frameworks implement async I/O and game frame logic: wrap a network request, an animation step, or a batch of data processing in a coroutine, call `yield` at its waiting point to give up, and have the host program resume it at the right moment.
 
-## 5. 相关章节
+## 5. Related sections
 
-- [协程的基本概念](./coroutines-basics.md)
-- [协程的创建与使用](./creating-using-coroutines.md)
-- [协程的状态与生命周期](./coroutine-lifecycle.md)
-- [协程与线程的比较](./coroutines-vs-threads.md)
-- [协程的应用场景与最佳实践](./coroutine-best-practices.md)
+- [Coroutine basics](./coroutines-basics.md)
+- [Creating and using coroutines](./creating-using-coroutines.md)
+- [Coroutine states and lifecycle](./coroutine-lifecycle.md)
+- [Comparing coroutines and threads](./coroutines-vs-threads.md)
+- [Coroutine use cases and best practices](./coroutine-best-practices.md)
 
-## 结语
+## Wrap-up
 
-协程让 Lua 用很小的代价拿到结构化的并发：它是把"交替执行的任务"写成清晰顺序代码的控制结构，拉高计算吞吐是并行的事，与协程无关。同一个 Lua 状态里任意时刻只有一个协程在跑，所以共享数据不需要加锁。
+Coroutines give Lua structured concurrency at very little cost: they are a control structure for writing "alternating tasks" as clear straight-line code. Pushing through more computation is what parallelism is for, and has nothing to do with coroutines. In the same Lua state only one coroutine runs at any moment, so shared data does not need locking.
 
-## 参考资料
+## References
 
-- [Lua 5.4 官方手册](https://www.lua.org/manual/5.4/manual.html#2.5)
+- [Lua 5.4 reference manual · 2.5 Coroutines](https://www.lua.org/manual/5.4/manual.html#2.5)
 - [Coroutine](https://en.wikipedia.org/wiki/Coroutine)
-- [PIL · 协程](https://www.lua.org/pil/10.html)
+- [PIL · Coroutines](https://www.lua.org/pil/10.html)
 
 <!-- BACKLINKS-AUTO -->
-## 相关页面
+## Related pages
 
 - [glossary](/glossary.md)
 - [books](/knowledge/books.md)

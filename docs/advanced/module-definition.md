@@ -1,18 +1,18 @@
-# 模块的定义与加载
+# Defining and loading modules
 
-Lua 的模块就是一个返回表的 Lua 文件，表里放模块提供的函数和数据，加载用 `require`。
+A Lua module is just a Lua file that returns a table. The table holds the functions and data the module provides, and you load it with `require`.
 
-## 1. 模块的定义
+## 1. Defining a module
 
-### 1.1 定义一个模块
+### 1.1 Defining a module
 
-一个 Lua 模块通常是一个 Lua 文件：定义一个表，把函数和数据放进去，最后返回这个表。一个简单的示例：
+A Lua module is typically a Lua file: define a table, put your functions and data in it, and return that table at the end. A simple example:
 
 ```lua
 -- math_utils.lua
-local M = {}  -- 创建一个空表 M，用于存放模块的功能
+local M = {}  -- an empty table M to hold the module's functionality
 
--- 定义模块的功能
+-- define the module's functions
 function M.add(a, b)
     return a + b
 end
@@ -21,68 +21,68 @@ function M.subtract(a, b)
     return a - b
 end
 
-return M  -- 返回表 M
+return M  -- return table M
 ```
 
-在这个示例中，`math_utils` 模块提供了两个功能：`add` 和 `subtract`。这些功能被封装在表 `M` 中，并且 `M` 被返回作为模块的接口。
+In this example, the `math_utils` module provides two functions: `add` and `subtract`. These are packaged into the table `M`, which is returned as the module's interface.
 
-### 1.2 模块的命名
+### 1.2 Naming a module
 
-模块的文件名应该与模块名称一致。比如，模块 `math_utils` 的文件名应该是 `math_utils.lua`。Lua 的 `require` 函数会根据模块的名称查找对应的文件。
+A module's filename should match its module name. For example, the file for the `math_utils` module should be named `math_utils.lua`. Lua's `require` function looks up the corresponding file based on the module name.
 
-## 2. 加载模块
+## 2. Loading modules
 
-### 2.1 使用 `require` 加载模块
+### 2.1 Loading a module with `require`
 
-`require` 接收模块名，返回模块的表，之后就能通过这个表访问模块的功能：
+`require` takes a module name, returns the module's table, and you can then access the module's functions through that table:
 
 ```lua
-local math_utils = require("math_utils")  -- 加载模块 math_utils
+local math_utils = require("math_utils")  -- load the math_utils module
 
-print(math_utils.add(3, 5))         -- 输出 8
-print(math_utils.subtract(10, 4))   -- 输出 6
+print(math_utils.add(3, 5))         -- prints 8
+print(math_utils.subtract(10, 4))   -- prints 6
 ```
 
-`require` 函数会自动查找模块文件，并执行该文件中的 Lua 代码。执行后，模块的表会被返回，并且可以通过表访问模块的功能。
+The `require` function automatically finds the module file and executes the Lua code in it. After execution, the module's table is returned, and you can access the module's functions through the table.
 
-### 2.2 模块的查找路径
+### 2.2 Module search paths
 
-Lua 使用 `package.path` 和 `package.cpath` 来指定模块的查找路径：
+Lua uses `package.path` and `package.cpath` to specify module search paths:
 
-- `package.path`：用于查找 Lua 脚本模块的路径，默认情况下，它包含了一些常见的路径模式，如 `./?.lua`，表示 Lua 会在当前目录下查找 `.lua` 文件。
-- `package.cpath`：用于查找 C 扩展模块的路径，默认情况下，它包含了 C 扩展的路径模式，如 `./?.so`，表示 Lua 会在当前目录下查找 `.so` 文件（在 Unix-like 系统下）。
+- `package.path`: the path used to look up Lua script modules. By default, it contains some common path patterns like `./?.lua`, meaning Lua will look for `.lua` files in the current directory.
+- `package.cpath`: the path used to look up C extension modules. By default, it contains C extension path patterns like `./?.so`, meaning Lua will look for `.so` files in the current directory (on Unix-like systems).
 
-### 2.3 配置模块路径
+### 2.3 Configuring module paths
 
-修改 `package.path` 和 `package.cpath` 就能添加自定义的模块查找路径。例如：
+Modify `package.path` and `package.cpath` to add custom module search paths. For example:
 
 ```lua
 package.path = package.path .. ";./my_modules/?.lua"
 package.cpath = package.cpath .. ";./my_modules/?.so"
 ```
 
-这里，`?.lua` 和 `?.so` 是路径模式中的占位符，`?` 会被替换为模块的名称。这样，Lua 会在 `./my_modules/` 目录下查找模块文件。
+Here, `?.lua` and `?.so` are placeholders in the path pattern; `?` is replaced with the module name. This way, Lua will look for module files in the `./my_modules/` directory.
 
-### 2.4 模块的缓存
+### 2.4 Module caching
 
-`require` 会缓存已加载的模块，避免重复加载和执行，缓存存放在 `package.loaded` 表中。需要强制重新加载时，手动清掉对应的缓存条目即可。例如：
+`require` caches modules it has already loaded to avoid reloading and re-executing them. The cache lives in the `package.loaded` table. To force a reload, manually clear the corresponding cache entry. For example:
 
 ```lua
 package.loaded["math_utils"] = nil
-local math_utils = require("math_utils")  -- 重新加载模块
+local math_utils = require("math_utils")  -- reload the module
 ```
 
-## 总结
+## Summary
 
-定义模块就是建一个表并返回；加载靠 `require`，它按 `package.path` 和 `package.cpath` 查找文件，并把结果缓存到 `package.loaded`。缓存清掉，下次 `require` 就会重新执行文件。
+Defining a module is just creating a table and returning it. Loading relies on `require`, which looks up files via `package.path` and `package.cpath` and caches the result in `package.loaded`. Clear the cache, and the next `require` will re-execute the file.
 
-## 参考资料
+## References
 
-- [Lua 5.4 官方手册](https://www.lua.org/manual/5.4/manual.html)
-- [Lua 官方文档索引](https://www.lua.org/docs.html)
+- [Lua 5.4 reference manual](https://www.lua.org/manual/5.4/manual.html)
+- [Lua official documentation index](https://www.lua.org/docs.html)
 
 <!-- BACKLINKS-AUTO -->
-## 相关页面
+## Related pages
 
 - [README](README.md)
 - [modules-and-packages](modules-and-packages.md)

@@ -1,78 +1,78 @@
-# 协程的状态与生命周期
+# Coroutine states and lifecycle
 
-每个协程都有自己的生命周期：从创建、运行、挂起，到最终死亡。`coroutine.status` 可以随时查询一个协程当前所处的状态，理解这些状态及其转换条件，是避免"恢复已死亡协程"这类错误的基础。
+Every coroutine has its own lifecycle: from creation, running, and suspension, to eventual death. `coroutine.status` can query a coroutine's current state at any time, and understanding these states and the conditions that transition between them is the foundation for avoiding errors like "resuming a dead coroutine."
 
-## 1. 协程的四种状态
+## 1. The four coroutine states
 
-`coroutine.status(co)` 返回以下四种字符串之一：
+`coroutine.status(co)` returns one of the following four strings:
 
-| 状态 | 含义 |
+| State | Meaning |
 | --- | --- |
-| `suspended` | 挂起：已创建尚未运行，或停在某个 `yield` 处等待恢复 |
-| `running` | 运行中：正在占用执行权（只能在被查询协程自身内部看到） |
-| `normal` | 活跃但未运行：该协程恢复过别的协程，自己正等待对方让出或结束 |
-| `dead` | 死亡：函数已返回或发生了无法恢复的错误，也可能是被 `close` 关闭 |
+| `suspended` | Suspended: created but not yet run, or stopped at a `yield` waiting to be resumed |
+| `running` | Running: currently holding execution (only visible from within the coroutine being queried itself) |
+| `normal` | Alive but not running: this coroutine resumed another one and is now waiting for it to yield or finish |
+| `dead` | Dead: the function returned or an unrecoverable error occurred; it may also have been closed with `close` |
 
-## 2. 状态流转实例
+## 2. A state-flow example
 
-下面的例子完整地走了一遍"挂起 → 运行 → 挂起 → 死亡"的流程：
+The following example walks through the "suspended → running → suspended → dead" flow in full:
 
 ```lua
-local co   -- 先声明再赋值，协程体内才能引用这个局部变量
+local co   -- declare first, then assign, so the coroutine body can reference this local variable
 co = coroutine.create(function()
-    print("inside:", coroutine.status(co))   -- 运行中看自己是 running
+    print("inside:", coroutine.status(co))   -- while running, it sees itself as running
     coroutine.yield()
     print("resumed again")
 end)
 
-print(coroutine.status(co))    -- 输出 suspended（创建后尚未启动）
-coroutine.resume(co)           -- 输出 inside:	running
-print(coroutine.status(co))    -- 输出 suspended（挂起在 yield 处）
-coroutine.resume(co)           -- 输出 resumed again
-print(coroutine.status(co))    -- 输出 dead（函数返回）
+print(coroutine.status(co))    -- output suspended (created but not yet started)
+coroutine.resume(co)           -- output inside:	running
+print(coroutine.status(co))    -- output suspended (suspended at the yield)
+coroutine.resume(co)           -- output resumed again
+print(coroutine.status(co))    -- output dead (function returned)
 ```
 
-`normal` 状态比较少见：当一个协程 A 恢复另一个协程 B 时，B 处于 `running`，而 A 就处于 `normal`。它"活着"，但执行权在别人手里：
+The `normal` state is less common: when coroutine A resumes another coroutine B, B is `running` and A is `normal`. A is "alive," but execution is in someone else's hands:
 
 ```lua
-local main = coroutine.running()   -- 当前（主）协程
+local main = coroutine.running()   -- the current (main) coroutine
 
 local co = coroutine.create(function()
-    -- 此时 co 是 running，恢复它的 main 是 normal
+    -- co is running here, and main, which resumed it, is normal
     print("status of main:", coroutine.status(main))
 end)
 
-coroutine.resume(co)   -- 输出 status of main:	normal
+coroutine.resume(co)   -- output status of main:	normal
 ```
 
-## 3. 查询正在运行的协程
+## 3. Querying the currently running coroutine
 
-`coroutine.running` 返回当前正在运行的协程本身，以及它是否为主协程：
+`coroutine.running` returns the currently running coroutine itself, along with whether it is the main coroutine:
 
 ```lua
 local co, is_main = coroutine.running()
-print(co ~= nil, is_main)   -- 在脚本主流程中执行：输出 true	true
+print(co ~= nil, is_main)   -- executed in the script's main flow: output true	true
 ```
 
-主协程是程序启动时就存在的协程，它永远不会是 `suspended` 状态（不能对它 `resume`），程序退出时它才结束。
+The main coroutine is the one that exists from the moment the program starts. It is never in the `suspended` state (you cannot `resume` it), and it only finishes when the program exits.
 
-## 4. 死亡协程与恢复错误
+## 4. Dead coroutines and resume errors
 
-协程死亡之后，再对它执行 `resume` 会得到一个错误而不是崩溃：
+After a coroutine is dead, calling `resume` on it again returns an error instead of crashing:
 
 ```lua
 local co = coroutine.create(function() end)
 
-coroutine.resume(co)             -- 协程运行完毕，进入 dead 状态
-print(coroutine.status(co))      -- 输出 dead
-print(coroutine.resume(co))      -- 输出 false	cannot resume dead coroutine
+coroutine.resume(co)             -- the coroutine has finished running and enters the dead state
+print(coroutine.status(co))      -- output dead
+print(coroutine.resume(co))      -- output false	cannot resume dead coroutine
 ```
 
-同理，尝试恢复主协程、或恢复一个正在运行中的协程，也都会返回失败。稳妥的写法是始终检查 `resume` 的第一个返回值。
+Likewise, trying to resume the main coroutine, or resuming a coroutine that is already running, also returns failure. The safe way to write this is to always check the first return value of `resume`.
 
-## 5. 用 coroutine.close 提前结束
+## 5. Ending early with coroutine.close
 
-Lua 5.4 增加了 `coroutine.close`，可以把一个挂起中的协程直接置为死亡状态：
+Lua 5.4 added `coroutine.close`, which can move a suspended coroutine straight into the dead state:
 
 ```lua
 local co = coroutine.create(function()
@@ -80,35 +80,35 @@ local co = coroutine.create(function()
     print("never reached")
 end)
 
-coroutine.resume(co)         -- 输出 true	waiting
-print(coroutine.close(co))   -- 输出 true
-print(coroutine.status(co))  -- 输出 dead
+coroutine.resume(co)         -- output true	waiting
+print(coroutine.close(co))   -- output true
+print(coroutine.status(co))  -- output dead
 ```
 
-`close` 的价值在于资源清理：关闭时，协程内尚未销毁的 to-be-closed 变量（`<close>` 局部变量）会按逆序调用各自的 `__close` 元方法，适合释放文件句柄、数据库连接等资源。如果某个 `__close` 抛出了错误，`close` 返回 `false` 和错误对象。
+The value of `close` is in resource cleanup: when closing, any to-be-closed variables (`<close>` locals) in the coroutine that have not yet been destroyed have their `__close` metamethod called in reverse order. This is a good fit for releasing resources like file handles and database connections. If one of the `__close` calls raises an error, `close` returns `false` and the error object.
 
-## 6. 生命周期小结
+## 6. Lifecycle summary
 
-一个协程的典型生命周期可以概括为：
+A coroutine's typical lifecycle can be summarized as:
 
-1. `coroutine.create` 创建，进入 `suspended`；
-2. `coroutine.resume` 启动，进入 `running`；
-3. 遇到 `coroutine.yield`，回到 `suspended`，等待下一次恢复；
-4. 重复 2-3，直到函数 `return`（或发生错误、被 `close`），进入 `dead`；
-5. `dead` 之后的任何 `resume` 都会失败。
+1. Created with `coroutine.create`, enters `suspended`;
+2. Started with `coroutine.resume`, enters `running`;
+3. Hits `coroutine.yield`, returns to `suspended`, waiting for the next resume;
+4. Repeats 2-3 until the function `return`s (or an error occurs, or it is `close`d), entering `dead`;
+5. Any `resume` after `dead` fails.
 
-## 结语
+## Wrap-up
 
-协程的状态机并不复杂：`suspended` 与 `running` 之间靠 `resume`/`yield` 来回切换，`dead` 是唯一不可逆的终点。写代码时不要恢复已死亡的协程；需要提前结束时调用 `close`，让 to-be-closed 变量完成清理。
+A coroutine's state machine is not complicated: `resume`/`yield` switch back and forth between `suspended` and `running`, and `dead` is the only irreversible endpoint. When writing code, do not resume a dead coroutine; call `close` when you need to end early so that to-be-closed variables can finish cleaning up.
 
-## 参考资料
+## References
 
-- [Lua 5.4 官方手册](https://www.lua.org/manual/5.4/manual.html#2.5)
+- [Lua 5.4 reference manual · 2.5 Coroutines](https://www.lua.org/manual/5.4/manual.html#2.5)
 - [Coroutine](https://en.wikipedia.org/wiki/Coroutine)
 - [Call_stack](https://en.wikipedia.org/wiki/Call_stack)
 
 <!-- BACKLINKS-AUTO -->
-## 相关页面
+## Related pages
 
 - [coroutines](coroutines.md)
 - [core-concepts](/knowledge/core-concepts.md)

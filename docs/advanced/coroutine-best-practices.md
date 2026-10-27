@@ -1,36 +1,36 @@
-# 协程的应用场景与最佳实践
+# Coroutine Use Cases and Best Practices
 
-协程在 Lua 中被大量使用：标准库的 `string.gmatch`、`io.lines` 等迭代器本质上都是协程。下面先看典型的应用场景，再看实际开发中的准则。
+Coroutines are used heavily in Lua: iterators in the standard library such as `string.gmatch` and `io.lines` are essentially coroutines. Below I first look at typical use cases, then at the guidelines for real-world development.
 
-## 1. 典型应用场景
+## 1. Typical Use Cases
 
-### 1.1 把回调改写成顺序代码
+### 1.1 Flattening Callbacks into Sequential Code
 
-这是协程最有价值的用途：把异步回调风格的逻辑放进协程，遇到耗时操作就 `yield`，数据到达后再 `resume`。使用者看到的是顺序执行的代码，而底层的事件循环仍在按普通回调方式运转。
+This is the most valuable use of coroutines: put asynchronous callback-style logic inside a coroutine, `yield` when a long-running operation is hit, and `resume` once the data arrives. What the user sees is sequentially executing code, while the underlying event loop keeps running in the ordinary callback fashion.
 
-### 1.2 生产者-消费者与惰性求值
+### 1.2 Producer-Consumer and Lazy Evaluation
 
-协程可以按需生产数据，消费者处理一条就恢复一次，两端天然解耦：
+Coroutines can produce data on demand; the consumer processes one item and resumes once, so the two ends are naturally decoupled:
 
 ```lua
 local function producer(count)
     return coroutine.wrap(function()
         for i = 1, count do
-            coroutine.yield("data-" .. i)   -- 需要时才生产
+            coroutine.yield("data-" .. i)   -- produce only when needed
         end
     end)
 end
 
 local p = producer(3)
-print(p())   -- 输出 data-1
-print(p())   -- 输出 data-2
+print(p())   -- data-1
+print(p())   -- data-2
 ```
 
-标准库中 `io.lines`、`string.gmatch` 就是这种模式的实现，它们不会一次性把所有数据读进内存，而是每次取用时才产生下一条。
+`io.lines` and `string.gmatch` in the standard library are implementations of this pattern: they do not read all the data into memory at once, but produce the next item only when it is consumed.
 
-### 1.3 分帧执行与协作式调度
+### 1.3 Frame-Spread Execution and Cooperative Scheduling
 
-游戏和交互式应用里，常把一个大任务拆成多次小执行，每次只处理固定数量的条目，避免卡顿：
+In games and interactive applications, a large task is often split into several small executions, each handling a fixed number of entries, to avoid stalling:
 
 ```lua
 local function chunkedTask(items, size)
@@ -46,17 +46,17 @@ local items = {"a", "b", "c", "d", "e"}
 for chunk in chunkedTask(items, 2) do
     print("process:", chunk)
 end
--- 输出
+-- Output
 -- process:	a, b
 -- process:	c, d
 -- process:	e
 ```
 
-每调用一次生成器函数就处理一批，主循环可以在批次之间插入渲染、输入处理等其他工作。
+Each call to the generator function processes one batch, and the main loop can slot rendering, input handling, and other work in between batches.
 
-### 1.4 用协程实现通用迭代器
+### 1.4 Implementing Generic Iterators with Coroutines
 
-把遍历逻辑封装成协程，可以对外提供统一的 `for` 循环接口：
+Wrapping traversal logic in a coroutine lets you expose a unified `for`-loop interface:
 
 ```lua
 local function values(t)
@@ -70,19 +70,19 @@ end
 for v in values({10, 20, 30}) do
     print(v)
 end
--- 输出
+-- Output
 -- 10
 -- 20
 -- 30
 ```
 
-只要把内部的遍历方式换掉，调用方的代码完全不用改动，这就是协程提供的"惰性序列"抽象。
+Swap out the internal traversal strategy and the calling code does not change at all — that is the "lazy sequence" abstraction coroutines provide.
 
-## 2. 最佳实践
+## 2. Best Practices
 
-### 2.1 始终检查 resume 的返回值
+### 2.1 Always Check the Return Value of resume
 
-`coroutine.resume` 的第一个返回值表示协程是否正常运行，忽略它等于忽略协程里抛出的所有错误：
+The first return value of `coroutine.resume` tells whether the coroutine ran normally; ignoring it is the same as ignoring every error raised inside the coroutine:
 
 ```lua
 local co = coroutine.create(function()
@@ -91,42 +91,42 @@ end)
 
 local ok, err = coroutine.resume(co)
 if not ok then
-    print("task error:", err)   -- 输出 task error:	task failed
+    print("task error:", err)   -- task error:	task failed
 end
 ```
 
-### 2.2 不要复用已死亡的协程
+### 2.2 Do Not Reuse Dead Coroutines
 
-协程进入 `dead` 状态后无法恢复，恢复它只会得到 `cannot resume dead coroutine`。长期运行的调度器应当在协程死亡时将其移出任务列表，需要再次执行时重新 `create`。
+Once a coroutine enters the `dead` state it cannot be resumed; resuming it only gets you `cannot resume dead coroutine`. A long-running scheduler should remove a coroutine from its task list when it dies, and `create` a new one when the work needs to run again.
 
-### 2.3 避免在协程中做阻塞调用
+### 2.3 Avoid Blocking Calls Inside Coroutines
 
-`io.read`、同步网络请求、`os.execute` 等会卡住整个进程，协程的并发能力也就无从发挥。要么改用非阻塞接口，要么由框架在等待处挂起协程。
+`io.read`, synchronous network requests, `os.execute`, and the like block the whole process, so the coroutine's concurrency never gets a chance to show. Either switch to non-blocking interfaces, or have the framework suspend the coroutine at the wait point.
 
-### 2.4 只在协程内部调用 yield
+### 2.4 Only Call yield Inside a Coroutine
 
-在普通函数里调用 `coroutine.yield` 会因为没有可挂起的协程而报错（`attempt to yield from outside a coroutine`）。如果工具函数可能在协程中被使用，可以用 `coroutine.isyieldable()` 判断。
+Calling `coroutine.yield` in an ordinary function errors out because there is no coroutine to suspend (`attempt to yield from outside a coroutine`). If a utility function may be used inside a coroutine, check with `coroutine.isyieldable()`.
 
-### 2.5 用 close 管理资源
+### 2.5 Use close to Manage Resources
 
-Lua 5.4 中，用 `coroutine.close` 结束协程或让协程函数自然返回时，to-be-closed 变量（`<close>`）都会触发 `__close` 元方法。把文件、连接等资源声明为 `<close>` 变量，可以保证协程无论以何种方式结束都能释放资源。
+In Lua 5.4, whether a coroutine is ended with `coroutine.close` or its coroutine function returns naturally, to-be-closed variables (`<close>`) fire their `__close` metamethod. Declaring resources such as files and connections as `<close>` variables guarantees they are released no matter how the coroutine ends.
 
-### 2.6 wrap 用于可信逻辑，create 用于需要容错的场景
+### 2.6 wrap for Trusted Logic, create for Fault-Tolerant Scenarios
 
-`wrap` 的错误会直接抛给调用者，写法简洁但容易被忽略；`create` + `resume` 把错误变成返回值，更适合调度器等需要统一处理故障的代码。
+Errors from `wrap` are thrown straight to the caller: concise to write, but easy to miss. `create` + `resume` turns errors into return values, which suits schedulers and other code that needs to handle failures uniformly.
 
-## 结语
+## Wrap-up
 
-协程的典型场景有四类：把回调拍平成顺序代码、按需生产的惰性序列、分帧执行的批处理、可复用的迭代器。场景之外再记住四条：检查 resume 返回值、不复用死协程、不做阻塞调用、用 close 清理资源。
+Coroutines have four typical use cases: flattening callbacks into sequential code, lazy sequences produced on demand, frame-spread batch processing, and reusable iterators. Beyond the use cases, remember four more: check the return value of resume, do not reuse dead coroutines, do not make blocking calls, and use close to clean up resources.
 
-## 参考资料
+## References
 
-- [Lua 5.4 官方手册](https://www.lua.org/manual/5.4/manual.html#2.5)
+- [Lua 5.4 reference manual · 2.5 Functions](https://www.lua.org/manual/5.4/manual.html#2.5)
 - [Coroutine](https://en.wikipedia.org/wiki/Coroutine)
-- [lua-users 维基](http://lua-users.org/wiki/)
+- [lua-users wiki](http://lua-users.org/wiki/)
 
 <!-- BACKLINKS-AUTO -->
-## 相关页面
+## Related pages
 
 - [coroutines](coroutines.md)
 - [glossary](/glossary.md)

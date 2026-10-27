@@ -1,10 +1,10 @@
-# 面向对象设计模式
+# Object-Oriented Design Patterns
 
-面向对象设计模式解决的是常见的对象组织问题。Lua 没有内建的面向对象支持，但表和元表足够把这些模式实现出来。下面是五种常见模式在 Lua 中的写法。
+Object-oriented design patterns solve common problems of organizing objects. Lua has no built-in object-oriented support, but tables and metatables are enough to implement these patterns. Below are five common patterns written in Lua.
 
-## 1. 单例模式（Singleton）
+## 1. Singleton Pattern
 
-单例模式保证一个类只有一个实例，并提供一个全局访问点。Lua 里的实现靠一个局部变量缓存实例：
+The Singleton pattern guarantees that a class has only one instance and provides a global point of access to it. In Lua the implementation relies on a local variable that caches the instance:
 
 ```lua
 local Singleton = {}
@@ -23,17 +23,17 @@ function Singleton:showMessage()
     print("This is a singleton instance.")
 end
 
--- 使用单例模式
+-- using the Singleton pattern
 local singleton1 = Singleton:getInstance()
 local singleton2 = Singleton:getInstance()
 
-singleton1:showMessage()  -- 输出: This is a singleton instance.
-print(singleton1 == singleton2)  -- 输出: true
+singleton1:showMessage()  -- This is a singleton instance.
+print(singleton1 == singleton2)  -- true
 ```
 
-## 2. 工厂模式（Factory）
+## 2. Factory Pattern
 
-工厂模式提供一个创建对象的接口，而不暴露创建逻辑。下面的工厂根据 `animalType` 决定造狗还是造猫：
+The Factory pattern provides an interface for creating objects without exposing the creation logic. The factory below decides whether to make a dog or a cat based on `animalType`:
 
 ```lua
 local Dog = {}
@@ -74,17 +74,17 @@ function AnimalFactory:createAnimal(animalType, name)
     end
 end
 
--- 使用工厂模式
+-- using the Factory pattern
 local dog = AnimalFactory:createAnimal("dog", "Rex")
-dog:bark()  -- 输出: Rex barks!
+dog:bark()  -- Rex barks!
 
 local cat = AnimalFactory:createAnimal("cat", "Whiskers")
-cat:meow()  -- 输出: Whiskers meows!
+cat:meow()  -- Whiskers meows!
 ```
 
-## 3. 观察者模式（Observer）
+## 3. Observer Pattern
 
-观察者模式定义一对多的依赖关系：一个对象状态改变时，所有依赖它的对象都会得到通知并自动更新。Subject 维护一张观察者列表，通知时逐个调用 `update`：
+The Observer pattern defines a one-to-many dependency: when one object's state changes, every object depending on it is notified and updates itself automatically. The Subject keeps a list of observers and calls `update` on each one when notifying:
 
 ```lua
 local Subject = {}
@@ -119,7 +119,7 @@ function Observer:update(message)
     print(self.name .. " received message: " .. message)
 end
 
--- 使用观察者模式
+-- using the Observer pattern
 local subject = Subject:new()
 
 local observer1 = Observer:new("Observer1")
@@ -128,14 +128,14 @@ local observer2 = Observer:new("Observer2")
 subject:addObserver(observer1)
 subject:addObserver(observer2)
 
-subject:notifyObservers("Hello Observers!") 
--- 输出: Observer1 received message: Hello Observers!
+subject:notifyObservers("Hello Observers!")
+-- Observer1 received message: Hello Observers!
 --       Observer2 received message: Hello Observers!
 ```
 
-## 4. 策略模式（Strategy）
+## 4. Strategy Pattern
 
-策略模式把一系列算法各自封装起来，使它们可以互相替换。算法以函数形式注入 Context，运行期间可以换掉：
+The Strategy pattern encapsulates a family of algorithms separately so they can replace each other. The algorithm is injected into the Context as a function and can be swapped out at runtime:
 
 ```lua
 local Strategy = {}
@@ -168,20 +168,20 @@ function Context:performAction(...)
     return self.strategy:execute(...)
 end
 
--- 使用策略模式
+-- using the Strategy pattern
 local addStrategy = Strategy:new(function(a, b) return a + b end)
 local subtractStrategy = Strategy:new(function(a, b) return a - b end)
 
 local context = Context:new(addStrategy)
-print(context:performAction(10, 5))  -- 输出: 15
+print(context:performAction(10, 5))  -- 15
 
 context:setStrategy(subtractStrategy)
-print(context:performAction(10, 5))  -- 输出: 5
+print(context:performAction(10, 5))  -- 5
 ```
 
-## 5. 装饰器模式（Decorator）
+## 5. Decorator Pattern
 
-装饰器模式动态地给对象添加额外的职责。MilkDecorator 包装一个 Coffee 对象，`cost` 在被包装对象的费用上加 2：
+The Decorator pattern dynamically adds extra responsibilities to an object. MilkDecorator wraps a Coffee object, and `cost` adds 2 on top of the wrapped object's cost:
 
 ```lua
 local Coffee = {}
@@ -213,26 +213,26 @@ function MilkDecorator:cost()
     return self.coffee:cost() + 2
 end
 
--- 使用装饰器模式
+-- using the Decorator pattern
 local coffee = Coffee:new()
-print("Cost of coffee: " .. coffee:cost())  -- 输出: Cost of coffee: 5
+print("Cost of coffee: " .. coffee:cost())  -- Cost of coffee: 5
 
 local milkCoffee = MilkDecorator:new(coffee)
-print("Cost of milk coffee: " .. milkCoffee:cost())  -- 输出: Cost of milk coffee: 7
+print("Cost of milk coffee: " .. milkCoffee:cost())  -- Cost of milk coffee: 7
 ```
 
-## 总结
+## Summary
 
-这五种模式没有用到表和元表之外的任何机制：单例靠缓存实例，工厂靠分支选择构造函数，观察者靠一张回调列表，策略靠把函数当字段存，装饰器靠包一层再转发调用。
+These five patterns rely on nothing beyond tables and metatables: the Singleton on a cached instance, the Factory on branching to pick a constructor, the Observer on a list of callbacks, the Strategy on storing a function as a field, and the Decorator on wrapping a layer and forwarding calls.
 
-## 参考资料
+## References
 
-- [PIL · 面向对象](https://www.lua.org/pil/13.html)
+- [PIL · Object-oriented programming](https://www.lua.org/pil/13.html)
 - [Object-oriented_programming](https://en.wikipedia.org/wiki/Object-oriented_programming)
 - [Prototype-based_programming](https://en.wikipedia.org/wiki/Prototype-based_programming)
 
 <!-- BACKLINKS-AUTO -->
-## 相关页面
+## Related pages
 
 - [README](README.md)
 - [object-oriented](object-oriented.md)

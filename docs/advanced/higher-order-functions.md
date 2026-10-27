@@ -1,14 +1,14 @@
-# 高阶函数
+# Higher-Order Functions
 
-高阶函数指的是接受其他函数作为参数、或返回函数的函数。函数能当值传，就有了这一层抽象。
+A higher-order function is a function that takes other functions as parameters, or returns a function. Because functions can be passed around as values, this layer of abstraction exists.
 
-## 1. 高阶函数的定义
+## 1. Defining Higher-Order Functions
 
-它把"对函数的操作"本身也写成了函数。函数组合、`filter` 这类模式都建立在这上面。
+It turns "operating on functions" into a function as well. Patterns like function composition and `filter` are built on top of this.
 
-### 作为参数的函数
+### Functions as Parameters
 
-高阶函数可以接受一个或多个函数作为参数，从而对这些函数进行操作或应用。
+A higher-order function can accept one or more functions as parameters and operate on or apply them.
 
 ```lua
 function applyFunction(f, x)
@@ -19,14 +19,14 @@ local function square(n)
     return n * n
 end
 
-print(applyFunction(square, 5))  -- 输出 25
+print(applyFunction(square, 5))  -- 25
 ```
 
-在这个例子中，`applyFunction` 是一个高阶函数，它接受一个函数 `f` 和一个值 `x` 作为参数，然后将 `f` 应用于 `x`。
+In this example, `applyFunction` is a higher-order function: it takes a function `f` and a value `x` as parameters, then applies `f` to `x`.
 
-### 作为返回值的函数
+### Functions as Return Values
 
-高阶函数可以返回另一个函数，因此可以用它创建具有特定行为的函数工厂。
+A higher-order function can return another function, so it can be used to create function factories with specific behavior.
 
 ```lua
 function makeAdder(x)
@@ -36,18 +36,18 @@ function makeAdder(x)
 end
 
 local addFive = makeAdder(5)
-print(addFive(10))  -- 输出 15
+print(addFive(10))  -- 15
 ```
 
-在这个例子中，`makeAdder` 返回一个闭包，这个闭包可以将 `x` 和 `y` 相加。`addFive` 是一个通过 `makeAdder` 创建的函数，它将 5 添加到其参数上。
+In this example, `makeAdder` returns a closure that adds `x` and `y`. `addFive` is a function created through `makeAdder`; it adds 5 to its argument.
 
-## 2. 高阶函数的应用
+## 2. Applications of Higher-Order Functions
 
-常见的用法有函数组合，以及作为 `filter` 这类数据处理函数的基础。
+Common uses include function composition and serving as the foundation for data-processing functions like `filter`.
 
-### 函数组合
+### Function Composition
 
-函数组合是将多个函数组合在一起进行链式调用的一种方式。
+Function composition is a way to combine multiple functions together for chained calls.
 
 ```lua
 function compose(f, g)
@@ -65,14 +65,14 @@ local function square(n)
 end
 
 local addOneAndSquare = compose(square, addOne)
-print(addOneAndSquare(4))  -- 输出 25
+print(addOneAndSquare(4))  -- 25
 ```
 
-在这个例子中，`compose` 函数将两个函数 `f` 和 `g` 组合成一个新的函数。`addOneAndSquare` 是通过组合 `addOne` 和 `square` 得到的函数，它先对输入值加 1，然后对结果进行平方操作。
+In this example, the `compose` function combines two functions, `f` and `g`, into a new function. `addOneAndSquare` is the function obtained by composing `addOne` and `square`: it first adds 1 to the input value, then squares the result.
 
-### 函数式编程
+### Functional Programming
 
-高阶函数是函数式编程的核心，允许你以函数的方式处理数据。
+Higher-order functions are at the core of functional programming, letting you process data in a functional style.
 
 ```lua
 function filter(tbl, predicate)
@@ -87,38 +87,38 @@ end
 
 local numbers = {1, 2, 3, 4, 5}
 local evenNumbers = filter(numbers, function(n) return n % 2 == 0 end)
-print(table.concat(evenNumbers, ", "))  -- 输出 2, 4
+print(table.concat(evenNumbers, ", "))  -- 2, 4
 ```
 
-在这个例子中，`filter` 是一个高阶函数，它接受一个列表和一个谓词函数 `predicate` 作为参数，返回一个包含满足谓词的元素的列表。
+In this example, `filter` is a higher-order function: it takes a list and a predicate function `predicate` as parameters, and returns a list containing the elements that satisfy the predicate.
 
-## 3. 高阶函数的优势
+## 3. Advantages of Higher-Order Functions
 
-### 代码重用
+### Code Reuse
 
-把行为作为参数传进去，不修改函数本身就能改变它做的事。遍历和收集的样板代码写一次就够了，变化的部分交给传入的函数。
+Pass behavior in as a parameter and you can change what a function does without modifying the function itself. The boilerplate for iterating and collecting is written once; the varying part is handed to the passed-in function.
 
-### 提高抽象层次
+### Higher Level of Abstraction
 
-操作的对象从数据变成了"产生数据的步骤"。`compose` 把两个函数接成一个新函数，调用方不再关心拼接的细节。
+The object being operated on shifts from data to "the steps that produce data." `compose` stitches two functions into a new one, so callers no longer care about the details of the stitching.
 
-### 支持函数式编程
+### Supports Functional Programming
 
-函数式风格在 Lua 里主要靠它支撑：`filter` 接收一个谓词函数，筛选逻辑完全由调用方决定。
+The functional style in Lua is carried mainly by this: `filter` takes a predicate function, and the filtering logic is decided entirely by the caller.
 
-## 4. 总结
+## 4. Summary
 
-高阶函数就是"参数或返回值里有函数"的函数。函数组合、`filter` 这样的数据处理、`makeAdder` 这样的函数工厂，都靠它实现。
+A higher-order function is a function that has a function as a parameter or return value. Function composition, data processing like `filter`, and function factories like `makeAdder` all rely on it.
 
-## 参考资料
+## References
 
-- [Lua 5.4 官方手册](https://www.lua.org/manual/5.4/manual.html#2.4)
+- [Lua 5.4 reference manual · 2.4 Statements](https://www.lua.org/manual/5.4/manual.html#2.4)
 - [Higher-order_function](https://en.wikipedia.org/wiki/Higher-order_function)
 - [First-class_function](https://en.wikipedia.org/wiki/First-class_function)
 - [Partial_application](https://en.wikipedia.org/wiki/Partial_application)
 
 <!-- BACKLINKS-AUTO -->
-## 相关页面
+## Related pages
 
 - [README](README.md)
 - [glossary](/glossary.md)

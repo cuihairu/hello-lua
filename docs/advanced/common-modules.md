@@ -1,52 +1,52 @@
-# 常用 Lua 模块
+# Common Lua modules
 
-Lua 社区里有不少常用模块，覆盖数据结构、网络、文件、JSON 等场景。这一页挑八个最常见的，附上安装命令和文档入口。
+The Lua community has a number of commonly used modules, covering data structures, networking, files, JSON, and more. This page picks the eight most common, with the install command and a documentation link for each.
 
 ## 1. Penlight
 
-Penlight 是一个功能丰富的工具库，补上标准库缺的部分：链表、队列、堆栈等数据结构，增强的文件读写，扩展的字符串操作，还有集合、映射这类常用工具。安装：`luarocks install penlight`，文档见 [Penlight GitHub 页面](https://github.com/lunarmodules/Penlight)。
+Penlight is a feature-rich toolkit that fills in the gaps of the standard library: linked lists, queues, stacks, and other data structures; enhanced file read/write; extended string manipulation; plus common utilities like sets and maps. Install with `luarocks install penlight`; see the [Penlight GitHub page](https://github.com/lunarmodules/Penlight) for documentation.
 
 ## 2. LuaSocket
 
-LuaSocket 负责网络编程，支持 TCP、UDP、HTTP、SMTP 等协议，数据包的收发和 URL 解析都在里面，网络应用开发基本绕不开它。安装：`luarocks install luasocket`，文档见 [LuaSocket GitHub 页面](https://github.com/lunarmodules/luasocket)。
+LuaSocket handles network programming. It supports TCP, UDP, HTTP, SMTP, and more; packet send/receive and URL parsing are built in, so network application development almost always leans on it. Install with `luarocks install luasocket`; see the [LuaSocket GitHub page](https://github.com/lunarmodules/luasocket) for documentation.
 
 ## 3. LuaFileSystem
 
-LuaFileSystem 补齐文件系统操作：创建、删除、移动、重命名文件和目录，读取文件大小和修改时间，递归遍历目录及其内容。安装：`luarocks install luafilesystem`，文档见 [LuaFileSystem GitHub 页面](https://github.com/lunarmodules/luafilesystem)。
+LuaFileSystem rounds out file system operations: creating, deleting, moving, and renaming files and directories; reading file sizes and modification times; recursively walking directories and their contents. Install with `luarocks install luafilesystem`; see the [LuaFileSystem GitHub page](https://github.com/lunarmodules/luafilesystem) for documentation.
 
 ## 4. Lua CJSON
 
-Lua CJSON 是一个 JSON 编解码库，用 C 语言实现，解析和序列化速度快，Lua 表与 JSON 字符串互转就靠它。安装：`luarocks install lua-cjson`，文档见 [Lua CJSON GitHub 页面](https://github.com/mpx/lua-cjson)。
+Lua CJSON is a JSON encode/decode library implemented in C. Parsing and serialization are fast, and it's how you convert between Lua tables and JSON strings. Install with `luarocks install lua-cjson`; see the [Lua CJSON GitHub page](https://github.com/mpx/lua-cjson) for documentation.
 
 ## 5. Luarocks
 
-Luarocks 本身也是一个 Lua 模块，但更常用作管理其他 Lua 模块的工具：命令行安装模块、自动处理依赖关系、管理模块的版本和更新。可以从 [Luarocks 官网](https://luarocks.org/) 下载并安装，仓库在 [Luarocks GitHub 页面](https://github.com/luarocks/luarocks)。
+Luarocks is itself a Lua module, but it's used more often as the tool for managing other Lua modules: installing modules from the command line, resolving dependencies automatically, and managing module versions and updates. You can download and install it from the [Luarocks site](https://luarocks.org/); the repository is on the [Luarocks GitHub page](https://github.com/luarocks/luarocks).
 
 ## 6. LuaJIT
 
-LuaJIT 是 Lua 的一个高性能实现，兼容 Lua 5.1，带 JIT 编译器，执行速度显著提升；FFI 库还能直接调用 C 函数、访问 C 数据结构。安装：`luarocks install luajit` 或从 [LuaJIT 官网](https://luajit.org/) 下载，文档见 [LuaJIT Wiki](https://luajit.org/)。
+LuaJIT is a high-performance implementation of Lua, compatible with Lua 5.1 and equipped with a JIT compiler that significantly speeds up execution; the FFI library also lets you call C functions directly and access C data structures. Install with `luarocks install luajit` or download from the [LuaJIT site](https://luajit.org/); see the [LuaJIT wiki](https://luajit.org/) for documentation.
 
 ## 7. Luasql
 
-Luasql 是数据库访问库，支持 SQLite、MySQL、PostgreSQL 等多种数据库，建立连接、执行查询和更新、处理结果集的接口都齐。驱动按需安装，比如 SQLite3 用 `luarocks install luasql-sqlite3`，文档见 [LuaSQL GitHub 页面](https://github.com/lunarmodules/luasql)。
+Luasql is a database access library supporting multiple databases including SQLite, MySQL, and PostgreSQL, with complete interfaces for establishing connections, executing queries and updates, and handling result sets. Install drivers as needed — for example, SQLite3 uses `luarocks install luasql-sqlite3`; see the [LuaSQL GitHub page](https://github.com/lunarmodules/luasql) for documentation.
 
 ## 8. Copas
 
-Copas 是协程驱动的异步网络库，支持 TCP 和 HTTP 服务器，非阻塞 I/O 建立在 Lua 协程之上，适合需要高并发的网络应用。安装：`luarocks install copas`，文档见 [Copas GitHub 页面](https://github.com/keplerproject/copas)。
+Copas is a coroutine-driven asynchronous networking library supporting TCP and HTTP servers. Its non-blocking I/O is built on Lua coroutines, making it well suited to network applications that need high concurrency. Install with `luarocks install copas`; see the [Copas GitHub page](https://github.com/keplerproject/copas) for documentation.
 
-## 总结
+## Summary
 
-这八个模块覆盖了数据结构、网络、文件系统、JSON、数据库和运行时。都能通过 LuaRocks 安装，平时按需取用即可。
+These eight modules cover data structures, networking, file systems, JSON, databases, and runtime execution. All of them can be installed through LuaRocks — grab what you need as you go.
 
-## 参考资料
+## References
 
-- [Lua 5.4 官方手册](https://www.lua.org/manual/5.4/manual.html#6.1)
-- [Lua 5.4 官方手册](https://www.lua.org/manual/5.4/manual.html#6.2)
-- [Lua 5.4 官方手册](https://www.lua.org/manual/5.4/manual.html#6.3)
-- [Lua 官方文档索引](https://www.lua.org/docs.html)
+- [Lua 5.4 reference manual · 6.1 Basic library](https://www.lua.org/manual/5.4/manual.html#6.1)
+- [Lua 5.4 reference manual · 6.2 Coroutine library](https://www.lua.org/manual/5.4/manual.html#6.2)
+- [Lua 5.4 reference manual · 6.3 Table library](https://www.lua.org/manual/5.4/manual.html#6.3)
+- [Lua official documentation index](https://www.lua.org/docs.html)
 
 <!-- BACKLINKS-AUTO -->
-## 相关页面
+## Related pages
 
 - [README](README.md)
 - [modules-and-packages](modules-and-packages.md)

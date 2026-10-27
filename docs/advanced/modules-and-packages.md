@@ -1,25 +1,25 @@
-# 模块与包
+# Modules and packages
 
-模块和包解决的是代码的组织与重用。Lua 的模块是返回表的文件，包管理围绕标准库的 `package` 库和第三方工具展开。本组三页：
+Modules and packages solve code organization and reuse. A Lua module is a file that returns a table; package management revolves around the standard library's `package` library and third-party tools. This group has three pages:
 
-- [模块的定义与加载](/advanced/module-definition)：模块怎么写、`require` 怎么查路径和缓存。
-- [Lua的包管理](/advanced/package-management)：`package` 库四个字段、LuaRocks 与依赖处理。
-- [常用 Lua 模块](/advanced/common-modules)：Penlight、LuaSocket、LuaFileSystem 等第三方库。
+- [Defining and loading modules](/advanced/module-definition): how to write modules, and how `require` looks up paths and caches.
+- [Lua package management](/advanced/package-management): the four fields of the `package` library, LuaRocks, and dependency handling.
+- [Common Lua modules](/advanced/common-modules): third-party libraries such as Penlight, LuaSocket, and LuaFileSystem.
 
-标准库自带的 `table`、`string`、`math`、`io`、`os` 五个模块在基础篇各有专页；运行时更新模块的做法见[热加载与动态更新](/design-and-implementation/hot-reloading)。
+The five modules that come with the standard library — `table`, `string`, `math`, `io`, `os` — each get their own page in the basics section; for updating modules at runtime, see [Hot reloading and dynamic updates](/design-and-implementation/hot-reloading).
 
-## 结语
+## Wrap-up
 
-模块的加载和缓存都由 `require` 一手包办，平时需要干预的地方通常只有路径配置和缓存清理。
+`require` takes care of both loading and caching for modules; the only places you usually need to step in are path configuration and cache clearing.
 
-## 参考资料
+## References
 
-- [Lua 5.4 官方手册](https://www.lua.org/manual/5.4/manual.html#6.3)
+- [Lua 5.4 reference manual · 6.3 Table library](https://www.lua.org/manual/5.4/manual.html#6.3)
 - [Module_(computer_science)](https://en.wikipedia.org/wiki/Module_(computer_science))
 - [Package_(software)](https://en.wikipedia.org/wiki/Package_(software))
 
 <!-- BACKLINKS-AUTO -->
-## 相关页面
+## Related pages
 
 - [glossary](/glossary.md)
 - [README](/knowledge/README.md)

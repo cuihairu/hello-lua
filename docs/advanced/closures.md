@@ -1,14 +1,14 @@
-# 闭包（Closures）
+# Closures
 
-在 Lua 中，闭包指的是一个函数，加上它所引用的外部函数局部变量。这些变量不会随外部函数返回而消失，闭包把它们保住了。
+In Lua, a closure is a function together with the local variables of its enclosing function that it references. Those variables do not vanish when the outer function returns; the closure keeps them alive.
 
-## 1. 闭包的定义
+## 1. Defining a Closure
 
-闭包由一个函数和它的环境组成，环境里是函数定义处可见的局部变量。外部函数返回之后，这些变量依然活着，只有闭包还能访问它们。
+A closure consists of a function and its environment, which holds the local variables visible at the point where the function is defined. After the outer function returns, those variables are still alive, and only the closure can reach them.
 
-### 创建闭包
+### Creating a Closure
 
-闭包是通过在一个函数内部定义另一个函数来创建的。内层函数可以访问外层函数的局部变量。
+A closure is created by defining one function inside another. The inner function can access the local variables of the outer function.
 
 ```lua
 function makeCounter()
@@ -20,17 +20,17 @@ function makeCounter()
 end
 
 local counter = makeCounter()
-print(counter())  -- 输出 1
-print(counter())  -- 输出 2
+print(counter())  -- 1
+print(counter())  -- 2
 ```
 
-在这个例子中，`makeCounter` 函数返回一个内部函数，该内部函数是一个闭包。它能够访问 `makeCounter` 的局部变量 `count`，并且在每次调用时更新这个变量的值。
+In this example, the `makeCounter` function returns an inner function, which is a closure. It can access `makeCounter`'s local variable `count` and updates that variable's value on each call.
 
-## 2. 闭包的特性
+## 2. Properties of Closures
 
-### 访问外部变量
+### Accessing Outer Variables
 
-闭包能够访问和修改其外部函数的局部变量。这使得闭包非常适合用来创建具有状态的函数。
+A closure can access and modify the local variables of its enclosing function. This makes closures a good fit for creating functions that carry state.
 
 ```lua
 function createMultiplier(factor)
@@ -40,14 +40,14 @@ function createMultiplier(factor)
 end
 
 local double = createMultiplier(2)
-print(double(5))  -- 输出 10
+print(double(5))  -- 10
 ```
 
-在这个例子中，`createMultiplier` 返回一个闭包，`factor` 是外部函数的局部变量，闭包能够记住并使用它。
+In this example, `createMultiplier` returns a closure; `factor` is a local variable of the outer function, and the closure can remember and use it.
 
-### 状态保持
+### Keeping State
 
-闭包可以保持其外部函数的状态，即使外部函数已经返回。这样，可以创建具有长期有效状态的函数。
+A closure can keep the state of its enclosing function even after the outer function has returned. That way you can create functions with state that stays valid over the long run.
 
 ```lua
 function counter()
@@ -59,20 +59,20 @@ function counter()
 end
 
 local count1 = counter()
-print(count1())  -- 输出 1
-print(count1())  -- 输出 2
+print(count1())  -- 1
+print(count1())  -- 2
 
 local count2 = counter()
-print(count2())  -- 输出 1
+print(count2())  -- 1
 ```
 
-在这个例子中，`counter` 函数返回了两个独立的闭包，每个闭包都有自己的 `count` 变量。调用 `count1` 和 `count2` 会分别维护它们自己的计数状态。
+In this example, the `counter` function returns two independent closures, each with its own `count` variable. Calling `count1` and `count2` maintains their own counting state separately.
 
-## 3. 闭包的应用
+## 3. Applying Closures
 
-### 数据封装
+### Data Encapsulation
 
-闭包可以用来封装数据和功能，避免直接暴露数据到外部。
+Closures can be used to encapsulate data and behavior, avoiding exposing data directly to the outside.
 
 ```lua
 function createBankAccount()
@@ -92,16 +92,16 @@ end
 
 local account = createBankAccount()
 account.deposit(100)
-print(account.getBalance())  -- 输出 100
+print(account.getBalance())  -- 100
 account.withdraw(30)
-print(account.getBalance())  -- 输出 70
+print(account.getBalance())  -- 70
 ```
 
-在这个例子中，`createBankAccount` 返回一个包含多个闭包的表，每个闭包都可以操作和访问 `balance`，但是 `balance` 对外部是不可见的。
+In this example, `createBankAccount` returns a table containing several closures. Each closure can operate on and access `balance`, but `balance` is not visible to the outside.
 
-### 函数工厂
+### Function Factories
 
-使用闭包可以创建具有特定行为的函数工厂。
+Closures can be used to build function factories with specific behavior.
 
 ```lua
 function makePower(exp)
@@ -112,25 +112,25 @@ end
 
 local square = makePower(2)
 local cube = makePower(3)
-print(square(4))  -- 输出 16.0（`^` 运算符的结果是浮点数）
-print(cube(2))    -- 输出 8.0
+print(square(4))  -- 16.0 (the result of the `^` operator is a float)
+print(cube(2))    -- 8.0
 ```
 
-在这个例子中，`makePower` 函数返回了一个根据传入的 `exp` 参数创建的函数闭包。这些闭包能够计算不同的幂次。
+In this example, the `makePower` function returns closures created according to the passed-in `exp` argument. Those closures can compute different powers.
 
-## 4. 总结
+## 4. Summary
 
-闭包让函数带上自己的状态。计数器、工厂函数、私有数据，都是靠这一点实现的。
+Closures let a function carry its own state. Counters, factory functions, private data — they all rely on this one property.
 
-## 参考资料
+## References
 
-- [Lua 5.4 官方手册](https://www.lua.org/manual/5.4/manual.html#2.4)
+- [Lua 5.4 reference manual · 2.4 Statements](https://www.lua.org/manual/5.4/manual.html#2.4)
 - [Closure_(computer_programming)](https://en.wikipedia.org/wiki/Closure_(computer_programming))
 - [Higher-order_function](https://en.wikipedia.org/wiki/Higher-order_function)
-- [PIL · 函数](https://www.lua.org/pil/4.html)
+- [PIL · Functions](https://www.lua.org/pil/4.html)
 
 <!-- BACKLINKS-AUTO -->
-## 相关页面
+## Related pages
 
 - [README](README.md)
 - [glossary](/glossary.md)

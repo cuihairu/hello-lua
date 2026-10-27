@@ -1,10 +1,10 @@
-# 沙箱与不可信代码
+# Sandboxing and Untrusted Code
 
-嵌入 Lua 的场景里，脚本来源常常不可信：玩家写的模组、插件市场下载的扩展、用户上传的配置。沙箱要做的是让这些代码跑起来，同时让它够不到权限之外的东西。Lua 没有内建沙箱机制，隔离环境、限制资源、认清边界这三件事都得自己搭。
+In scenarios where Lua is embedded, the scripts often come from untrusted sources: mods written by players, extensions downloaded from a plugin marketplace, user-uploaded configurations. A sandbox has to let that code run while keeping it out of reach of anything beyond its granted permissions. Lua has no built-in sandboxing mechanism, so environment isolation, resource limiting, and a clear sense of the boundaries all have to be built by hand.
 
-## 1. 隔离环境
+## 1. Environment Isolation
 
-`load` 的第四个参数可以给代码一张受限的环境表（`_ENV`），表里放什么，代码才能用什么：
+The fourth argument of `load` gives the code a restricted environment table (`_ENV`); what you put in the table is all the code can use:
 
 ```lua
 local env = {
@@ -28,22 +28,22 @@ local chunk = [[
     function greet()
         return "hello, " .. name
     end
-    -- os.execute("rm -rf /")  -- 拿不到 os，这行写不进来
+    -- os.execute("rm -rf /")  -- os is not available, so this line cannot even be written
 ]]
 
 local fn = load(chunk, "guest_chunk", "t", env)
 fn()
-print(env.greet())  -- 输出 hello, guest
-print(env.os)       -- 输出 nil
+print(env.greet())  -- hello, guest
+print(env.os)       -- nil
 ```
 
-白名单之外的东西一律不放：`io`、`os`、`package`、`debug`、`load`、`require`（会读文件系统）、`dofile`、`collectgarbage`。少放一个，对应的攻击面就开一个。
+Nothing outside the whitelist goes in: `io`, `os`, `package`, `debug`, `load`, `require` (reads the filesystem), `dofile`, `collectgarbage`. Leave one out and its corresponding attack surface opens up.
 
-## 2. 限制资源
+## 2. Resource Limits
 
-环境隔离管不住「跑太久」和「吃太多」，这两样要用 `debug.sethook` 挂计数钩子来卡。
+Environment isolation cannot control "runs too long" and "eats too much"; those two need counting hooks via `debug.sethook`.
 
-指令配额——钩子每执行 100 条指令触发一次，超配额就抛错：
+Instruction quota — the hook fires once every 100 instructions, and raises an error when the quota is exceeded:
 
 ```lua
 local budget = 100000
@@ -56,19 +56,19 @@ local function quota()
     end
 end
 
-debug.sethook(quota, "", 100)  -- 第三个参数 100 表示计数钩子的间隔
+debug.sethook(quota, "", 100)  -- the third argument, 100, is the counting interval for the hook
 
 local ok, err = pcall(function()
     local n = 0
-    for i = 1, 1e9 do n = n + i end  -- 远超配额
+    for i = 1, 1e9 do n = n + i end  -- far beyond the quota
     return n
 end)
 
 debug.sethook()
-print(ok, err)  -- 输出 false  instruction budget exceeded
+print(ok, err)  -- false  instruction budget exceeded
 ```
 
-时间配额——同一个钩子里查 `os.clock()`，到点抛错，死循环也能掐断：
+Time quota — check `os.clock()` inside the same hook, and raise an error once the deadline passes; even an infinite loop can be cut off:
 
 ```lua
 local deadline = os.clock() + 0.5
@@ -81,14 +81,14 @@ end
 debug.sethook(timecheck, "", 1000)
 
 local ok, err = pcall(function()
-    while true do end  -- 死循环
+    while true do end  -- infinite loop
 end)
 
 debug.sethook()
-print(ok, err)  -- 输出 false  time limit exceeded
+print(ok, err)  -- false  time limit exceeded
 ```
 
-内存配额——`collectgarbage("count")` 返回当前内存用量（KB），配合分配前的检查来卡：
+Memory quota — `collectgarbage("count")` returns the current memory usage (KB); pair it with a pre-allocation check:
 
 ```lua
 local limit = 1024  -- KB
@@ -98,29 +98,29 @@ if before + 512 > limit then
 end
 ```
 
-## 3. 认清边界
+## 3. Know the Boundaries
 
-沙箱是纵深防御的一层，不是安全边界，三个绕不过去的洞：
+A sandbox is one layer of defense in depth, not a security boundary. Three holes that cannot be avoided:
 
-- `debug` 库本身能逃逸：沙箱里的代码拿到 `debug` 就能读钩子、改钩子、访问注册表，所以 `debug` 必须从环境里拿掉——但拿掉之后 `debug.sethook` 也进不去，配额钩子只能由沙箱外的宿主来挂。
-- C 扩展不受 Lua 层约束：`ffi.load` 进来的 C 代码、`require` 进来的 C 模块，都绕过 Lua 的一切检查。
-- 解释器层的侧信道：定时、内存布局这类差异，靠 Lua 层堵不住。
+- The `debug` library is itself an escape hatch: sandboxed code that gets `debug` can read hooks, modify hooks, and access the registry, so `debug` must be removed from the environment — but once it is removed, `debug.sethook` is unreachable too, and quota hooks can only be installed by the host outside the sandbox.
+- C extensions are not bound by the Lua layer: C code loaded via `ffi.load` and C modules pulled in via `require` both bypass every check Lua applies.
+- Side channels at the interpreter level: differences in timing and memory layout cannot be plugged at the Lua layer.
 
-生产环境跑不可信代码，硬隔离在操作系统一侧：独立进程加容器，配 seccomp 之类的系统调用过滤。Lua 沙箱是纵深防御的一层，不是城墙。
+For running untrusted code in production, hard isolation belongs on the operating-system side: a separate process plus a container, with syscall filtering via seccomp or similar. A Lua sandbox is one layer of defense in depth, not a wall.
 
-## 结语
+## Wrap-up
 
-环境用白名单，资源用钩子，边界要认清：沙箱能挡住的只有按 Lua 规则玩的代码，真正的隔离交给操作系统。
+Whitelist the environment, gate resources with hooks, and keep the boundaries clear: a sandbox only stops code that plays by Lua's rules; real isolation is the operating system's job.
 
-## 参考资料
+## References
 
-- [Lua 5.4 官方手册](https://www.lua.org/manual/5.4/manual.html#2.7)
-- [Lua 5.4 官方手册](https://www.lua.org/manual/5.4/manual.html#2.8)
+- [Lua 5.4 reference manual · 2.7 Environment](https://www.lua.org/manual/5.4/manual.html#2.7)
+- [Lua 5.4 reference manual · 2.8 Vararg Parameters](https://www.lua.org/manual/5.4/manual.html#2.8)
 - [Sandbox_(computer_security)](https://en.wikipedia.org/wiki/Sandbox_(computer_security))
 - [Principle_of_least_privilege](https://en.wikipedia.org/wiki/Principle_of_least_privilege)
 
 <!-- BACKLINKS-AUTO -->
-## 相关页面
+## Related pages
 
 - [glossary](/glossary.md)
 - [core-concepts](/knowledge/core-concepts.md)
