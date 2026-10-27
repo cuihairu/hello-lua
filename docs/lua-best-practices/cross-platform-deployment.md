@@ -1,80 +1,80 @@
-# 跨平台发布Lua应用
+# Cross-Platform Deployment of Lua Applications
 
-把 Lua 应用发到 Windows、Linux、macOS、iOS、Android 这些平台，要处理三块事：平台差异、构建打包、各平台的测试。
+Deploying a Lua application to Windows, Linux, macOS, iOS, and Android means handling three things: platform differences, build and packaging, and testing on each platform.
 
-## 1. 了解目标平台
+## 1. Understand the Target Platforms
 
-### 1.1. 支持的操作系统
+### 1.1. Supported operating systems
 
-先圈定要支持的操作系统（如 Windows、Linux、macOS、iOS、Android），再逐个了解它们的特性和限制，决定在哪里做调整和优化。
+First pin down the operating systems to support (such as Windows, Linux, macOS, iOS, Android), then learn each one's features and limitations to decide where to adjust and optimize.
 
-### 1.2. 构建工具和环境
+### 1.2. Build tools and environment
 
-构建工具按平台选，CMake、Autoconf、Meson 都常用；每个平台装好各自的开发环境和依赖项。
+Pick build tools per platform; CMake, Autoconf, and Meson are all common. Install each platform's development environment and dependencies.
 
-## 2. 使用跨平台工具
+## 2. Use Cross-Platform Tools
 
-### 2.1. Lua 的跨平台支持
+### 2.1. Lua's cross-platform support
 
-Lua 语言本身是跨平台的，但解释器和扩展库要在目标平台上实际跑通才行。用到的库和模块逐个确认平台支持情况，没有的找兼容替代品。
+Lua itself is cross-platform, but the interpreter and extension libraries must actually run on the target platforms. Check each library and module used for platform support; find compatible replacements where none exist.
 
-### 2.2. 跨平台开发框架
+### 2.2. Cross-platform development frameworks
 
-游戏类应用可以站在现成框架上：Love2D 支持 Windows、macOS、Linux 等平台；Corona SDK 面向移动设备（iOS 和 Android）。
+Game-like applications can build on existing frameworks: Love2D supports Windows, macOS, Linux, and more; Corona SDK targets mobile devices (iOS and Android).
 
-## 3. 平台特有的调整
+## 3. Platform-Specific Adjustments
 
-### 3.1. 文件路径和分隔符
+### 3.1. File paths and separators
 
-路径分隔符别硬编码。用 `package.config` 取当前平台的路径分隔符，再拼文件路径。
+Don't hardcode path separators. Use `package.config` to get the current platform's path separator, then build file paths.
 
-### 3.2. 系统调用和依赖
+### 3.2. System calls and dependencies
 
-别依赖平台特有的系统调用。Lua 脚本本身没有条件编译，平台判断只能在运行时做（例如用 `package.config` 的第一个字符区分路径分隔符，LuaJIT 下可用 `jit.os`）；确需编译期区分平台的，是随 Lua 一起编译的 C 代码（`#if` 条件编译）或构建脚本。
+Avoid platform-specific system calls. Lua scripts have no conditional compilation, so platform checks can only happen at run time (for example, checking the first character of `package.config` to distinguish path separators; under LuaJIT use `jit.os`). Where compile-time platform distinction is truly needed, it lives in the C code compiled with Lua (`#if` conditional compilation) or in the build scripts.
 
-每个平台的依赖项配好，保证必要的库和模块都找得到。
+Configure each platform's dependencies so the necessary libraries and modules are all found.
 
-## 4. 构建和打包
+## 4. Build and Packaging
 
-### 4.1. 构建脚本
+### 4.1. Build scripts
 
-每个平台一套构建脚本，交给 CMake、Makefile 这类工具自动化；脚本里处理各平台的编译选项和依赖关系。
+One build script per platform, automated by CMake, Makefile, or similar tools; handle each platform's compile options and dependency relationships in the scripts.
 
-### 4.2. 打包
+### 4.2. Packaging
 
-按目标平台的要求出包：`.zip`、`.tar.gz`、`.dmg`、`.exe` 按需选择。需要安装程序的平台单独做安装程序，让安装过程简单一点。
+Produce packages according to the target platform: `.zip`, `.tar.gz`, `.dmg`, `.exe` as needed. For platforms requiring an installer, build a separate installer to keep installation simple.
 
-## 5. 测试
+## 5. Testing
 
-### 5.1. 在不同平台上测试
+### 5.1. Test on different platforms
 
-每个目标平台都要实测功能和性能；没有真机的环境用虚拟机或容器模拟。
+Test functionality and performance on every target platform; where no real device is available, use a virtual machine or container to simulate it.
 
-### 5.2. 自动化测试
+### 5.2. Automated testing
 
-接入 CI/CD 工具（Jenkins、GitLab CI 等）做跨平台自动化测试，每次构建和发布都过一遍完整的测试流程。
+Hook into CI/CD tools (Jenkins, GitLab CI, etc.) for cross-platform automated testing, running the full test suite on every build and release.
 
-## 6. 发布与维护
+## 6. Release and Maintenance
 
-### 6.1. 发布渠道
+### 6.1. Release channels
 
-官网放下载链接和安装说明；应用商店（Mac App Store、Google Play、Microsoft Store）按各自的发布指南提交。
+Put download links and installation instructions on the website; submit to app stores (Mac App Store, Google Play, Microsoft Store) per each store's publishing guidelines.
 
-### 6.2. 用户支持
+### 6.2. User support
 
-用户文档写全：安装指南、常见问题解答、故障排除步骤。再开支持渠道（论坛、邮件列表、在线聊天）接用户在各平台遇到的问题。
+Write complete user documentation: installation guide, FAQ, troubleshooting steps. Then open support channels (forums, mailing lists, online chat) to catch issues users hit on each platform.
 
-### 6.3. 更新和修复
+### 6.3. Updates and fixes
 
-根据用户反馈和测试结果发更新，修已知问题、补功能。长期维护的版本要跟上新的操作系统。
+Release updates based on user feedback and test results, fixing known issues and adding features. Long-term maintained versions must keep up with new operating systems.
 
-## 参考资料
+## References
 
-- [Lua 官方文档索引](https://www.lua.org/docs.html)
+- [Lua official documentation index](https://www.lua.org/docs.html)
 - [Type_system](https://en.wikipedia.org/wiki/Type_system)
-- [Lua 下载页](https://www.lua.org/download.html)
+- [Lua download page](https://www.lua.org/download.html)
 
 <!-- BACKLINKS-AUTO -->
-## 相关页面
+## Related pages
 
 - [pitfalls](/knowledge/pitfalls.md)

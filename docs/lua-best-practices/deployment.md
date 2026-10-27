@@ -1,84 +1,84 @@
-# 部署与发布
+# Deployment and Release
 
-Lua 项目从代码到上线，要过代码质量、构建打包、部署、测试、发布、维护六道关。
+A Lua project goes from code to production through six stages: code quality, build and packaging, deployment, testing, release, and maintenance.
 
-## 1. 部署准备
+## 1. Deployment Preparation
 
-### 1.1. 确保代码质量
+### 1.1. Ensure code quality
 
-发布前把三件事做完：代码审查把关，单元测试全部通过以验证功能，集成测试确认系统各部分能协同工作。
+Before release, finish three things: review the code, have unit tests all pass to verify functionality, and run integration tests to confirm the system's parts work together.
 
-### 1.2. 环境配置
+### 1.2. Environment configuration
 
-开发、测试、生产环境的环境变量分别设置；`config.lua` 这类配置文件要对准目标环境。
+Set environment variables separately for development, testing, and production environments; configuration files such as `config.lua` should target the right environment.
 
-## 2. 构建与打包
+## 2. Build and Packaging
 
-### 2.1. 构建脚本
+### 2.1. Build scripts
 
-构建交给工具自动化，`Makefile`、`CMake` 或自定义脚本都行；构建出的版本要和版本控制系统里的对得上。
+Hand the build to automated tools; `Makefile`, `CMake`, or a custom script all work. The built version should match what is in version control.
 
-### 2.2. 打包
+### 2.2. Packaging
 
-项目文件打成 `.zip`、`.tar.gz` 这类压缩包，分发起来方便。外部依赖要么打进包里，要么写清依赖说明。
+Package the project files into archives such as `.zip` or `.tar.gz` for easy distribution. Either include external dependencies in the package or write out their dependency requirements clearly.
 
-脚本可在打包前用 `luac` 预编译成字节码（`luac -o script.luac script.lua`），加载时省掉解析这一步，顺带不暴露源码。字节码与 Lua 小版本绑定，升级解释器后要重新编译。
+Scripts can be precompiled to bytecode with `luac` before packaging (`luac -o script.luac script.lua`), saving the parse step at load time and incidentally not exposing the source. Bytecode is bound to the Lua minor version, so recompile after upgrading the interpreter.
 
-## 3. 部署
+## 3. Deployment
 
-### 3.1. 部署策略
+### 3.1. Deployment strategy
 
-小规模可以手动部署：上传打包文件，解压到指定目录。发布频繁就用 CI/CD 工具自动化，Jenkins、GitLab CI、GitHub Actions 都可以。
+Small-scale deployments can be manual: upload the archive and unpack it to the target directory. With frequent releases, automate with CI/CD tools; Jenkins, GitLab CI, and GitHub Actions all work.
 
-### 3.2. 部署步骤
+### 3.2. Deployment steps
 
-先通过 SCP、FTP 等文件传输协议把文件传上服务器，解压到目标目录，设置好文件和目录权限。应用若要跑在 Web 服务器、应用服务器上，把服务配置核对一遍。
+First transfer files to the server via a file transfer protocol such as SCP or FTP, unpack into the target directory, and set file and directory permissions. If the application runs on a web server or application server, double-check the service configuration.
 
-## 4. 测试与验证
+## 4. Testing and Verification
 
-### 4.1. 功能测试
+### 4.1. Functional testing
 
-在目标环境里跑功能测试，确认应用程序按预期工作。
+Run functional tests in the target environment to confirm the application works as expected.
 
-### 4.2. 性能测试
+### 4.2. Performance testing
 
-负载测试看高负载下的性能和稳定性，压力测试看极端条件下的行为。
+Load testing looks at performance and stability under high load; stress testing looks at behavior under extreme conditions.
 
-## 5. 发布
+## 5. Release
 
-### 5.1. 发布管理
+### 5.1. Release management
 
-给发布的版本打标签，写发布说明和发布日志：新版本改了什么、修了什么、还有哪些已知问题。
+Tag the released version and write release notes and a changelog: what the new version changed, what it fixed, and what known issues remain.
 
-### 5.2. 发布渠道
+### 5.2. Release channels
 
-内网使用就发到内部网络，供内部用户使用；面向外部用户则通过官方网站、应用商店这类渠道发布。
+For internal use, publish to the internal network for internal users; for external users, release through official websites, app stores, and similar channels.
 
-## 6. 维护与支持
+## 6. Maintenance and Support
 
-### 6.1. 监控
+### 6.1. Monitoring
 
-上线不是终点。日志监控盯潜在问题，性能监控盯性能指标，发现异常及时处理。
+Going live is not the finish line. Log monitoring watches for potential problems, performance monitoring watches performance metrics, and handle anomalies promptly when found.
 
-### 6.2. 用户反馈
+### 6.2. User feedback
 
-用户反馈和报告的问题收集起来，修复后排进后续版本。
+Collect user feedback and reported issues, fix them, and fold them into subsequent releases.
 
-### 6.3. 更新与回滚
+### 6.3. Updates and rollback
 
-问题修完发布更新版本。新版本出严重问题时，靠回滚机制退回先前的稳定状态。
+After fixing issues, release an updated version. If a new version has a serious problem, rely on the rollback mechanism to return to the previous stable state.
 
-## 总结
+## Summary
 
-部署环节的多数事故来自手动操作和流程不固定。构建、部署、测试能自动化的都自动化，回滚机制提前备好，出问题才有退路。
+Most deployment incidents come from manual operations and unstructured processes. Automate whatever can be automated in build, deployment, and testing, and prepare the rollback mechanism in advance so there is a way back when problems arise.
 
-## 参考资料
+## References
 
-- [Lua 官方文档索引](https://www.lua.org/docs.html)
-- [Lua 下载页](https://www.lua.org/download.html)
+- [Lua official documentation index](https://www.lua.org/docs.html)
+- [Lua download page](https://www.lua.org/download.html)
 
 <!-- BACKLINKS-AUTO -->
-## 相关页面
+## Related pages
 
 - [README](/knowledge/README.md)
 - [core-concepts](/knowledge/core-concepts.md)

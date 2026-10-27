@@ -1,15 +1,15 @@
-# 常见的编码误区
+# Common Coding Mistakes
 
-下面这些误区在 Lua 代码里反复出现，每一个都附了改法。
+The mistakes below recur in Lua code; each comes with a fix.
 
-## 1. 忽视局部变量的使用
+## 1. Ignoring Local Variables
 
-用全局变量代替局部变量，容易撞名，访问也慢。
+Using global variables instead of local ones invites name collisions and is slower to access.
 
-反例:
+Counterexample:
 
 ```lua
--- 不推荐
+-- Not recommended
 count = 0
 
 function increment()
@@ -17,9 +17,9 @@ function increment()
 end
 ```
 
-改法是用 `local` 把作用域限制在函数或块内。
+The fix is `local`, limiting scope to a function or block.
 
-改后:
+After:
 
 ```lua
 local count = 0
@@ -29,48 +29,48 @@ function increment()
 end
 ```
 
-## 2. 错误的表键使用
+## 2. Incorrect Table Key Usage
 
-用每次都新建的表作键，写进去的值就取不回来了。
+Using a freshly created table as a key means the value you wrote cannot be retrieved.
 
-表本身可以作为键（Lua 允许任何非 `nil` 的值作为键），但下面的写法每次 `{}` 都会创建一个**新**表，写入和读取用的是两个不同的对象，因此取回的是 `nil`。
+A table itself can be a key (Lua allows any non-`nil` value as a key), but in the following code every `{}` creates a **new** table. The write and the read use two different objects, so what comes back is `nil`.
 
-反例:
-
-```lua
-local t = {}
-t[{}] = "value"   -- 写入：键是这里新建的表
-
-print(t[{}])      -- 读取：这里又新建了一个表，输出 nil
-```
-
-改法：键用字符串、数字这类能稳定构造的值；必须用表作键时，把同一个表存进局部变量复用。
-
-改后:
+Counterexample:
 
 ```lua
 local t = {}
-t["key"] = "value"  -- 正确的键使用
+t[{}] = "value"   -- write: the key is the table created here
 
-print(t["key"])  -- 输出 "value"
+print(t[{}])      -- read: creates another new table here, prints nil
 ```
 
-## 3. 未处理的错误
+Fix: use keys that construct stably, such as strings or numbers. When a table must be a key, store it in a local variable and reuse it.
 
-直接调用可能出错的函数而不做处理，程序会当场崩掉。
+After:
 
-反例:
+```lua
+local t = {}
+t["key"] = "value"  -- correct key usage
+
+print(t["key"])  -- prints "value"
+```
+
+## 3. Unhandled Errors
+
+Calling a function that may fail without handling the failure crashes the program on the spot.
+
+Counterexample:
 
 ```lua
 local file = io.open("nonexistent_file.txt", "r")
-local content = file:read("a")  -- 文件不存在时 file 为 nil，这里会报错
+local content = file:read("a")  -- when the file doesn't exist, file is nil, so this errors
 ```
 
-注意：`io.open` 打开失败时**不会抛出错误**，而是返回 `nil, errmsg`。因此 `pcall(io.open, ...)` 捕获不到“文件不存在”，真正会出错的是随后对 `nil` 调用 `read`。
+Note: `io.open` **does not raise** an error when opening fails; it returns `nil, errmsg`. So `pcall(io.open, ...)` cannot catch "file not found"; what actually errors is calling `read` on `nil` afterward.
 
-改法：先检查 `io.open` 的返回值，再做读取操作。
+Fix: check `io.open`'s return value before reading.
 
-改后:
+After:
 
 ```lua
 local file, err = io.open("nonexistent_file.txt", "r")
@@ -83,25 +83,25 @@ else
 end
 ```
 
-## 4. 重复代码
+## 4. Duplicate Code
 
-相似代码复制粘贴而不提成函数，改一处就得记着改另一处。
+Copying and pasting similar code without extracting a function means fixing one place requires remembering the other.
 
-示例:
+Example:
 
 ```lua
 function calculate_area(width, height)
     return width * height
 end
 
--- 重复代码
+-- duplicate code
 local area1 = 10 * 20
 local area2 = 15 * 25
 ```
 
-改法：把重复代码提取到函数里，改一处就够。
+Fix: extract duplicate code into a function so one change suffices.
 
-改后:
+After:
 
 ```lua
 function calculate_area(width, height)
@@ -112,20 +112,20 @@ local area1 = calculate_area(10, 20)
 local area2 = calculate_area(15, 25)
 ```
 
-## 5. 不适当的全局表使用
+## 5. Inappropriate Use of the Global Table
 
-往全局表里随手塞数据，早晚被人覆盖，或者覆盖别人。
+Stuffing data into the global table means sooner or later someone overwrites it, or you overwrite someone else's.
 
-反例:
+Counterexample:
 
 ```lua
--- 不推荐
-_G.some_variable = "value"  -- 直接修改全局表
+-- Not recommended
+_G.some_variable = "value"  -- modifying the global table directly
 ```
 
-改法：数据用局部表或模块组织和存储，别动全局表。
+Fix: organize and store data in local tables or modules, and leave the global table alone.
 
-改后:
+After:
 
 ```lua
 local MyModule = {}
@@ -137,94 +137,94 @@ end
 return MyModule
 ```
 
-## 6. 不合理的表操作
+## 6. Unreasonable Table Operations
 
-对表做操作前不想想它的特性，容易写出慢代码或逻辑错误。
+Acting on a table without thinking through its characteristics easily produces slow code or logic errors.
 
-示例:
+Example:
 
 ```lua
 local t = {1, 2, 3, 4}
 table.insert(t, 5)
-print(t[5])  -- 输出 5，表的最后一个元素被插入了
+print(t[5])  -- prints 5: the value was appended to the table
 ```
 
-先弄清表的特性和操作方法再动手，能省掉不少无谓的开销和错误。
+Understand the table's characteristics and operation methods first, saving a lot of needless overhead and errors.
 
-示例:
+Example:
 
 ```lua
 local t = {1, 2, 3, 4}
-table.insert(t, 5)  -- 插入值到表中
+table.insert(t, 5)  -- insert a value into the table
 for i, v in ipairs(t) do
-    print(i, v)  -- 遍历表的值
+    print(i, v)  -- iterate over the table's values
 end
 ```
 
-## 7. 不正确的字符串操作
+## 7. Incorrect String Operations
 
-用字符串操作函数之前先记住：字符串不可变，改不了，只能新建。
+Before using string functions, remember: strings are immutable, cannot be changed in place, and only new strings can be created.
 
-反例:
-
-```lua
-local str = "Hello"
--- str:sub(1, 3) = "Hi"  -- 错误：字符串不可变，不能被赋值修改（这句本身也是语法错误）
-```
-
-改法：用合适的字符串操作函数生成新字符串，而不是试图原地修改。
-
-改后:
+Counterexample:
 
 ```lua
 local str = "Hello"
-local new_str = "Hi" .. str:sub(4)  -- 创建新字符串："Hi" 拼接上 "lo"
-print(new_str)  -- 输出 "Hilo"
+-- str:sub(1, 3) = "Hi"  -- wrong: strings are immutable and cannot be assigned to (this line is also a syntax error)
 ```
 
-## 8. 没有利用 Lua 的协程特性
+Fix: use appropriate string functions to produce a new string instead of trying to modify in place.
 
-长任务一路函数调用写到底，只能干等。协程可以中途让出执行，主流程不必卡住。
+After:
 
-反例:
+```lua
+local str = "Hello"
+local new_str = "Hi" .. str:sub(4)  -- creates a new string: "Hi" concatenated with "lo"
+print(new_str)  -- prints "Hilo"
+```
+
+## 8. Not Using Lua's Coroutine Feature
+
+Writing a long task as one straight call chain leaves you waiting. Coroutines can yield execution mid-way so the main flow doesn't stall.
+
+Counterexample:
 
 ```lua
 function task1()
-    -- 执行长时间任务
+    -- run a long task
 end
 
 function task2()
-    -- 执行另一长时间任务
+    -- run another long task
 end
 
-task1()  -- 阻塞执行
+task1()  -- blocks execution
 task2()
 ```
 
-改法：把任务放进协程，用 `coroutine.resume` 驱动，执行到 `coroutine.yield` 就让出。
+Fix: put the tasks in coroutines, drive them with `coroutine.resume`, and they yield at `coroutine.yield`.
 
-改后:
+After:
 
 ```lua
 local co1 = coroutine.create(function()
-    -- 执行长时间任务
+    -- run a long task
 end)
 
 local co2 = coroutine.create(function()
-    -- 执行另一长时间任务
+    -- run another long task
 end)
 
 coroutine.resume(co1)
 coroutine.resume(co2)
 ```
 
-## 参考资料
+## References
 
-- [Lua 5.4 官方手册](https://www.lua.org/manual/5.4/manual.html#2.4)
+- [Lua 5.4 official manual](https://www.lua.org/manual/5.4/manual.html#2.4)
 - [Exception_handling](https://en.wikipedia.org/wiki/Exception_handling)
 
 <!-- BACKLINKS-AUTO -->
-## 相关页面
+## Related pages
 
 - [pitfalls](/knowledge/pitfalls.md)
 - [code-style](code-style.md)

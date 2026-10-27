@@ -1,55 +1,55 @@
-# 垃圾回收的调优
+# Tuning Garbage Collection
 
-Lua 的垃圾回收是自动的，但参数可以调，写代码的方式也能影响它的压力。
+Lua's garbage collection is automatic, but the parameters can be adjusted and the way you write code also affects its pressure.
 
-## 1. 原理速记
+## 1. Quick Reference on the Principles
 
-Lua 5.4 的标记-清除算法、增量/分代模式和 `collectgarbage` 参数语义详见[垃圾回收机制总览](/design-and-implementation/garbage-collection)。这里记录的是应用侧调参与观测经验。
+The mark-and-sweep algorithm, incremental/generational modes, and `collectgarbage` parameter semantics in Lua 5.4 are detailed in the [Garbage Collection Overview](/design-and-implementation/garbage-collection). What is recorded here is the application-side experience of tuning parameters and observing.
 
-## 2. 手动控制垃圾回收
+## 2. Manually Controlling Garbage Collection
 
-用 `collectgarbage` 函数控制：
-- `collectgarbage("stop")`：停止垃圾回收。
-- `collectgarbage("restart")`：重新启动垃圾回收（没有 `"start"` 这个选项）。
-- `collectgarbage("collect")`：手动触发一次完整回收。
-- `collectgarbage("incremental", pause, stepmul, stepsize)`：切到增量模式，一次设好暂停值、步进倍率与步长，`0` 表示保持不变。
-- `collectgarbage("setpause", value)`：设置垃圾回收的暂停阈值。`value` 是一个百分比，表示 GC 何时触发。
-- `collectgarbage("setstepmul", value)`：设置垃圾回收的步进乘数。`value` 是一个乘数，用于调整 GC 的步进量。这两个选项沿袭自 5.1，5.4 起已标记为过时，新代码用上面的 `incremental` 形式。
+Control it with the `collectgarbage` function:
+- `collectgarbage("stop")`: stop garbage collection.
+- `collectgarbage("restart")`: restart garbage collection (there is no `"start"` option).
+- `collectgarbage("collect")`: manually trigger a full collection.
+- `collectgarbage("incremental", pause, stepmul, stepsize)`: switch to incremental mode, setting the pause value, step multiplier, and step size at once, where `0` means keep the current value.
+- `collectgarbage("setpause", value)`: set the pause threshold. `value` is a percentage indicating when GC triggers.
+- `collectgarbage("setstepmul", value)`: set the step multiplier. `value` is a multiplier used to adjust how much GC does per step. These two options date back to 5.1 and have been marked deprecated since 5.4; new code uses the `incremental` form above.
 
-示例：
+Example:
 
 ```lua
--- 停止垃圾回收
+-- Stop garbage collection
 collectgarbage("stop")
 
--- 执行内存密集型操作（doHeavyWork 为示意）
+-- Perform a memory-intensive operation (doHeavyWork is illustrative)
 -- doHeavyWork()
 
--- 手动触发一次垃圾回收
+-- Manually trigger a garbage collection
 collectgarbage("collect")
 
--- 重新启动垃圾回收
+-- Restart garbage collection
 collectgarbage("restart")
 ```
 
-## 3. 调整 GC 参数
+## 3. Adjusting GC Parameters
 
-两个关键参数：
-- `pause`（暂停值）：控制垃圾回收的触发频率。值越大，GC 触发频率越低（峰值内存更高）。
-- `stepmul`（步进倍率）：控制垃圾回收的工作量。值越大，每个 GC 步骤完成的工作越多，回收越快，但单步占用 CPU 越多。
+Two key parameters:
+- `pause` (pause value): controls how often GC triggers. The larger the value, the less often GC runs (higher peak memory).
+- `stepmul` (step multiplier): controls how much work GC does. The larger the value, the more work each GC step completes and the faster collection, but each step uses more CPU.
 
-示例：
+Example:
 
 ```lua
--- 增量模式：暂停值 200、步进倍率 100、步长不变（0 表示不改）
+-- Incremental mode: pause 200, step multiplier 100, step size unchanged (0 means no change)
 collectgarbage("incremental", 200, 100, 0)
 ```
 
-## 4. 减少内存使用
+## 4. Reducing Memory Usage
 
-对象能重用就不新建，减少分配；不再用的引用及时清掉，好让回收器收走。
+Reuse objects instead of creating new ones to reduce allocation; clear references you no longer need promptly so the collector can reclaim them.
 
-示例：
+Example:
 
 ```lua
 local objectPool = {}
@@ -58,7 +58,7 @@ function getObject()
     if #objectPool > 0 then
         return table.remove(objectPool)
     else
-        return {}  -- 创建新对象
+        return {}  -- create a new object
     end
 end
 
@@ -67,56 +67,56 @@ function releaseObject(obj)
 end
 ```
 
-## 5. 优化数据结构
+## 5. Optimizing Data Structures
 
-表结构选得合适，内存和 GC 压力都小。循环引用不用担心，标记-清除回收器能正确处理，不会泄漏；但对象之间互相引用着、且从根集可达时，它们就不会被回收。所以长期持有的容器（如缓存、注册表）要清掉不再需要的条目，或改用弱引用表，让不再使用的对象尽早被回收。
+A well-chosen table structure reduces both memory and GC pressure. Don't worry about circular references: the mark-and-sweep collector handles them correctly without leaking. But if objects refer to each other and are reachable from the root set, they will not be collected. So long-lived containers (such as caches and registries) should clear entries no longer needed, or use weak-reference tables so unused objects are collected sooner.
 
-示例：
+Example:
 
 ```lua
--- 用弱值表做缓存：条目没有被其他地方引用时可以被回收
+-- Use a weak-value table as a cache: entries can be collected when nothing else references them
 local cache = setmetatable({}, { __mode = "v" })
 
 do
     local a = {}
     local b = {a = a}
-    a.b = b              -- 循环引用
-    cache.a = a          -- 只有弱表持有 a
+    a.b = b              -- circular reference
+    cache.a = a          -- only the weak table holds a
 end
 
-print("回收前条目数:", (function()
+print("entries before collection:", (function()
     local n = 0 for _ in pairs(cache) do n = n + 1 end return n
 end)())                  -- 1
 collectgarbage("collect")
-print("回收后条目数:", (function()
+print("entries after collection:", (function()
     local n = 0 for _ in pairs(cache) do n = n + 1 end return n
-end)())                  -- 0：循环引用的对象被整组回收
+end)())                  -- 0: the circularly referenced objects are collected as a group
 ```
 
-## 6. 监控和分析
+## 6. Monitoring and Analysis
 
-调试时用 `collectgarbage("count")` 看当前内存用量：
+While debugging, use `collectgarbage("count")` to see current memory usage:
 
-示例：
+Example:
 
 ```lua
 print("Memory usage: " .. collectgarbage("count") .. " KB")
 ```
 
-内存和 GC 的表现还可以用 LuaProfiler（`luaprofiler`）这类工具分析。
+Memory and GC behavior can also be analyzed with tools such as LuaProfiler (`luaprofiler`).
 
-## 7. 避免频繁的垃圾回收
+## 7. Avoiding Frequent Garbage Collection
 
-把多个小操作合并到一起做，降低 GC 触发频率；同时控制内存分配的节奏，别频繁分配又释放。
+Combine many small operations into one to lower how often GC triggers; at the same time control the pace of allocation and avoid repeatedly allocating and freeing.
 
-## 8. 合理使用 LuaJIT
+## 8. Using LuaJIT Wisely
 
-LuaJIT 的垃圾回收更高效，还带 JIT 编译，GC 的表现和调优方式跟标准解释器不一样。
+LuaJIT's garbage collection is more efficient and it also brings JIT compilation, so GC behavior and tuning differ from the standard interpreter.
 
-示例：
+Example:
 
 ```lua
--- 在 LuaJIT 中，可以使用 FFI 来提高性能
+-- In LuaJIT, FFI can be used to improve performance
 local ffi = require("ffi")
 ffi.cdef[[
     int add(int, int);
@@ -125,17 +125,17 @@ local C = ffi.load("mylib")
 print(C.add(1, 2))
 ```
 
-## 总结
+## Summary
 
-调参只改变回收的时机和节奏，减少分配才是根本：分配得少，GC 的压力自然小。
+Tuning parameters only changes the timing and pace of collection; reducing allocation is the fundamental fix: allocate less and GC pressure naturally drops.
 
-## 参考资料
+## References
 
-- [Lua 5.4 官方手册](https://www.lua.org/manual/5.4/manual.html#2.9)
+- [Lua 5.4 official manual](https://www.lua.org/manual/5.4/manual.html#2.9)
 - [Garbage_collection_(computer_science)](https://en.wikipedia.org/wiki/Garbage_collection_(computer_science))
 
 <!-- BACKLINKS-AUTO -->
-## 相关页面
+## Related pages
 
 - [glossary](/glossary.md)
 - [pitfalls](/knowledge/pitfalls.md)

@@ -1,20 +1,20 @@
-# 性能优化
+# Performance Optimization
 
-Lua 程序的开销大头通常在全局变量查找、表的创建和字符串拼接上。本组两页：
+In Lua programs the main costs are usually global variable lookups, table creation, and string concatenation. This group has two pages:
 
-- [Lua代码的优化技巧](/lua-best-practices/optimization-techniques)：全局变量、表、元表、函数调用、字符串、GC、LuaJIT 等十一条优化手法。
-- [垃圾回收的调优](/lua-best-practices/gc-tuning)：`collectgarbage` 的参数与回收节奏控制。
+- [Lua Code Optimization Techniques](/lua-best-practices/optimization-techniques): eleven optimization approaches covering global variables, tables, metatables, function calls, strings, GC, and LuaJIT.
+- [Garbage Collection Tuning](/lua-best-practices/gc-tuning): the parameters of `collectgarbage` and controlling collection pace.
 
-## 结语
+## Closing
 
-先测量再动手：用性能分析工具找到热点，改完再测一遍，确认优化真的有效。
+Measure before acting: find hot spots with a performance profiling tool, measure again after changing, and confirm the optimization really helps.
 
-## 参考资料
+## References
 
-- [Lua 5.4 官方手册](https://www.lua.org/manual/5.4/manual.html#2.9)
+- [Lua 5.4 official manual](https://www.lua.org/manual/5.4/manual.html#2.9)
 - [Tracing_just-in-time_compilation](https://en.wikipedia.org/wiki/Tracing_just-in-time_compilation)
 
 <!-- BACKLINKS-AUTO -->
-## 相关页面
+## Related pages
 
 - [README](/knowledge/README.md)

@@ -1,87 +1,87 @@
-# Lua的编码规范
+# Lua Coding Standards
 
-我把代码风格和编码规范分开记录：前者关乎代码呈现，后者关乎减少错误。下面按命名、格式、注释、作用域、表、错误处理和代码组织列出项目里常用的约定。
+I keep code style and coding standards in separate documents: the former is about how code looks, the latter about reducing errors. Below are the conventions commonly used in this project, covering naming, formatting, comments, scope, tables, error handling, and code organization.
 
-## 1. 变量命名
+## 1. Variable Naming
 
-名字要描述用途，别用无意义的缩写或单字母。风格上 snake_case 或 camelCase 都行，认准一种：`user_name` 或 `userName`。表名用名词，如 `user`、`config`；表示类或模块的表可以用驼峰命名，如 `UserSettings`。
+Names should describe their purpose; avoid meaningless abbreviations or single letters. For style, snake_case or camelCase both work, but pick one: `user_name` or `userName`. Table names use nouns, such as `user`, `config`; tables representing classes or modules can use camel case, such as `UserSettings`.
 
-示例:
+Example:
 
 ```lua
-local user_name = "Alice"  -- 下划线分隔
-local UserName = "Alice"   -- 驼峰命名法
+local user_name = "Alice"  -- underscore-separated
+local UserName = "Alice"   -- camelCase
 ```
 
-## 2. 函数命名
+## 2. Function Naming
 
-函数名用「动词+名词」，写出它做什么、对谁做：`calculate_sum`、`get_user_data`。全库统一一种风格，别混用。
+Function names follow "verb + noun", stating what they do and to what: `calculate_sum`, `get_user_data`. Pick one style across the codebase and don't mix.
 
-示例:
+Example:
 
 ```lua
--- 计算两个数的和
+-- Calculate the sum of two numbers
 function calculate_sum(a, b)
     return a + b
 end
 
--- 获取用户数据
+-- Get user data
 function get_user_data(user_id)
-    -- 实现代码
+    -- implementation
 end
 ```
 
-## 3. 缩进与格式
+## 3. Indentation and Formatting
 
-缩进用 2 个空格，别用制表符（tab），各编辑器显示才一致。每行控制在 80 到 120 个字符以内。
+Use 2 spaces for indentation, not tabs, so every editor displays it consistently. Keep each line within 80 to 120 characters.
 
-操作符前后留空格，括号和函数名之间不留：`a + b` 而不是 `a+b`，`function foo(arg)` 而不是 `function foo (arg)`。
+Leave spaces around operators and none between parentheses and the function name: `a + b` rather than `a+b`, `function foo(arg)` rather than `function foo (arg)`.
 
-示例:
+Example:
 
 ```lua
 local x = 12
 
--- 不推荐（虽然语法合法，但所有内容挤在一行，难以阅读）
+-- Not recommended (valid syntax, but everything squeezed onto one line is hard to read)
 if(x>10)then return x+5 end
 
--- 推荐
+-- Recommended
 if x > 10 then
     return x + 5
 end
 ```
 
-## 4. 注释
+## 4. Comments
 
-复杂或不直观的逻辑要加注释，写清楚意图，句子要短。函数、模块和类按 LuaDoc 这类格式写文档注释，参数、返回值和用法示例都写全。
+Add comments to complex or non-obvious logic, describing intent in short sentences. Document functions, modules, and classes in a LuaDoc-style format, covering parameters, return values, and usage examples fully.
 
-示例:
+Example:
 
 ```lua
---- 计算两个数的和
--- @param a 第一个数
--- @param b 第二个数
--- @return 两个数的和
+--- Calculate the sum of two numbers
+-- @param a the first number
+-- @param b the second number
+-- @return the sum of the two numbers
 function add(a, b)
     return a + b
 end
 ```
 
-## 5. 局部变量与全局变量
+## 5. Local and Global Variables
 
-变量用 `local` 定义，命名冲突少，访问也快。全局变量能不用就不用，实在要用，加个明确前缀，比如 `MyApp_globalVar`。变量和函数都别放在全局作用域，功能按模块划分。
+Declare variables with `local` to reduce name conflicts and access them faster. Avoid globals unless necessary; when you must use one, give it a clear prefix such as `MyApp_globalVar`. Don't put variables or functions in the global scope; organize functionality into modules.
 
-示例:
+Example:
 
 ```lua
--- 不推荐
+-- Not recommended
 global_var = 42
 
 function global_function()
     return global_var
 end
 
--- 推荐
+-- Recommended
 local local_var = 42
 
 local function local_function()
@@ -89,32 +89,32 @@ local function local_function()
 end
 ```
 
-## 6. 表（Tables）
+## 6. Tables
 
-相关的数据和方法收进同一个表，用表模拟对象和数据结构。字符串作键时建议带引号，`table["key"]` 而不是 `table.key`，键里含特殊字符时尤其如此。
+Group related data and methods into one table, using tables to simulate objects and data structures. When using strings as keys, prefer quoting them, `table["key"]` instead of `table.key`, especially when the key contains special characters.
 
-示例:
+Example:
 
 ```lua
--- 定义一个用户表
+-- Define a user table
 local user = {
     name = "Alice",
     age = 30
 }
 
--- 访问表中的字段
-print(user["name"])  -- 使用字符串键访问
+-- Access a field in the table
+print(user["name"])  -- access with a string key
 ```
 
-## 7. 错误处理
+## 7. Error Handling
 
-可能出运行时错误的地方用 `pcall` 包起来，别只靠 `assert`。错误消息写清楚，排查时省时间。
+Wrap code that may raise runtime errors in `pcall` instead of relying only on `assert`. Write clear error messages to save debugging time.
 
-示例:
+Example:
 
 ```lua
 local success, result = pcall(function()
-    -- 可能会发生错误的代码
+    -- code that may error
 end)
 
 if not success then
@@ -122,11 +122,11 @@ if not success then
 end
 ```
 
-## 8. 代码组织
+## 8. Code Organization
 
-一个模块只负责一件事，加载用 `require`，文件末尾用 `return` 导出模块表（`module` 函数自 Lua 5.2 起已被移除，不要用）。文件和目录结构保持清晰，别把所有代码塞进一个文件。函数保持简短，一件事一个函数，太长了就拆成几个小的。
+One module does one thing. Load it with `require`, and export the module table with `return` at the end of the file (the `module` function has been removed since Lua 5.2; don't use it). Keep file and directory structure clear, and don't cram all code into one file. Keep functions short: one function, one job; split long ones into smaller functions.
 
-示例:
+Example:
 
 ```lua
 -- math_utils.lua
@@ -139,13 +139,13 @@ end
 return MathUtils
 ```
 
-## 参考资料
+## References
 
-- [Lua 5.4 官方手册](https://www.lua.org/manual/5.4/manual.html#2.2)
-- [lua-users 维基](http://lua-users.org/wiki/)
+- [Lua 5.4 official manual](https://www.lua.org/manual/5.4/manual.html#2.2)
+- [lua-users wiki](http://lua-users.org/wiki/)
 
 <!-- BACKLINKS-AUTO -->
-## 相关页面
+## Related pages
 
 - [README](/knowledge/README.md)
 - [pitfalls](/knowledge/pitfalls.md)

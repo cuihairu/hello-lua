@@ -1,20 +1,20 @@
-# 测试与调试
+# Testing and Debugging
 
-测试和调试回答两类问题：代码对不对，慢在哪里。本组两页：
+Testing and debugging answer two kinds of questions: is the code correct, and where is it slow. This group has two pages:
 
-- [Lua的单元测试框架](/lua-best-practices/unit-testing)：LuaUnit、Busted、Lunatest 与不引框架的最简做法。
-- [调试工具与技术](/lua-best-practices/debugging-tools)：ZeroBrane Studio、luadebug、MobDebug、日志与性能分析器。
+- [Lua Unit Testing Frameworks](/lua-best-practices/unit-testing): LuaUnit, Busted, Lunatest, and a framework-free minimal approach.
+- [Debugging Tools and Techniques](/lua-best-practices/debugging-tools): ZeroBrane Studio, luadebug, MobDebug, logging, and performance profilers.
 
-## 结语
+## Closing
 
-临时看个变量，`print` 就够；要断点和单步，上 ZeroBrane Studio 或 luadebug；查性能瓶颈，用 LuaJIT 分析器或 LuaProfiler。
+To peek at a variable temporarily, `print` suffices; for breakpoints and single-stepping, use ZeroBrane Studio or luadebug; to find performance bottlenecks, use the LuaJIT profiler or LuaProfiler.
 
-## 参考资料
+## References
 
-- [Lua 5.4 官方手册](https://www.lua.org/manual/5.4/manual.html#2.4)
+- [Lua 5.4 official manual](https://www.lua.org/manual/5.4/manual.html#2.4)
 - [Stack_trace](https://en.wikipedia.org/wiki/Stack_trace)
 
 <!-- BACKLINKS-AUTO -->
-## 相关页面
+## Related pages
 
 - [README](/knowledge/README.md)
