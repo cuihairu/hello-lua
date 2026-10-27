@@ -1,65 +1,65 @@
-# 实现垃圾回收器的考虑
+# Considerations for Implementing a Garbage Collector
 
-在实现垃圾回收器时，需要考虑多个因素来确保其高效、可靠，并且能够满足应用程序的需求。下面按算法、内存策略、暂停时间、性能、线程安全、设计、策略调整、语言集成、测试、文档十个方面展开。
+Implementing a garbage collector requires balancing several factors to keep it efficient, reliable, and suited to the application. This page walks ten: algorithm, memory policy, pause time, performance, thread safety, design, policy tuning, language integration, testing, and documentation.
 
-## 1. 垃圾回收算法选择
+## 1. Choosing the Algorithm
 
-标记-清除算法（Mark-and-Sweep）简单易实现，能处理各种类型的垃圾，代价是程序暂停时间可能较长，还需要额外的内存来存储标记信息。
+Mark-and-sweep is simple to implement and handles any kind of garbage; the cost is potentially long program pauses plus extra memory for mark bits.
 
-标记-整理算法（Mark-and-Compact）通过整理内存碎片有效减少碎片问题，但整理过程本身可能带来较长的暂停时间。
+Mark-and-compact reduces fragmentation by compacting memory, but compaction itself can bring long pauses.
 
-分代收集（Generational Collection）按对象的生命周期分代回收，减少短期对象的回收频率，效率更高；实现也复杂得多，需要设计不同代之间的交互机制。
+Generational collection reclaims objects by age and lowers the collection frequency of short-lived objects, making it more efficient; it is also much more complex, requiring a mechanism for interactions between generations.
 
-增量收集（Incremental Collection）把回收过程分解成多个小步骤，减少对程序的暂停时间，换来的是回收复杂度和开销的增加。
+Incremental collection splits reclamation into many small steps to reduce the pause, at the cost of added complexity and overhead in the collector.
 
-## 2. 内存管理策略
+## 2. Memory Management Strategy
 
-空闲内存管理维护空闲内存块列表，重用未使用的内存块，分配和释放的开销因此下降，内存使用效率提高。对象池则重用对象本身，避免频繁创建和销毁，减轻垃圾回收的负担。
+Free-list management keeps a list of free memory blocks and reuses unused memory, lowering allocation and deallocation overhead and improving memory use efficiency. An object pool reuses the objects themselves, avoiding frequent creation and destruction and lightening the GC burden.
 
-## 3. 暂停时间
+## 3. Pause Time
 
-允许开发者调整垃圾回收的暂停时间和频率，就能按应用程序的需求平衡性能和回收开销。增量收集和并发回收进一步压缩暂停时间，应用程序的响应性随之提升。
+Letting developers adjust the collector's pause time and frequency lets them balance performance against reclamation cost per the application's needs. Incremental and concurrent collection shrink the pause further, improving application responsiveness.
 
-## 4. 性能优化
+## 4. Performance Optimization
 
-优化死对象的处理可以减少无用对象的内存占用，提高回收效率。配合性能分析工具（如 Profiler）监控垃圾回收的表现，性能瓶颈能被定位和解决。
+Optimizing how dead objects are handled reduces the memory used by useless objects and improves reclamation efficiency. Pairing this with a profiler to monitor GC performance lets you locate and resolve bottlenecks.
 
-## 5. 线程安全
+## 5. Thread Safety
 
-在多线程环境中实现垃圾回收器，必须保证线程安全，否则会出现竞争条件和数据不一致。用读写锁保护垃圾回收器的内部数据，可以在保证正确性的同时维持多线程下的并发性能。
+In a multithreaded environment, the collector must be thread-safe, or you get race conditions and inconsistent data. Protecting the collector's internal data with read/write locks preserves correctness while keeping concurrent performance.
 
-## 6. 垃圾回收器的设计
+## 6. Collector Design
 
-内存布局的设计直接影响垃圾回收器的效率和性能，布局合理回收就快。实现之前先写设计文档，明确设计目标、算法选择、实现细节，能减少错误，保证实现符合需求。
+Memory layout directly affects the collector's efficiency and performance; a good layout collects faster. Writing a design document before implementation—clearly stating goals, algorithm choice, and implementation details—reduces errors and keeps the implementation aligned with the requirements.
 
-## 7. 回收策略的调整
+## 7. Tuning the Policy
 
-根据运行时的内存使用情况动态调整垃圾回收策略，可以适应不同的应用场景和负载变化。再提供配置选项让用户按需调整回收参数，灵活性更高，不同应用的需求都能覆盖。
+Adjusting the collection policy dynamically according to runtime memory use adapts to different application scenarios and load changes. Add configuration options so users can tune reclamation parameters as needed, giving the flexibility to cover varied needs.
 
-## 8. 与编程语言的集成
+## 8. Language Integration
 
-垃圾回收器要与语言的其他特性（如对象生命周期、异常处理）兼容，集成度才高。根据语言特性（如引用计数、强引用、弱引用）设计回收器，语言特性带来的内存管理挑战才有解。
+The collector must be compatible with the language's other features—such as object lifetime and exception handling—to integrate well. Designing it around the language's characteristics (reference counting, strong and weak references, and so on) is what makes the language's memory-management challenges solvable.
 
-## 9. 测试和验证
+## 9. Testing and Verification
 
-单元测试验证垃圾回收器的功能和性能，确保在各种情况下正常工作。性能测试评估回收器的效率和影响，为优化提供依据，减少对应用程序的干扰。
+Unit tests verify the collector's function and performance, ensuring it works correctly in a range of situations. Performance tests evaluate its efficiency and impact, giving a basis for optimization and reducing interference with the application.
 
-## 10. 文档和支持
+## 10. Documentation and Support
 
-用户文档解释如何配置和使用垃圾回收器，用户才能用好它的功能。技术支持解决使用过程中遇到的问题，保证垃圾回收器正常运行。
+User documentation explains how to configure and use the collector so users can take full advantage of it. Technical support handles problems encountered in use, keeping the collector running correctly.
 
-## 总结
+## Summary
 
-算法选择、内存管理策略、暂停时间、性能优化、线程安全，这五项决定了回收器的基本面；设计文档、策略调整、语言集成、测试和文档把基本面守住。每一项都有取舍，按应用的负载特征选即可。
+Algorithm choice, memory policy, pause time, performance optimization, and thread safety set the collector's fundamentals; the design document, policy tuning, language integration, testing, and documentation hold them in place. Each has trade-offs—pick per your workload's characteristics.
 
-## 参考资料
+## References
 
-- [Lua 5.4 官方手册](https://www.lua.org/manual/5.4/manual.html#2.7)
-- [Lua 5.4 官方手册](https://www.lua.org/manual/5.4/manual.html#2.9)
+- [Lua 5.4 official manual](https://www.lua.org/manual/5.4/manual.html#2.7)
+- [Lua 5.4 official manual](https://www.lua.org/manual/5.4/manual.html#2.9)
 - [Garbage_collection_(computer_science)](https://en.wikipedia.org/wiki/Garbage_collection_(computer_science))
 - [Mark-and-sweep](https://en.wikipedia.org/wiki/Mark-and-sweep)
 
 <!-- BACKLINKS-AUTO -->
-## 相关页面
+## Related pages
 
 - [lua55-source](lua55-source.md)

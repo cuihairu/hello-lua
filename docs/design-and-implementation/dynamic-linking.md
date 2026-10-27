@@ -1,30 +1,30 @@
-# 动态链接与模块加载
+# Dynamic Linking and Module Loading
 
-在 Lua 中，动态链接和模块加载是模块系统的关键部分，让 Lua 程序能够在运行时加载和使用外部模块。
+In Lua, dynamic linking and module loading are key parts of the module system: they let a Lua program load and use external modules at run time.
 
-## 1. 动态链接与模块加载概述
+## 1. Overview
 
-动态链接是指在程序运行时动态地加载共享库或模块，而不是在编译时静态链接。模块加载是指将模块的代码载入到 Lua 环境中，使得程序可以使用这些模块提供的功能。
+Dynamic linking means loading a shared library or module while the program runs, rather than linking it statically at compile time. Module loading means loading a module's code into the Lua environment so the program can use the features it provides.
 
-## 2. 模块路径
+## 2. Module Paths
 
-Lua 用 `package.path` 和 `package.cpath` 配置模块的查找路径：`package.path` 用于 Lua 脚本模块，Lua 在这些路径下查找 `.lua` 文件；`package.cpath` 用于 C 扩展模块，查找共享库（如 `.so`、`.dll`）。
+Lua configures the search paths with `package.path` and `package.cpath`: `package.path` is for Lua script modules, searched as `.lua` files; `package.cpath` is for C extension modules, searched as shared libraries (such as `.so` or `.dll`).
 
-示例：配置模块路径
+Example: configuring module paths
 
 ```lua
--- 添加路径到 package.path
+-- Add a path to package.path
 package.path = package.path .. ";./mymodules/?.lua"
 
--- 添加路径到 package.cpath
+-- Add a path to package.cpath
 package.cpath = package.cpath .. ";./mymodules/?.so"
 ```
 
-## 3. 模块的定义与返回
+## 3. Defining and Returning a Module
 
-在 Lua 模块文件中，模块通常被定义为一个表（table），并在文件末尾返回。这使得其他 Lua 脚本可以通过 `require` 函数获取模块内容。
+A Lua module file is usually defined as a table and returned at the end of the file, which lets other scripts get its contents through `require`.
 
-示例：定义和返回模块
+Example: defining and returning a module
 
 ```lua
 -- mymodule.lua
@@ -37,58 +37,58 @@ end
 return M
 ```
 
-## 4. 加载模块
+## 4. Loading Modules
 
-### 4.1 加载 Lua 模块
+### 4.1 Loading a Lua Module
 
-使用 `require` 函数可以加载 Lua 模块。`require` 会根据 `package.path` 查找并加载模块文件，执行后返回模块表。对上一节定义的 `mymodule`：
+`require` loads Lua modules: it searches `package.path`, loads and runs the module file, and returns the module table. For the `mymodule` above:
 
-示例：加载 Lua 模块
+Example: loading a Lua module
 
 ```lua
 local mymodule = require("mymodule")
-print(mymodule.say_hello("World"))  -- 输出 Hello, World
+print(mymodule.say_hello("World"))  -- prints Hello, World
 ```
 
-### 4.2 加载 C 扩展模块
+### 4.2 Loading a C Extension Module
 
-C 扩展模块是用 C 语言编写的，并被编译成共享库。在 Lua 中使用 `require` 可以加载这些扩展模块。共享库的文件名通常以 `.so`（Linux）或 `.dll`（Windows）结尾。
+C extension modules are written in C and compiled into shared libraries. `require` loads them too. Shared library filenames usually end in `.so` (Linux) or `.dll` (Windows).
 
-示例：加载 C 扩展模块
+Example: loading a C extension module
 
 ```lua
-local mylib = require("mylib")  -- 假设 mylib.so 或 mylib.dll 在 package.cpath 路径下
+local mylib = require("mylib")  -- assume mylib.so or mylib.dll is on package.cpath
 print(mylib.some_c_function())
 ```
 
-## 5. 动态加载 C 扩展
+## 5. Dynamically Loading C Extensions
 
-在 Lua 中，可以使用 `package.loadlib` 函数动态加载 C 扩展。这个函数用于加载共享库，并调用指定的初始化函数。
+`package.loadlib` loads a C extension dynamically. It loads a shared library and calls the named initialization function.
 
-示例：动态加载 C 扩展
+Example: dynamically loading a C extension
 
 ```lua
--- 加载共享库，并调用初始化函数
+-- Load the shared library and call its init function
 local mylib = package.loadlib("mylib.so", "luaopen_mylib")
 
--- 执行初始化函数
+-- Run the init function
 if mylib then
     mylib()
 end
 ```
 
-## 6. 热加载与动态更新
+## 6. Hot Reloading and Dynamic Updates
 
-### 6.1 热加载
+### 6.1 Hot Reloading
 
-热加载允许在运行时更新模块而无需重新启动程序。通过监视模块文件的变化，可以重新加载模块，以便应用新的功能或修复问题。
+Hot reloading updates a module at run time without restarting the program. Watching module file changes lets you reload a module to apply new features or fix problems.
 
-示例：简单的热加载
+Example: simple hot reloading
 
 ```lua
 local module = require("mymodule")
 
--- 监视文件变化并重新加载模块（伪代码）
+-- Watch for file changes and reload (pseudocode)
 while true do
     if file_changed("mymodule.lua") then
         package.loaded["mymodule"] = nil
@@ -97,16 +97,16 @@ while true do
 end
 ```
 
-### 6.2 动态更新
+### 6.2 Dynamic Updates
 
-动态更新是在运行时修改模块的内容，重新加载模块或直接修改模块表都可以。
+A dynamic update modifies a module at run time: either reload the module, or change its table directly.
 
-示例：动态更新模块
+Example: dynamically updating a module
 
 ```lua
 local mymodule = require("mymodule")
 
--- 动态添加新功能
+-- Add a new feature dynamically
 mymodule.new_feature = function()
     return "New feature added!"
 end
@@ -114,11 +114,11 @@ end
 print(mymodule.new_feature())
 ```
 
-## 7. 错误处理
+## 7. Error Handling
 
-模块加载过程中可能会遇到错误，例如模块文件不存在、加载失败等。用错误处理机制捕捉这些错误。
+Module loading can fail—the module file may be missing, the load may fail, and so on. Use the error-handling mechanism to catch these errors.
 
-示例：错误处理
+Example: error handling
 
 ```lua
 local function safe_require(module_name)
@@ -132,21 +132,21 @@ end
 
 local mymodule = safe_require("mymodule")
 if mymodule then
-    print(mymodule.say_hello("World"))  -- 输出 Hello, World
+    print(mymodule.say_hello("World"))  -- prints Hello, World
 end
 ```
 
-## 8. 总结
+## Summary
 
-配置 `package.path`/`package.cpath`、用 `require` 加载 Lua 与 C 扩展模块、清除 `package.loaded` 实现热加载、`pcall` 兜底加载错误，这四件事覆盖了 Lua 动态链接和模块加载的日常工作。
+Configuring `package.path`/`package.cpath`, loading Lua and C extension modules with `require`, clearing `package.loaded` for hot reloading, and catching load errors with `pcall`—these four things cover the everyday work of Lua dynamic linking and module loading.
 
-## 参考资料
+## References
 
-- [Lua 5.4 官方手册](https://www.lua.org/manual/5.4/manual.html#8)
+- [Lua 5.4 official manual](https://www.lua.org/manual/5.4/manual.html#8)
 - [Dynamic_linking](https://en.wikipedia.org/wiki/Dynamic_linking)
 
 <!-- BACKLINKS-AUTO -->
-## 相关页面
+## Related pages
 
 - [glossary](/glossary.md)
 - [core-concepts](/knowledge/core-concepts.md)

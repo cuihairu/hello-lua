@@ -1,50 +1,50 @@
-# 引用计数与标记-清除算法
+# Reference Counting versus Mark-and-Sweep
 
-在 Lua 的垃圾回收机制中，引用计数和标记-清除算法都是重要的内存管理技术。Lua 本身只使用标记-清除算法来管理对象的生命周期，并不采用引用计数作为对象管理手段（仅在内部少数场合，例如对已打开 upvalue 的计数，使用了引用计数的思想）。把两种算法放在一起对比，能看清楚 Lua 的选择。
+In Lua's garbage collection, reference counting and mark-and-sweep are both important memory-management techniques. Lua itself uses only mark-and-sweep to manage object lifetimes; it does not use reference counting to manage objects (it borrows the idea only in a few internal spots, such as counting already-open upvalues). Comparing the two algorithms makes Lua's choice clear.
 
-## 1. 引用计数（Reference Counting）
+## 1. Reference Counting
 
-### 基本概念
+### Basic idea
 
-引用计数为每个对象维护一个计数器，追踪其使用情况：对象被引用时计数增加，引用被释放时计数减少，计数为零时对象不再被使用，可以安全地回收其占用的内存。
+Reference counting keeps a counter per object that tracks how it is used: the count increments when the object is referenced and decrements when a reference is released; at zero the object is no longer used and its memory can be safely reclaimed.
 
-### 优点
+### Strengths
 
-实时回收是引用计数最大的优势，引用计数归零时立即释放内存。实现也相对简单，很多编程语言都能有效使用。
+Immediate reclamation is reference counting's biggest advantage: when the count hits zero, the memory is freed right away. The implementation is also relatively simple, and many languages use it effectively.
 
-### 缺点
+### Weaknesses
 
-循环引用无法处理：两个对象相互引用时，它们的引用计数可能都不为零，导致内存泄漏。维护计数的开销也偏高，对象创建和销毁频繁时尤其明显。
+Cycles are unhandled: if two objects reference each other, both counts may stay nonzero and leak. Counting also has significant overhead, especially when objects are created and destroyed often.
 
-## 2. 标记-清除算法（Mark-and-Sweep Algorithm）
+## 2. Mark-and-Sweep
 
-### 基本概念
+### Basic idea
 
-标记-清除算法分两个阶段管理内存：标记阶段从根对象开始，递归遍历所有可达的对象并标记为活跃对象，根对象包括全局变量和当前调用栈中的局部变量；清除阶段遍历所有对象，清除那些没有被标记为活跃的对象，释放它们占用的内存。
+Mark-and-sweep manages memory in two phases. In the mark phase, starting from root objects—global variables and locals on the current call stack—it recursively walks every reachable object and marks it live. In the sweep phase, it walks all objects and clears those not marked live, freeing their memory.
 
-### 优点
+### Strengths
 
-循环引用能有效处理，因为算法根据对象的可达性决定是否回收。也免去了维护引用计数的开销和复杂性。
+Cycles are handled correctly, because the algorithm decides reclamation from reachability. It also avoids the overhead and complexity of maintaining reference counts.
 
-### 缺点
+### Weaknesses
 
-暂停时间可能较长，每次垃圾回收需要扫描所有对象。回收是周期性的，不实时，短期内可能出现内存使用峰值。
+The pause can be long, since each collection scans every object. Collection is periodic rather than immediate, so memory use may peak in the short term.
 
-## Lua的垃圾回收机制
+## Lua's Garbage Collector
 
-Lua 的垃圾回收机制结合了标记-清除算法和增量收集技术。主要算法是标记-清除：通过标记所有可达的对象来决定哪些对象可以被清除。为了减少回收对程序的影响，Lua 默认采用增量收集（增量模式），把回收过程分成多个小步骤逐步清理内存，减少暂停时间。Lua 5.4 还提供分代模式作为增量模式的替代：把对象按存活时间分为新对象和老对象，新对象以更高的频率被回收，老对象只在较少的全局回收中被检查，两种模式通过 `collectgarbage("incremental")` 与 `collectgarbage("generational")` 二选一切换。控制与调优入口是 `collectgarbage` 函数，可以手动触发回收、调整阈值。
+Lua's collector combines mark-and-sweep with incremental collection. The main algorithm is mark-and-sweep: it marks all reachable objects and uses that to decide what can be cleared. To reduce the impact on the program, Lua defaults to incremental (incremental mode), spreading collection into many small steps to shorten the pause. Lua 5.4 also offers a generational mode as the alternative: objects are split by survival time into new and old; new objects are collected more often, old objects only during the less frequent major collections. The two modes are mutually exclusive, selected with `collectgarbage("incremental")` or `collectgarbage("generational")`. The control and tuning entry point is `collectgarbage`, which can trigger a manual collection and adjust thresholds.
 
-## 总结
+## Summary
 
-引用计数实时但处理不了循环引用，频繁操作对象时开销也高；标记-清除能处理循环引用，代价是较长的暂停时间。Lua 选了标记-清除，再叠加增量收集和分代收集来压低停顿。
+Reference counting is immediate but cannot handle cycles and is costly under frequent object churn; mark-and-sweep handles cycles at the price of longer pauses. Lua chooses mark-and-sweep, layering incremental and generational collection on top to reduce pauses.
 
-## 参考资料
+## References
 
 - [Reference_counting](https://en.wikipedia.org/wiki/Reference_counting)
-- [Lua 官方源码仓 github.com/lua/lua](https://github.com/lua/lua)
+- [Lua official source repository on GitHub](https://github.com/lua/lua)
 
 <!-- BACKLINKS-AUTO -->
-## 相关页面
+## Related pages
 
 - [core-concepts](/knowledge/core-concepts.md)
 - [pitfalls](/knowledge/pitfalls.md)

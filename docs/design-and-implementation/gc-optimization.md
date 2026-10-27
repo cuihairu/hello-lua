@@ -1,46 +1,46 @@
-# 垃圾回收的优化策略
+# Optimizing Garbage Collection
 
-Lua 的垃圾回收机制有一组优化策略，目标是提高性能、减少回收对程序运行的影响。
+Lua's garbage collector has a set of optimization strategies aimed at improving performance and reducing the collector's effect on program execution.
 
-## 1. 回收模式与参数
+## 1. Modes and Parameters
 
-Lua 5.4 标记-清除、增量/分代模式的定义及 `collectgarbage` 参数语义见[垃圾回收机制总览](/design-and-implementation/garbage-collection)。本页保留模式取舍、对象分配和测量方法，避免重复维护算法事实。
+The definitions of Lua 5.4's mark-and-sweep, incremental/generational modes, and the semantics of `collectgarbage` parameters are in [the garbage collection overview](/design-and-implementation/garbage-collection). This page keeps the mode trade-offs, object allocation, and measurement methods, to avoid re-maintaining algorithm facts.
 
-## 2. 优化对象分配
+## 2. Optimizing Allocation
 
-减少垃圾回收的压力可以从分配端入手。对象池（Object Pool）技术重复使用对象，避免频繁创建和销毁；高频操作中尽量少创建短期对象，年轻代的回收压力随之下降。
+You can lower GC pressure on the allocation side. An object pool reuses objects, avoiding frequent create/destroy; high-frequency code should create as few short-lived objects as possible, which lowers young-generation collection pressure.
 
-## 3. 调试与性能分析
+## 3. Debugging and Profiling
 
-内存曲线监控用 `collectgarbage("count")` 定期采样内存占用，对比回收前后的差值，可以了解对象的分配和回收情况：
+For a memory curve, sample `collectgarbage("count")` periodically and compare the value before and after a collection to learn about allocation and reclamation:
 
 ```lua
 local function mem()
     return string.format("%.1f KB", collectgarbage("count"))
 end
-print("回收前:", mem())
+print("before GC:", mem())
 collectgarbage("collect")
-print("回收后:", mem())
+print("after GC:", mem())
 ```
 
-工具方面要分清边界：`luajit` 的 `-jdump`（`jit.dump` 库）用于观察 JIT trace 的编译过程，与垃圾回收本身无关；Lua 5.4 标准解释器没有内置的 GC 分析器，通常配合外部采样或日志来观察 GC 行为。根据监控结果优化代码中的内存管理策略，回收的开销就能继续压低。
+Tool boundaries matter: `luajit`'s `-jdump` (the `jit.dump` library) observes JIT trace compilation and is unrelated to GC itself; the Lua 5.4 standard interpreter has no built-in GC profiler, so you usually pair it with external sampling or logging to observe GC behavior. Optimize the code's memory-management strategy based on the monitoring results, and reclamation cost keeps dropping.
 
-## 4. 增量与分代模式的实测取舍
+## 4. Measuring Incremental versus Generational
 
-模式定义与参数见[垃圾回收机制总览](/design-and-implementation/garbage-collection)。增量模式可作为分配速率稳定负载的比较基线；短生命周期对象较多时，可把分代模式纳入对照。切换后用 `collectgarbage("count")` 和计时对比内存峰值与停顿，再按目标负载决定。
+Mode definitions and parameters are in [the garbage collection overview](/design-and-implementation/garbage-collection). Incremental mode can serve as the comparison baseline for a steady allocation-rate workload; if there are many short-lived objects, include generational mode in the comparison. After switching, use `collectgarbage("count")` and timing to compare memory peaks and pauses, then decide based on your target workload.
 
-## 总结
+## Summary
 
-增量收集、分代收集、参数调优、对象分配优化、性能分析，五条路都指向同一个目标：让回收更少地打断程序。先用 `collectgarbage("count")` 量化现状，再选模式和调参数。
+Incremental collection, generational collection, parameter tuning, allocation optimization, and profiling all aim at the same goal: making collection interrupt the program less. Quantify the current state with `collectgarbage("count")`, then choose a mode and tune parameters.
 
-## 参考资料
+## References
 
-- [Lua 5.4 官方手册](https://www.lua.org/manual/5.4/manual.html#2.9)
+- [Lua 5.4 official manual](https://www.lua.org/manual/5.4/manual.html#2.9)
 - [Garbage_collection_(computer_science)](https://en.wikipedia.org/wiki/Garbage_collection_(computer_science))
 - [Manual_memory_management](https://en.wikipedia.org/wiki/Manual_memory_management)
 
 <!-- BACKLINKS-AUTO -->
-## 相关页面
+## Related pages
 
 - [lua55-source](lua55-source.md)
 - [pitfalls](/knowledge/pitfalls.md)

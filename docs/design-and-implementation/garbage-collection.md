@@ -1,73 +1,73 @@
-# 垃圾回收机制
+# Garbage Collection
 
-Lua的垃圾回收自动回收不再使用的内存，防止内存泄漏，采用标记-清除（Mark-and-Sweep）和增量收集（Incremental Collection）相结合的策略。
+Lua's garbage collector automatically reclaims memory that is no longer used, preventing leaks. It combines mark-and-sweep with incremental collection.
 
-## 1. 垃圾回收的基本概念
+## 1. Basic Concepts
 
-垃圾回收（Garbage Collection）是自动回收不再需要的内存的过程：垃圾回收器跟踪程序中的内存对象，在对象不再被引用时释放其占用的内存。Lua 中的内存对象包括表、函数、字符串等，回收机制关注这些对象的生命周期和引用状态。
+Garbage collection (GC) is the process of automatically reclaiming memory that is no longer needed: the collector tracks the program's memory objects and frees an object's memory once it is no longer referenced. Lua's memory objects include tables, functions, strings, and so on; the collector cares about each object's lifetime and reference state.
 
-## 2. 标记-清除算法
+## 2. Mark-and-Sweep
 
-算法分两个阶段。标记阶段从根对象开始遍历程序中的所有对象，标记所有可达的对象；根对象包括全局变量和当前调用栈中的局部变量，这一步的目标是识别仍然被引用的对象。清除阶段遍历所有对象，把未被标记的视为垃圾并释放其占用的内存，只有标记阶段未命中的对象会被清除。
+The algorithm has two phases. In the mark phase, starting from root objects, it walks every object in the program and marks all reachable objects. Roots include global variables and the local variables on the current call stack; this step identifies the objects still referenced. In the sweep phase, it walks all objects and frees any that were not marked as garbage—only objects missed by the mark phase are swept.
 
-## 3. 增量收集
+## 3. Incremental Collecting
 
-Lua 5.4 提供两种可切换的回收模式，通过 `collectgarbage("incremental")` 或 `collectgarbage("generational")` 选择。
+Lua 5.4 offers two switchable collection modes, selected with `collectgarbage("incremental")` or `collectgarbage("generational")`.
 
-增量模式（默认）把标记与清除分成多个小步骤，穿插在程序执行之间逐步完成，每一步只处理一部分对象，单次回收的暂停时间因此变短。
+The incremental mode (default) splits marking and sweeping into many small steps interleaved with program execution. Each step handles a subset of objects, so the pause from a single collection is shorter.
 
-分代模式基于“大多数对象朝生夕灭”的假设，把对象按存活时间分为新对象与老对象：新对象以较高的频率做局部（minor）回收，老对象只在较少发生的全局（major）回收中被检查。分代模式不能与增量模式同时生效，两者是二选一的关系。
+The generational mode assumes that most objects die young, and splits objects by age into new and old: new objects are reclaimed by frequent minor collections; old objects are only checked during the less frequent major collections. The generational and incremental modes cannot both be active—they are mutually exclusive.
 
-分代模式可用两个倍率控制局部与全局回收的频率：`minormul` 控制局部回收触发频率，`majormul` 控制全局回收触发频率。参数为 `0` 时保持该参数原值。
+Two multipliers control the frequency of minor and major collections in the generational mode: `minormul` controls how often a minor collection is triggered, and `majormul` controls how often a major one is. Passing `0` keeps that parameter's current value.
 
 ```lua
-collectgarbage("incremental", 100, 100, 13) -- 暂停值、步进倍率、步长
-collectgarbage("generational", 20, 100)    -- 局部回收倍率、全局回收倍率
+collectgarbage("incremental", 100, 100, 13) -- pause, step multiplier, step size
+collectgarbage("generational", 20, 100)    -- minor multiplier, major multiplier
 ```
 
-## 4. 垃圾回收的控制
+## 4. Controlling the Collector
 
-`collectgarbage` 函数可以查询和控制垃圾回收器的状态：
+The `collectgarbage` function queries and controls the collector's state:
 
 ```lua
--- 手动触发一次完整回收
+-- Run one full collection
 collectgarbage("collect")
 
--- 查询垃圾回收器是否正在运行
+-- Is the collector running?
 print(collectgarbage("isrunning"))      -- true
 
--- 查询当前 Lua 占用的内存（单位 KB）
+-- Memory in use (KB)
 print(collectgarbage("count"))
 ```
 
-增量模式下，垃圾回收器由两个参数控制何时开始回收、每步做多少工作：
+In the incremental mode, two parameters control when collection starts and how much work each step does:
 
 ```lua
--- 设置垃圾回收的参数
-collectgarbage("setpause", 100)    -- 暂停值：控制两次回收之间内存可以增长多少
-collectgarbage("setstepmul", 200)  -- 步长倍率：控制每个 GC 步骤完成的工作量
+-- Set GC parameters
+collectgarbage("setpause", 100)    -- pause: how much memory may grow between collections
+collectgarbage("setstepmul", 200)  -- step multiplier: work done per GC step
 ```
 
-Lua 5.4 也支持用一条调用同时设置这两个参数：`collectgarbage("incremental", pause, stepmul, stepsize)`。`setpause`/`setstepmul` 是沿袭自 5.1 的旧接口，在 5.4 中已被标记为过时，新代码建议使用 `incremental`/`generational` 形式。
+Lua 5.4 also lets you set both with a single call: `collectgarbage("incremental", pause, stepmul, stepsize)`. `setpause`/`setstepmul` are the legacy 5.1 interface, now deprecated in 5.4; new code should prefer the `incremental`/`generational` forms.
 
-两个参数的效果：`pause` 越大，GC 触发得越晚、频率越低，但峰值内存越高；`stepmul` 越大，每个步骤做的 GC 工作越多，单步耗时增加但整体回收更快。适当调整可以在内存占用和停顿时间之间取得平衡。
+The effect of the two parameters: a larger `pause` triggers GC later and less often but at a higher peak memory; a larger `stepmul` does more GC work per step—each step takes longer but collection finishes faster. Adjusting them trades memory usage against pause time.
 
-## 5. 垃圾回收的优化
+## 5. Optimizing Reclamation
 
-优化回收有三个方向：减少内存分配、优化对象的生命周期，降低垃圾回收的负担（例如避免创建大量短生命周期的对象）；根据程序需求调整回收阈值和步长，平衡性能和内存使用；用 Lua 的内置函数和工具监控回收效果，依据数据继续调整。
+Optimization has three directions: reduce memory allocation and tune object lifetimes to lower GC pressure (for example, avoid creating many short-lived objects); adjust the reclamation threshold and step size to the program's requirements, balancing performance against memory use; and monitor the collector with Lua's built-in functions and tools, continuing to adjust based on the data.
 
-## 总结
+## Summary
 
-标记-清除负责判断哪些对象可回收，增量收集把回收摊平成小步骤。理解这两层，再用 `collectgarbage` 调参数，就能在程序性能和内存占用之间找到适合自己负载的平衡点。
+Mark-and-sweep decides which objects are reclaimable, and incremental collection flattens collection into small steps. Understand those two layers, then tune parameters with `collectgarbage`, and you can find the balance between program performance and memory use that suits your workload.
 
-## 参考资料
+## References
 
-- [Lua 5.4 官方手册](https://www.lua.org/manual/5.4/manual.html#2.7)
-- [Lua 5.4 官方手册](https://www.lua.org/manual/5.4/manual.html#2.9)
+- [Lua 5.4 official manual](https://www.lua.org/manual/5.4/manual.html#2.7)
+- [Lua 5.4 official manual](https://www.lua.org/manual/5.4/manual.html#2.9)
 - [Garbage_collection_(computer_science)](https://en.wikipedia.org/wiki/Garbage_collection_(computer_science))
 
 <!-- BACKLINKS-AUTO -->
-## 相关页面
+## Related pages
 
 - [glossary](/glossary.md)
 - [core-concepts](/knowledge/core-concepts.md)

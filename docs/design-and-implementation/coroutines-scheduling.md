@@ -1,38 +1,38 @@
-# 协程的调度与切换
+# Coroutine Scheduling and Switching
 
-Lua 通过协作式调度管理协程的执行，核心工作是保存和恢复协程的状态。
+Lua manages coroutine execution through cooperative scheduling; the core work is saving and restoring coroutine state.
 
-## 1. 协程的调度
+## 1. Scheduling Coroutines
 
-协作式意味着协程必须主动让出控制权，其他协程才能运行。三个库函数覆盖了调度的全过程。`coroutine.create` 创建新协程，此时协程处于`suspended`（挂起）状态，尚未开始执行。`coroutine.resume` 恢复协程的执行，协程从挂起变为`running`（运行）状态，一直执行到遇到`coroutine.yield`或协程结束。`coroutine.yield` 让协程主动挂起自己，状态变回`suspended`，控制权返回给调用协程或主线程。
+Cooperative means a coroutine must yield control voluntarily before any other coroutine can run. Three library functions cover the whole scheduling cycle. `coroutine.create` creates a new coroutine, initially `suspended` and not yet started. `coroutine.resume` resumes execution: the coroutine moves from `suspended` to `running` and runs until it hits `coroutine.yield` or finishes. `coroutine.yield` suspends the coroutine itself, moving it back to `suspended` and returning control to the caller.
 
-调度的决定权在协程本身的执行逻辑手里。开发者需要显式地管理协程的切换，确保协程在适当的时机挂起和恢复。
+The scheduling decision belongs to the coroutine's own execution logic. You explicitly manage switching, suspending and resuming coroutines at the right moments.
 
-## 2. 协程的切换
+## 2. Switching Coroutines
 
-切换涉及上下文的保存与恢复。协程挂起时，Lua 只需要保留该协程的`lua_State`即可，它的栈、局部变量和当前的调用信息（`CallInfo`，其中记录了指令指针）都原样存放在结构体里，不需要额外拷贝。恢复时，Lua把“当前协程”指针指向被恢复的`lua_State`，从其`CallInfo`中取出指令指针继续执行，协程从上次挂起的位置继续运行。
+Switching involves saving and restoring context. When a coroutine suspends, Lua only needs to keep its `lua_State`: its stack, local variables, and current call information (`CallInfo`, which records the instruction pointer) stay in place inside the structure, needing no extra copy. On resume, Lua points the "current coroutine" pointer at the resumed `lua_State`, pulls the instruction pointer from its `CallInfo`, and continues from where it last suspended.
 
-切换发生在 C 层面，交换的是 `lua_State` 中的栈指针与 `CallInfo`，并不保存或恢复 CPU 寄存器（`setjmp`/`longjmp` 仅用于错误恢复）。这也解释了为什么协程只能在同一线程内协作切换。
+The switch happens in C: it exchanges the stack pointer and `CallInfo` in `lua_State` rather than saving or restoring CPU registers (`setjmp`/`longjmp` are only for error recovery). This also explains why coroutines can only switch cooperatively within the same thread.
 
-## 3. 协程切换的优化
+## 3. Optimizing the Switch
 
-切换效率对性能影响明显，Lua 的实现从三处降低开销。切换本身只需交换栈指针和当前调用信息，不涉及系统调用或 CPU 级的上下文保存，成本极低，适合高频切换的调度场景。栈按需分配并自动伸缩，切换时无需拷贝栈内容；控制协程数量、及时回收 dead 状态的协程，可以避免内存被大量空闲协程占用。垃圾回收与协程切换密切相关，优化回收策略能减少它对切换的干扰。
+Switch efficiency matters to performance; Lua's implementation lowers cost in three places. The switch itself only exchanges the stack pointer and current call information—no system call or CPU-level context save—so it is cheap enough for high-frequency scheduling. Stacks are allocated on demand and grow and shrink automatically, so switching never copies stack contents; controlling the number of coroutines and collecting dead ones promptly avoids tying up memory in idle coroutines. Garbage collection is closely tied to switching, so a tuned reclamation strategy reduces its interference.
 
-## 4. 协程切换的调试与测试
+## 4. Debugging and Testing the Switch
 
-调试协程切换有几条路：用调试工具跟踪协程的状态变化，检查挂起和恢复情况，暴露潜在的切换问题；对切换做性能分析，确认开销并针对性优化；写单元测试验证协程的创建、恢复、暂停和状态切换。
+There are a few routes to debugging coroutine switching: track coroutine state changes with a debugger to catch suspension and resume problems and expose latent switching bugs; profile the switch to confirm its cost and optimize the hot spots; and write unit tests for creation, resume, suspension, and state transitions.
 
-## 总结
+## Summary
 
-协作式调度加上轻量的上下文切换，构成了 Lua 协程的成本模型：切换只交换栈指针和 `CallInfo`，不碰 CPU 寄存器，也没有系统调用。应用层要做的事是管理好协程的数量和挂起时机。
+Cooperative scheduling plus lightweight context switching makes up Lua's coroutine cost model: the switch only exchanges the stack pointer and `CallInfo`, touches no CPU registers, and makes no system call. On the application side, the work is managing coroutine count and suspension timing.
 
-## 参考资料
+## References
 
-- [Lua 5.4 官方手册](https://www.lua.org/manual/5.4/manual.html#2.5)
+- [Lua 5.4 official manual](https://www.lua.org/manual/5.4/manual.html#2.5)
 - [Coroutine](https://en.wikipedia.org/wiki/Coroutine)
 - [Call_stack](https://en.wikipedia.org/wiki/Call_stack)
 
 <!-- BACKLINKS-AUTO -->
-## 相关页面
+## Related pages
 
 - [core-concepts](/knowledge/core-concepts.md)
