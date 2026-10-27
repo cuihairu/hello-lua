@@ -1,73 +1,73 @@
-# 应用场景
+# Application Scenarios
 
-我把 [Lua的应用场景](/basics/applications) 与 [Lua的扩展与应用](/lua-extensions-applications/README) 里的领域、嵌入式和 C 互操作案例合在这份索引里，每条附项目或用法线索并回链原页。
+This index combines domain, embedded, and C interop cases from [Lua applications](/basics/applications) and [Lua extensions and applications](/lua-extensions-applications/README). Each item includes a project or usage clue and links back to the source page.
 
-## 游戏开发
+## Game development
 
-- 游戏脚本：Unity3D、Cocos2d-x、CryEngine 等引擎支持 Lua 作脚本，控制游戏逻辑、事件处理、AI 行为；逻辑可边跑边改，不必重编整个游戏。
-- 游戏扩展与插件：玩家用 Lua 写自定义内容，角色行为、关卡设计、游戏规则都能由玩家扩展。
-- 有名字的案例：《World of Warcraft》《Angry Birds》《Dark Souls》用 Lua 写脚本。
+- Game scripting: Unity3D, Cocos2d-x, CryEngine, and other engines support Lua as a scripting language for game logic, event handling, and AI behavior. Logic can change while the game runs without recompiling the whole game.
+- Game extensions and plugins: players use Lua to create custom content, including character behavior, level design, and game rules.
+- Named examples: World of Warcraft, Angry Birds, and Dark Souls use Lua scripts.
 
-来源：[Lua的应用场景](/basics/applications)、[Lua的历史和发展](/basics/history-and-development)。
+Sources: [Lua applications](/basics/applications), [Lua history and development](/basics/history-and-development).
 
-## 嵌入式系统
+## Embedded systems
 
-- 资源受限设备：Lua 内存与运行时开销小，承担设备控制、配置管理、界面处理。
-- 家电与消费电子：智能电视、机顶盒、路由器内嵌 Lua 作脚本引擎，可控制功能、灵活扩展。这几项站内未给出具体产品名。
-- 交叉编译：Lua 的 Makefile 没有 `CROSS` 变量，用 `CC` 指定工具链即可，例如 `make generic CC=arm-none-eabi-gcc`。
+- Resource-constrained devices: Lua has low memory and runtime overhead, making it useful for device control, configuration management, and interface handling.
+- Home appliances and consumer electronics: smart TVs, set-top boxes, and routers embed Lua as a scripting engine for controllable features and flexible extension. This site does not name specific products for these items.
+- Cross-compilation: Lua’s Makefile does not have a `CROSS` variable. Use `CC` to specify the toolchain, for example `make generic CC=arm-none-eabi-gcc`.
 
-来源：[Lua的应用场景](/basics/applications)、[嵌入式开发](/lua-extensions-applications/embedded-development)。
+Sources: [Lua applications](/basics/applications), [Embedded development](/lua-extensions-applications/embedded-development).
 
-## Web 开发
+## Web development
 
-- OpenResty 结合 Nginx 处理并发请求与动态内容生成，HTTP 处理、数据库交互、业务逻辑都在 Lua 里完成。
-- API 网关：请求路由、负载均衡、安全检查用 Lua 脚本实现。
-- 异步 I/O：OpenResty/ngx_lua 把网络 I/O 做成「非阻塞 + 协程挂起」，请求发出后协程让出，数据到达再恢复，使用者视角仍是顺序代码。
+- OpenResty with Nginx handles concurrent requests and dynamic content generation; HTTP processing, database interaction, and business logic can all run in Lua.
+- API gateways: request routing, load balancing, and security checks can be implemented with Lua scripts.
+- Asynchronous I/O: OpenResty/ngx_lua models network I/O as nonblocking operations plus coroutine suspension. A coroutine yields after sending a request and resumes when data arrives, so the user-facing code still reads sequentially.
 
-来源：[Lua的应用场景](/basics/applications)、[协程与线程的比较](/advanced/coroutines-vs-threads)。
+Sources: [Lua applications](/basics/applications), [Coroutines versus threads](/advanced/coroutines-vs-threads).
 
-## 配置管理
+## Configuration management
 
-- 动态配置文件：Lua 配置可含逻辑运算与条件判断，比 JSON、YAML 这类静态配置灵活；Neovim 用 Lua 管理配置。
-- 软件定义网络（SDN）：用 Lua 动态配置网络设备的行为和策略，运行时调整。
+- Dynamic configuration files: Lua configuration can include logic and conditionals, making it more flexible than static JSON or YAML configuration. Neovim manages configuration with Lua.
+- Software-defined networking (SDN): use Lua to configure device behavior and policies dynamically at run time.
 
-来源：[Lua的应用场景](/basics/applications)。
+Sources: [Lua applications](/basics/applications).
 
-## 数据分析
+## Data analysis
 
-- 嵌入式数据处理：在 IoT 设备里处理传感器数据、做边缘计算。
-- 数据清洗与转换：借表的处理能力写转换脚本，处理结构化或半结构化数据。
+- Embedded data processing: process sensor data and perform edge computing on IoT devices.
+- Data cleaning and transformation: use tables to write transformation scripts for structured or semi-structured data.
 
-来源：[Lua的应用场景](/basics/applications)。
+Sources: [Lua applications](/basics/applications).
 
-## 测试与自动化
+## Testing and automation
 
-- 自动化测试：UI 测试、API 测试脚本。
-- CI/CD：用 Lua 写构建、部署、发布的脚本，执行代码质量检查与测试。
+- Automated testing: UI tests and API test scripts.
+- CI/CD: use Lua for build, deployment, and release scripts, and for code quality checks and tests.
 
-来源：[Lua的应用场景](/basics/applications)。
+Sources: [Lua applications](/basics/applications).
 
-## 人工智能
+## Artificial intelligence
 
-- Torch：深度学习早期的主力框架以 Lua 为接口，后来被 PyTorch 等取代。这是历史用法，不是当前主流方向。
-- 嵌入式 AI 推理：硬件资源有限时，用 Lua 做基本的机器学习算法或模型推理。
+- Torch: an early deep learning framework used Lua as its interface. It was later superseded by tools such as PyTorch. This is a historical use, not the current mainstream direction.
+- Embedded AI inference: on hardware with limited resources, use Lua for basic machine learning algorithms or model inference.
 
-来源：[Lua的应用场景](/basics/applications)。
+Sources: [Lua applications](/basics/applications).
 
-## C 扩展与嵌入
+## C extensions and embedding
 
-- 在 C 程序里嵌入 Lua：`luaL_newstate` 创建状态、`luaL_openlibs` 打开标准库、`luaL_dofile` 执行脚本。
-- 写 C 扩展：`luaopen_mylib` 入口创建模块表并返回，Lua 侧 `require("mylib")` 加载。
-- LuaJIT FFI：不写 C 扩展，直接用 `ffi.cdef` 声明、`ffi.load` 加载后调用 C 函数。
-- 性能关键的部分用 C 实现，非关键部分用 Lua。
+- Embed Lua in a C program: `luaL_newstate` creates the state, `luaL_openlibs` opens the standard library, and `luaL_dofile` runs a script.
+- Write C extensions: the `luaopen_mylib` entry point creates and returns the module table; Lua loads it with `require("mylib")`.
+- LuaJIT FFI: avoid writing a C extension by declaring C functions with `ffi.cdef`, loading them with `ffi.load`, then calling them.
+- Implement performance-critical parts in C and noncritical parts in Lua.
 
-来源：[Lua的扩展与应用](/lua-extensions-applications/README)、[编写Lua C扩展](/lua-extensions-applications/writing-c-extensions)、[使用 LuaJIT 的 FFI 库](/lua-extensions-applications/ffi-library)。
+Sources: [Lua extensions and applications](/lua-extensions-applications/README), [Writing Lua C extensions](/lua-extensions-applications/writing-c-extensions), [LuaJIT FFI library](/lua-extensions-applications/ffi-library).
 
-## 相关角度
+## Related angle
 
-这里是带项目案例和出处的横向索引；各领域的背景记录见[Lua 的应用场景](/basics/applications)。
+This is a cross-cutting index with project examples and sources. Background for each area is recorded in [Lua applications](/basics/applications).
 
-## 参考资料
+## References
 
 - [Lua_(programming_language)](https://en.wikipedia.org/wiki/Lua_(programming_language))
-- [lua-users 维基](http://lua-users.org/wiki/)
+- [lua-users wiki](http://lua-users.org/wiki/)

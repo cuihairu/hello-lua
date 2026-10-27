@@ -1,30 +1,30 @@
-# 官方文档要点
+# Official Documentation Notes
 
-站内引用的官方与社区文档，按用途分组。每条给出链接和它覆盖的知识点。
+Official and community documentation referenced in the site, grouped by purpose. Each item includes a link and the knowledge area it covers.
 
-## Lua 官方
+## Lua official
 
-- **官方网站** <https://www.lua.org/>：发布版本、新闻与官方文档。
-- **Lua 5.4 参考手册** <https://www.lua.org/manual/5.4/>：语言与标准库的权威定义，站内所有 API 以此为准。覆盖数据类型、元表、标准库。
-- **Lua 5.5 参考手册** <https://www.lua.org/manual/5.5/>：第 2 章（语言）与第 3 章（标准库）记录 5.5 新增特性；旧版手册（如 5.4）仍在原地址维护。
-- **源码下载** <https://www.lua.org/ftp/>：各版本源码包，站内示例用 lua-5.4.8 与 lua-5.5.1。
-- **源码在线浏览** <https://www.lua.org/source/>，GitHub 镜像 <https://github.com/lua/lua>。覆盖解释器实现、虚拟机、GC。
-- **在线演示** <https://www.lua.org/demo.html>：快速验证小段代码。
-- **Programming in Lua 第 1 版** <https://www.lua.org/pil/>：免费在线阅读。
-- **lua-l 邮件列表** <https://www.lua.org/lua-l.html>：官方邮件列表，Lua 作者与核心维护者活跃，讨论语言设计、内部实现与版本演进。
+- **Official website** <https://www.lua.org/>: releases, news, and official documentation.
+- **Lua 5.4 reference manual** <https://www.lua.org/manual/5.4/>: the authoritative definition of the language and standard library for all API text in this site. Covers data types, metatables, and the standard library.
+- **Lua 5.5 reference manual** <https://www.lua.org/manual/5.5/>: Chapter 2 (Language) and Chapter 3 (Library) document new Lua 5.5 features; older manuals such as 5.4 remain at their original addresses.
+- **Source download** <https://www.lua.org/ftp/>: source archives for each release. Site examples use lua-5.4.8 and lua-5.5.1.
+- **Online source browsing** <https://www.lua.org/source/>, GitHub mirror <https://github.com/lua/lua>. Covers interpreter implementation, the virtual machine, and GC.
+- **Online demo** <https://www.lua.org/demo.html>: quickly verify short snippets.
+- **Programming in Lua, 1st edition** <https://www.lua.org/pil/>: available to read online for free.
+- **lua-l mailing list** <https://www.lua.org/lua-l.html>: the official mailing list where the Lua authors and core maintainers discuss language design, internals, and version evolution.
 
-## 社区与工具
+## Community and tools
 
-- **lua-users wiki** <https://lua-users.org/wiki/>：社区维护的知识库，含 LuaImplementations（对比 Lua、LuaJIT、Ravi 等实现）、SandBoxes、OptimisingUsingLocalVariables 等条目。
-- **LuaJIT** <https://luajit.org/>：高性能实现，附 FFI 库；扩展文档 <https://luajit.org/extensions.html> 说明 FFI、`bit` 库以及与 Lua 5.1/5.2/5.3 的差异；源码 <https://github.com/LuaJIT/LuaJIT>。
-- **LuaRocks** <https://luarocks.org/>：Lua 的包管理器，用它安装第三方库。
-- **ZeroBrane Studio** <https://studio.zerobrane.com/>：轻量级 Lua IDE，内置调试器。
-- **LuaBinaries** <https://luabinaries.sourceforge.net/>：Windows 预编译包。
-- **awesome-lua** <https://github.com/LewisJEllis/awesome-lua>：第三方库与工具清单。
+- **lua-users wiki** <https://lua-users.org/wiki/>: community-maintained knowledge base, including entries such as LuaImplementations (comparing Lua, LuaJIT, Ravi, and other implementations), SandBoxes, and OptimisingUsingLocalVariables.
+- **LuaJIT** <https://luajit.org/>: high-performance implementation with an FFI library. Extensions documentation <https://luajit.org/extensions.html> covers FFI, the `bit` library, and differences from Lua 5.1/5.2/5.3. Source: <https://github.com/LuaJIT/LuaJIT>.
+- **LuaRocks** <https://luarocks.org/>: package manager for Lua, used to install third-party libraries.
+- **ZeroBrane Studio** <https://studio.zerobrane.com/>: lightweight Lua IDE with a built-in debugger.
+- **LuaBinaries** <https://luabinaries.sourceforge.net/>: precompiled packages for Windows.
+- **awesome-lua** <https://github.com/LewisJEllis/awesome-lua>: curated list of third-party libraries and tools.
 
-## 第三方模块仓库
+## Third-party module repositories
 
-[常用 Lua 模块](/advanced/common-modules)引用的仓库都在 GitHub：
+The repositories referenced by [Common Lua modules](/advanced/common-modules) are on GitHub:
 
 - Penlight <https://github.com/lunarmodules/Penlight>
 - LuaSocket <https://github.com/lunarmodules/luasocket>
@@ -34,17 +34,17 @@
 - Copas <https://github.com/keplerproject/copas>
 - LuaRocks <https://github.com/luarocks/luarocks>
 
-## 来源
+## Sources
 
-链接与用途取自站内的[相关资源与社区](/appendix/resources)、[延伸阅读与参考资料](/appendix/further-reading)、[环境搭建](/basics/setup)、[集成开发环境（IDE）推荐](/basics/ide-recommendations)、[常用 Lua 模块](/advanced/common-modules)。
+Links and purposes are taken from the site pages [Resources and community](/appendix/resources), [Further reading and references](/appendix/further-reading), [Environment setup](/basics/setup), [IDE recommendations](/basics/ide-recommendations), and [Common Lua modules](/advanced/common-modules).
 
-## 参考资料
+## References
 
-- [Lua 官方文档索引](https://www.lua.org/docs.html)
-- [Lua 5.4 官方手册](https://www.lua.org/manual/5.4/manual.html)
-- [Lua 下载页](https://www.lua.org/download.html)
+- [Lua official documentation index](https://www.lua.org/docs.html)
+- [Lua 5.4 official manual](https://www.lua.org/manual/5.4/manual.html)
+- [Lua download page](https://www.lua.org/download.html)
 
 <!-- BACKLINKS-AUTO -->
-## 相关页面
+## Related pages
 
 - [README](README.md)

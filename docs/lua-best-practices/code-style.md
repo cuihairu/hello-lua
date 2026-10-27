@@ -1,21 +1,21 @@
-# 代码风格与规范
+# Code Style and Standards
 
-风格规范的作用很直接：让别人读得懂你的代码，也让你三个月后还读得懂。本组两页：
+Style rules have a direct purpose: make your code understandable to others and still understandable to you three months later. This group has two pages:
 
-- [Lua的编码规范](/lua-best-practices/coding-standards)：命名、格式、注释、作用域、表、错误处理和代码组织的推荐做法。
-- [常见的编码误区](/lua-best-practices/coding-mistakes)：Lua 代码里反复出现的误区，每条附改法。
+- [Lua coding standards](/lua-best-practices/coding-standards): recommended practices for naming, formatting, comments, scope, tables, error handling, and code organization.
+- [Common coding mistakes](/lua-best-practices/coding-mistakes): recurring mistakes in Lua code, each with a fix.
 
-## 结语
+## Summary
 
-风格管的是代码长什么样，规范管的是怎么写才不容易出错。两页合起来：名字起得清楚、格式排得整齐、作用域收得干净。
+Style covers how code looks; standards cover how to write it in ways less likely to fail. Together: use clear names, keep formatting tidy, and keep scope clean.
 
-## 参考资料
+## References
 
-- [Lua 5.4 官方手册](https://www.lua.org/manual/5.4/manual.html)
-- [lua-users 维基](http://lua-users.org/wiki/)
+- [Lua 5.4 manual](https://www.lua.org/manual/5.4/manual.html)
+- [lua-users wiki](http://lua-users.org/wiki/)
 
 <!-- BACKLINKS-AUTO -->
-## 相关页面
+## Related pages
 
 - [README](README.md)
 - [README](/knowledge/README.md)

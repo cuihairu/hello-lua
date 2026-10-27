@@ -1,30 +1,30 @@
-# 附录
+# Appendix
 
-我把笔记里常回查、但不适合放进正文展开的资料收在这里，分成四组：
+The material I keep coming back to, which does not fit the body pages, lives here, in four groups:
 
-## 1. 常见问题与解决方案
+## 1. Frequently asked questions and solutions
 
-记录我排查 Lua 问题时反复碰到的几类现象，例如全局变量与局部变量的性能差异、表的长度、整数除法和错误处理，并附可运行的例子。
+The kinds of symptoms I repeatedly hit while debugging Lua issues, such as the performance difference between globals and locals, table length, integer division, and error handling, each with a runnable example.
 
-## 2. Lua 标准库参考
+## 2. Lua standard library reference
 
-按库列出 Lua 5.4 自带的标准库（`base`、`string`、`table`、`math`、`io`、`os`、`coroutine`、`debug`、`package`、`utf8`），附上各库职责和常用函数，方便我查 API。
+The standard libraries shipped with Lua 5.4 (`base`, `string`, `table`, `math`, `io`, `os`, `coroutine`, `debug`, `package`, `utf8`) listed library by library, with each library's responsibilities and the commonly used functions, for quick API lookups.
 
-## 3. Lua 相关资源与社区
+## 3. Lua resources and community
 
-记录我查 Lua 文档、工具、社区与邮件列表时常用的入口；语言行为以官方资料核对。
+The entry points I use when looking up Lua documentation, tools, community, and mailing lists; language behavior is checked against the official material.
 
-## 4. 延伸阅读与参考资料
+## 4. Further reading and references
 
-收录 Lua 内部实现相关论文、书籍与源码阅读线索，涉及虚拟机、垃圾回收和语法分析。
+Papers, books, and source-reading leads about Lua internals, covering the virtual machine, garbage collection, and syntax analysis.
 
-> 本站示例以 Lua 5.4 为基线编写并验证；5.1 与 5.5 在语法和标准库上有差异，引用时我会注明版本。
+> The examples on this site are written and verified against Lua 5.4 as a baseline; 5.1 and 5.5 differ in syntax and standard library, and I note the version whenever that matters.
 
-## 参考资料
+## References
 
-- [Lua 官方文档索引](https://www.lua.org/docs.html)
-- [Lua 5.4 官方手册](https://www.lua.org/manual/5.4/manual.html)
+- [Lua official documentation index](https://www.lua.org/docs.html)
+- [Lua 5.4 official manual](https://www.lua.org/manual/5.4/manual.html)
 
-## 相关页面
+## Related pages
 
 - [faq](faq.md)

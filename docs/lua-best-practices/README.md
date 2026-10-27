@@ -1,77 +1,77 @@
-# Lua的最佳实践
+# Lua Best Practices
 
-Lua 代码里的问题大多出在全局变量、表的使用和错误处理上。下面按代码风格、性能、测试调试、部署四个方面整理对应的做法。
+Most Lua code problems come from global variables, table usage, and error handling. The section is organized around code style, performance, testing and debugging, and deployment.
 
-## 1. 代码风格与规范
+## 1. Code Style and Standards
 
-**1.1 编码规范**
+**1.1 Coding standards**
 
-同一份代码保持一种风格，跟团队的编码标准走。命名要有意义，`get_user_name` 胜过 `g_un`。缩进统一用 2 个或 4 个空格。操作符和括号周围留空格，写 `a + b` 不写 `a+b`。
+Keep one consistent style across a codebase and follow the team coding standards. Names should be meaningful: `get_user_name` is better than `g_un`. Use either 2 or 4 spaces consistently for indentation. Put spaces around operators and parentheses: write `a + b`, not `a+b`.
 
-**1.2 Lua 风格指南**
+**1.2 Lua style guide**
 
-单一对象用一个表收拢，而不是摊成一堆变量；需要类和继承时，用表的 `__index` 元方法模拟。变量和函数尽量都加 `local`，全局变量容易撞名，出了问题也难查。代码按模块组织，用 `require` 加载，别在全局作用域里定义函数和变量。
+Group a single object into one table instead of spreading it across many variables. For classes and inheritance, simulate them with the table `__index` metamethod. Declare variables and functions as `local` whenever possible; globals can collide and make failures hard to trace. Organize code into modules loaded with `require`, instead of defining functions and variables in global scope.
 
-示例:
+Example:
 
 ```lua
--- 不推荐
+-- Not recommended
 x = 10
 function foo()
     return x
 end
 
--- 推荐
+-- Recommended
 local x = 10
 local function foo()
     return x
 end
 ```
 
-## 2. 性能优化
+## 2. Performance Optimization
 
-**2.1 减少表的创建**
+**2.1 Reduce table creation**
 
-避免在循环中重复创建表或其他数据结构。尽量一次性构造表的内容，或复用已存在的表（Lua 5.4 标准解释器没有预分配表大小的 API）。
+Avoid repeatedly creating tables or other data structures inside loops. Construct table contents in one pass when possible, or reuse existing tables (the standard Lua 5.4 interpreter has no API for preallocating table size).
 
-**2.2 使用局部变量**
+**2.2 Use local variables**
 
-局部变量比全局变量访问快，循环和函数里优先用 `local`。
+Local variables are faster to access than globals. Prefer `local` in loops and functions.
 
-示例:
+Example:
 
 ```lua
--- 不推荐
+-- Not recommended
 global_var = 0
 for i = 1, 1000 do
     global_var = global_var + i
 end
 
--- 推荐
+-- Recommended
 local local_var = 0
 for i = 1, 1000 do
     local_var = local_var + i
 end
 ```
 
-**2.3 避免过度的表嵌套**
+**2.3 Avoid excessive table nesting**
 
-深层嵌套的表会影响访问速度，数据结构保持在合理的深度内。
+Deeply nested tables slow access down. Keep data structures at a reasonable depth.
 
-**2.4 使用元表优化**
+**2.4 Use metatables for optimization**
 
-方法挂在元表上，所有对象共享同一份，不要每个对象各存一份。
+Attach methods to a metatable so all objects share the same method table, instead of storing one copy per object.
 
-示例:
+Example:
 
 ```lua
--- 不推荐
+-- Not recommended
 local obj1 = { value = 1 }
 local obj2 = { value = 2 }
 function obj1:increment() self.value = self.value + 1 end
 function obj2:increment() self.value = self.value + 1 end
 
--- 推荐
+-- Recommended
 local mt = {
     increment = function(self) self.value = self.value + 1 end
 }
@@ -80,21 +80,21 @@ local obj1 = setmetatable({ value = 1 }, mt)
 local obj2 = setmetatable({ value = 2 }, mt)
 ```
 
-## 3. 测试与调试
+## 3. Testing and Debugging
 
-**3.1 单元测试**
+**3.1 Unit testing**
 
-用 `busted` 或 `luaunit` 这类框架写测试，让代码在各种输入下都过一遍。
+Use frameworks such as `busted` or `luaunit` to exercise code across many inputs.
 
-**3.2 调试工具**
+**3.2 Debugging tools**
 
-排查问题用标准 `debug` 库（`debug.traceback`、`debug.getinfo`），或者 ZeroBrane Studio 这类带调试器的 IDE；`luasocket` 是网络库，不是调试工具。
+Use the standard `debug` library (`debug.traceback`, `debug.getinfo`) or an IDE with a debugger such as ZeroBrane Studio. `luasocket` is a networking library, not a debugging tool.
 
-**3.3 错误处理**
+**3.3 Error handling**
 
-用 `pcall` 和 `xpcall` 捕获运行时错误，错误信息要写得能定位到出事的位置。
+Use `pcall` and `xpcall` to catch runtime errors. Error messages should identify the location of the failure.
 
-示例:
+Example:
 
 ```lua
 local function safe_divide(a, b)
@@ -102,8 +102,8 @@ local function safe_divide(a, b)
         print("Error: division by zero")
         return nil
     end
-    -- a / b 在 b 为 0 时不会报错，除零需要显式判断；
-    -- pcall 用于捕获参数类型不对等运行时错误
+    -- a / b does not raise an error when b is 0; check for division by zero explicitly.
+    -- pcall catches runtime errors such as invalid argument types.
     local status, result = pcall(function() return a / b end)
     if not status then
         print("Error: " .. tostring(result))
@@ -114,29 +114,29 @@ end
 
 print(safe_divide(10, 2))   -- 5.0
 print(safe_divide(10, 0))   -- Error: division by zero
-print(safe_divide("x", 2))  -- Error: ...（pcall 捕获的算术错误）
+print(safe_divide("x", 2))  -- Error: ... (arithmetic error caught by pcall)
 ```
 
-## 4. 部署与发布
+## 4. Deployment and Release
 
-**4.1 跨平台支持**
+**4.1 Cross-platform support**
 
-尽量只用标准库，避开平台特有的功能，代码才好跨平台运行。
+Use the standard library where possible and avoid platform-specific features so code runs across platforms.
 
-**4.2 性能监控**
+**4.2 Performance monitoring**
 
-生产环境里用 `LuaProfiler` 这类工具跟踪脚本运行，找性能瓶颈。
+Use tools such as `LuaProfiler` in production to track script execution and locate bottlenecks.
 
-**4.3 代码审查**
+**4.3 Code review**
 
-发布前过一遍代码审查，能提前发现错误和不一致。
+Run code review before release to catch errors and inconsistencies early.
 
-## 参考资料
+## References
 
-- [Lua 官方文档索引](https://www.lua.org/docs.html)
-- [Lua 5.4 官方手册](https://www.lua.org/manual/5.4/manual.html)
-- [lua-users 维基](http://lua-users.org/wiki/)
+- [Lua official documentation index](https://www.lua.org/docs.html)
+- [Lua 5.4 manual](https://www.lua.org/manual/5.4/manual.html)
+- [lua-users wiki](http://lua-users.org/wiki/)
 
-## 相关页面
+## Related pages
 
 - [code-style](code-style.md)

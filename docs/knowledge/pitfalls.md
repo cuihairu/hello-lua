@@ -1,95 +1,95 @@
-# 常见坑与误区
+# Common Pitfalls
 
-全站的坑收拢成一份清单，按主题分组，每条给正解和出处。查无实据的标「来源未考」。
+Every trap in the site is gathered into one list, grouped by theme, with a correct answer and a source for each item. Items with no verifiable basis are marked "source unconfirmed".
 
-## 语法与类型
+## Syntax and types
 
-- 数组索引从 1 开始，不是 0。从 0 索引语言迁来最容易栽在这里。
-- 不等号是 `~=` 不是 `!=`；`^` 和 `/` 恒返回浮点数（`10/5` 得 `2.0`），要整数结果必须用 `//`。
-- `1 / 0` 不报错，结果是 `inf`；`0 / 0` 得 `nan`。只有整数 `//` 或 `%` 除数为零才抛错。要除零报错须显式判断。
-- `//` 和 `%` 都向负无穷取整：`-1 // 2` 是 -1，`-1 % 2` 是 1。
-- 字符串不可变，任何「修改」都产生新字符串；`string.len`/`string.sub` 按字节操作，中文截断会切坏字符，处理 UTF-8 用 `utf8` 库。
-- Lua 没有内置 split，用 `string.gmatch` 加模式 `([^,]+)` 模拟。
-- `pairs` 遍历哈希部分无序，不能当有序遍历用；`ipairs` 从 1 连续遍历，遇到 nil 就停；`#t` 对含空洞的稀疏表不给出确定结果，不要当「元素个数」用。
-- 不加 `local` 就是全局变量，这是默认行为，也是要避免的习惯。
+- Array indices start at 1, not 0. Coming from a zero-indexed language, this is where you trip first.
+- Not-equal is `~=` and not `!=`; `^` and `/` always return floats (`10/5` gives `2.0`), and an integer result requires `//`.
+- `1 / 0` does not error and yields `inf`; `0 / 0` gives `nan`. Only integer `//` or `%` with a zero divisor raises. To fail on division by zero you must check explicitly.
+- `//` and `%` both round toward negative infinity: `-1 // 2` is -1 and `-1 % 2` is 1.
+- Strings are immutable, so any "modification" produces a new string; `string.len`/`string.sub` work on bytes, so truncating Chinese text breaks characters mid-codepoint — use the `utf8` library for UTF-8.
+- Lua has no built-in split; simulate one with `string.gmatch` and the pattern `([^,]+)`.
+- `pairs` walks the hash part in no fixed order and must not be used as an ordered traversal; `ipairs` walks from 1 contiguously and stops at the first nil; `#t` gives no defined result for a sparse table with holes, so do not treat it as "the element count".
+- Without `local`, a variable is global. That is the default behavior and a habit to avoid.
 
-来源：[操作符和表达式](/basics/operators-and-expressions)、[常见问题与解决方案](/appendix/faq)、[字符串处理](/basics/string-handling)、[Lua标准库参考](/appendix/standard-library)。
+Source: [Operators and expressions](/basics/operators-and-expressions), [FAQ](/appendix/faq), [String handling](/basics/string-handling), [Lua standard library reference](/appendix/standard-library).
 
-## 表与元表
+## Tables and metatables
 
-- `t[{}] = "value"` 之后 `t[{}]` 取回 nil：每次 `{}` 都创建新表，写入和读取用的是两个不同对象。表作键必须存进局部变量复用。
-- `__index`/`__newindex` 元方法里直接读写原始表会无限递归，绕开要用 `rawget`/`rawset`。
-- `pairs` 和 `#` 都不走 `__index` 链：`pairs(instance)` 看不到类上的方法，继承来的字段不计入 `#`。
-- 一张表只有一张元表，第二次 `setmetatable` 是整体替换，先挂的链会静默丢失。
-- `__newindex` 一旦定义就接管写入，普通赋值不再落在本表，要写本表得用 `rawset`。
+- After `t[{}] = "value"`, `t[{}]` reads back nil: every `{}` creates a new table, so the write and the read use two different objects. A table used as a key must be kept in a local variable and reused.
+- Reading or writing the raw table inside an `__index`/`__newindex` metamethod recurses forever; use `rawget`/`rawset` to bypass it.
+- Neither `pairs` nor `#` walks the `__index` chain: `pairs(instance)` cannot see methods on the class, and fields inherited from a parent do not count toward `#`.
+- A table can have only one metatable; a second `setmetatable` replaces it wholesale, and the previously attached chain is lost silently.
+- Once `__newindex` is defined it takes over all writes, so ordinary assignment no longer lands in the table; use `rawset` to write into the table itself.
 
-来源：[常见的编码误区](/lua-best-practices/coding-mistakes)、[元表和元方法](/basics/metatables-and-metamethods)、[面向对象的实现](/advanced/oop-implementation)。
+Source: [Common coding mistakes](/lua-best-practices/coding-mistakes), [Metatables and metamethods](/basics/metatables-and-metamethods), [Implementing object orientation](/advanced/oop-implementation).
 
-## 面向对象
+## Object orientation
 
-- 点号冒号混用是最多发的错误：冒号定义的方法用点号调用，`self` 为 nil 报 `attempt to index a nil value`；点号定义冒号调用则参数错位。
-- 忘了 `Class.__index = Class`：元表挂上了但查找在实例处就停，实例上找不到方法。
-- 子类方法里调父类同名方法必须显式传 self（`Account.withdraw(self, amount)`），写成 `Account:withdraw(amount)` 会把 Account 表本身当 self。
-- 构造函数里写死类名（`setmetatable({}, Dog)`）会让子类实例全挂到父类上，要写 `setmetatable({}, self)`。
-- 方法作回调传递时 `self` 会丢，用闭包绑定对象或调用时手动补。
+- Mixing dot and colon calls is the most frequent error: calling a colon-defined method with a dot leaves `self` as nil and raises `attempt to index a nil value`; defining with a dot and calling with a colon shifts the arguments.
+- Forgetting `Class.__index = Class`: the metatable is attached, but lookup stops at the instance and no method is found there.
+- Calling a parent method of the same name from a subclass requires passing self explicitly (`Account.withdraw(self, amount)`); writing `Account:withdraw(amount)` passes the Account table itself as self.
+- Hard-coding the class name in a constructor (`setmetatable({}, Dog)`) attaches every subclass instance to the parent; write `setmetatable({}, self)` instead.
+- When a method is passed as a callback, `self` is lost — bind the object with a closure or supply it manually at the call site.
 
-来源：[self 的作用](/advanced/self)、[面向对象的实现](/advanced/oop-implementation)。
+Source: [What `self` does](/advanced/self), [Implementing object orientation](/advanced/oop-implementation).
 
-## 协程
+## Coroutines
 
-- `coroutine.wrap` 没有错误保护层，协程内错误直接抛给调用者；需要容错用 `create` + `resume`，并检查第一个返回值。
-- 恢复已死亡的协程得到 `cannot resume dead coroutine`，不会崩溃但也不会执行；调度器要在协程死亡时把它移出任务列表。
-- 阻塞调用（`io.read`、同步网络请求、`os.execute`）会卡住整个进程，其他协程毫无办法。
-- 协程不是并行：同一 Lua 状态里任意时刻只有一个协程在跑，拉高计算吞吐与协程无关。
-- 同一个 Lua 状态机不是线程安全的，多线程访问要外部加锁或每线程独立状态机。
+- `coroutine.wrap` has no error-protection layer, so an error inside the coroutine is thrown straight at the caller; for fault tolerance use `create` plus `resume` and check the first return value.
+- Resuming a dead coroutine yields `cannot resume dead coroutine` — it neither crashes nor runs — so a scheduler must remove the coroutine from its task list when it dies.
+- A blocking call (`io.read`, a synchronous network request, `os.execute`) stalls the whole process, and nothing else in the process can run.
+- Coroutines are not parallel: at any moment only one coroutine runs inside a Lua state, so coroutines do nothing to raise computational throughput.
+- A Lua state machine is not thread-safe; multi-threaded access needs external locking or a separate state machine per thread.
 
-来源：[协程的应用场景与最佳实践](/advanced/coroutine-best-practices)、[协程与线程的比较](/advanced/coroutines-vs-threads)。
+Source: [Coroutine use cases and best practices](/advanced/coroutine-best-practices), [Coroutines versus threads](/advanced/coroutines-vs-threads).
 
-## 模块
+## Modules
 
-- `module` 函数自 Lua 5.2 起已移除，不要再写。
-- 模块文件忘了 `return`，`require` 返回 `true`；C 扩展的 `luaopen_mylib` 返回 0 也是同样效果。
-- 改了模块文件后不清 `package.loaded` 缓存，`require` 拿到的仍是旧版本；热加载就是清缓存再 `require`，但注意模块状态丢失和依赖未同步重载。
+- The `module` function was removed in Lua 5.2; do not write it.
+- A module file that forgets to `return` makes `require` yield `true`; a C extension whose `luaopen_mylib` returns 0 has the same effect.
+- After changing a module file, if the `package.loaded` cache is not cleared, `require` still returns the old version. Hot reloading is clearing the cache and calling `require` again, but mind lost module state and dependencies not reloaded in step.
 
-来源：[Lua的编码规范](/lua-best-practices/coding-standards)、[编写Lua C扩展](/lua-extensions-applications/writing-c-extensions)、[模块的定义与加载](/advanced/module-definition)、[热加载与动态更新](/design-and-implementation/hot-reloading)。
+Source: [Lua coding standards](/lua-best-practices/coding-standards), [Writing Lua C extensions](/lua-extensions-applications/writing-c-extensions), [Module definition and loading](/advanced/module-definition), [Hot reloading and dynamic updates](/design-and-implementation/hot-reloading).
 
-## 错误处理
+## Error handling
 
-- `io.open` 打开失败不抛错，返回 `nil, errmsg`，所以 `pcall(io.open, ...)` 捕获不到「文件不存在」，真正出错的是随后对 nil 调用 `read`。先检查返回值。
-- `error` 默认在消息前附加位置信息；第二个参数传 0 去掉前缀，传 2 用调用者的位置。
-- 访问表中不存在的键只得到 nil，不报错；只有对 nil 本身做索引才报错。
+- A failed `io.open` does not raise; it returns `nil, errmsg`, so `pcall(io.open, ...)` cannot catch "file not found" — the real error is the later `read` call on nil. Check the return value first.
+- `error` appends location information to the message by default; a second argument of 0 removes the prefix, and 2 uses the caller's location.
+- Accessing an absent key in a table only gives nil and does not error; only indexing into nil itself raises.
 
-来源：[常见的编码误区](/lua-best-practices/coding-mistakes)、[错误处理机制](/advanced/error-handling-mechanism)、[常见问题与解决方案](/appendix/faq)。
+Source: [Common coding mistakes](/lua-best-practices/coding-mistakes), [Error handling mechanism](/advanced/error-handling-mechanism), [FAQ](/appendix/faq).
 
-## GC 与性能
+## GC and performance
 
-- 「Lua 用引用计数做 GC」是误传，实际是标记-清除（增量/分代）；引用计数只是个别内部场合的思想借用。循环引用不会泄漏，标记-清除能整组回收。
-- `collectgarbage` 没有 `"start"` 选项，重新启动用 `"restart"`；5.4 里 `setpause`/`setstepmul` 已过时，新代码用 `collectgarbage("incremental", ...)` 形式。
-- 「用表打包参数比按位置传参快」是误区：表打包要额外分配一张表，通常更慢。表传参图的是命名参数和可读性。
-- 常量折叠只对两个操作数都是常量的表达式生效，有变量参与就失效。
-- 元方法调用有额外开销，频繁调用的热路径避免元方法；`debug` 库操作同样有开销，别拿它做生产性能分析。
-- `jit.dump` 和 `-jp` 观察的是 JIT trace 编译与采样，不是 GC 分析器；Lua 5.4 标准解释器没有内置 GC 分析器。
-- 「Lua 沙箱能防住恶意代码」是误传：沙箱里的代码拿到 `debug` 就能读钩子、改钩子、访问注册表，`ffi.load` 进来的 C 代码绕过 Lua 层的一切检查，定时与内存布局差异构成侧信道。沙箱只是纵深防御的一层，硬隔离在操作系统一侧。
+- "Lua uses reference counting for GC" is a misconception; it actually uses mark-and-sweep (incremental or generational), and counting is borrowed only in a few internal cases. Cyclic references do not leak — mark-and-sweep reclaims the whole group.
+- `collectgarbage` has no `"start"` option; use `"restart"` to restart it. In 5.4 `setpause`/`setstepmul` are outdated, and new code should use the `collectgarbage("incremental", ...)` form.
+- "Packing arguments into a table is faster than positional passing" is a misconception: packing allocates an extra table and is usually slower. The table form buys named arguments and readability.
+- Constant folding applies only when both operands are constants; if a variable is involved it does not fire.
+- Metamethod calls carry extra overhead, so keep them out of hot paths on frequent calls; `debug` library operations are equally costly, so do not use them for production profiling.
+- `jit.dump` and `-jp` observe JIT trace compilation and sampling, not a GC analyzer; the standard Lua 5.4 interpreter has no built-in GC analyzer.
+- "A Lua sandbox stops malicious code" is a misconception: code in a sandbox that reaches `debug` can read and modify hooks and access the registry, C code brought in by `ffi.load` bypasses every Lua-level check, and timing and memory layout differences form side channels. A sandbox is one layer of defense in depth; hard isolation lives at the operating system.
 
-来源：[引用计数与标记-清除算法](/design-and-implementation/reference-counting)、[垃圾回收的调优](/lua-best-practices/gc-tuning)、[Lua代码的优化技巧](/lua-best-practices/optimization-techniques)、[代码生成与优化](/design-and-implementation/code-generation)、[垃圾回收的优化策略](/design-and-implementation/gc-optimization)。
+Source: [Reference counting and mark-and-sweep](/design-and-implementation/reference-counting), [Tuning garbage collection](/lua-best-practices/gc-tuning), [Lua optimization techniques](/lua-best-practices/optimization-techniques), [Code generation and optimization](/design-and-implementation/code-generation), [Optimizing garbage collection](/design-and-implementation/gc-optimization).
 
-## 实现层误传
+## Implementation-layer misconceptions
 
-- 「Lua 协程切换用了 setjmp/longjmp」是误传：切换只交换栈指针和 `CallInfo`，`setjmp`/`longjmp` 只用于错误恢复，所以协程只能同线程协作切换。
-- 「预编译字节码块可以跨平台分发」不成立：官方明确不保证 `luac -o` 产物跨机器可移植，要在目标平台重编译。
-- Lua 脚本层没有条件编译，平台判断只能在运行时做（`package.config`，LuaJIT 下可用 `jit.os`）。
-- 「Lua 内部值类型叫 TaggedValue」是讹传，5.4/5.5 源码里是 `TValue`。
+- "Lua coroutine switching uses setjmp/longjmp" is a misconception: switching swaps only the stack pointer and `CallInfo`, and `setjmp`/`longjmp` exist for error recovery only, so coroutines can only switch cooperatively inside one thread.
+- "Precompiled bytecode can be distributed across platforms" does not hold: the project explicitly does not guarantee that `luac -o` output is portable between machines, so recompile on the target platform.
+- Lua has no conditional compilation at the script layer, so platform detection happens at run time (`package.config`, or `jit.os` under LuaJIT).
+- "Lua's internal value type is called TaggedValue" is an error; the source in 5.4/5.5 uses `TValue`.
 
-来源：[协程的底层实现](/design-and-implementation/coroutines-implementation)、[字节码与虚拟机](/design-and-implementation/bytecode-and-vm)、[跨平台发布Lua应用](/lua-best-practices/cross-platform-deployment)、[Lua 5.5 源码解析](/design-and-implementation/lua55-source)、[沙箱与不可信代码](/advanced/sandboxing)。
+Source: [Coroutines under the hood](/design-and-implementation/coroutines-implementation), [Bytecode and virtual machine](/design-and-implementation/bytecode-and-vm), [Cross-platform deployment of Lua applications](/lua-best-practices/cross-platform-deployment), [Lua 5.5 source analysis](/design-and-implementation/lua55-source), [Sandboxing and untrusted code](/advanced/sandboxing).
 
-## 参考资料
+## References
 
-- [Lua 5.4 官方手册](https://www.lua.org/manual/5.4/manual.html#2.4)
+- [Lua 5.4 official manual](https://www.lua.org/manual/5.4/manual.html#2.4)
 - [Exception_handling](https://en.wikipedia.org/wiki/Exception_handling)
 - [Hash_table](https://en.wikipedia.org/wiki/Hash_table)
 
 <!-- BACKLINKS-AUTO -->
-## 相关页面
+## Related pages
 
 - [glossary](/glossary.md)
 - [README](README.md)
