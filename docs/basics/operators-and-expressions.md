@@ -1,209 +1,209 @@
-# 操作符和表达式
+# Operators and Expressions
 
-表达式由操作符和操作数组成，算出一个值。Lua 的操作符分六类，下面逐类过。
+An expression is made up of operators and operands, and it evaluates to a value. Lua's operators fall into six groups; this page goes through them one at a time.
 
-## 1. 算术操作符
+## 1. Arithmetic operators
 
-算术操作符用于执行数学运算。Lua 提供了基本的算术操作符，包括加法、减法、乘法、除法、取余、乘方和整数除法。
+Arithmetic operators perform mathematical operations. Lua provides the basic ones: addition, subtraction, multiplication, division, modulus, exponentiation and integer division.
 
-### 加法 (`+`)
+### Addition (`+`)
 
 ```lua
 local a = 10
 local b = 5
 local sum = a + b
-print(sum)  -- 输出 15
+print(sum)  -- 15
 ```
 
-### 减法 (`-`)
+### Subtraction (`-`)
 
 ```lua
 local a = 10
 local b = 5
 local difference = a - b
-print(difference)  -- 输出 5
+print(difference)  -- 5
 ```
 
-### 乘法 (`*`)
+### Multiplication (`*`)
 
 ```lua
 local a = 10
 local b = 5
 local product = a * b
-print(product)  -- 输出 50
+print(product)  -- 50
 ```
 
-### 除法 (`/`)
+### Division (`/`)
 
 ```lua
 local a = 10
 local b = 5
 local quotient = a / b
-print(quotient)  -- 输出 2.0
+print(quotient)  -- 2.0
 ```
 
-### 取余 (`%`)
+### Modulus (`%`)
 
 ```lua
 local a = 10
 local b = 3
 local remainder = a % b
-print(remainder)  -- 输出 1
+print(remainder)  -- 1
 ```
 
-### 乘方 (`^`)
+### Exponentiation (`^`)
 
-乘方操作符总是返回浮点数（float）结果。
+The exponentiation operator always returns a floating point result.
 
 ```lua
 local a = 2
 local b = 3
 local power = a ^ b
-print(power)  -- 输出 8.0
+print(power)  -- 8.0
 ```
 
-### 整数除法 (`//`)
+### Integer division (`//`)
 
-整数除法（向下取整除法）在两个操作数都是整数时返回整数结果。
+Integer division (floor division) returns an integer result when both operands are integers.
 
 ```lua
 local a = 10
 local b = 3
 local quotient = a // b
-print(quotient)  -- 输出 3
+print(quotient)  -- 3
 ```
 
-## 2. 比较操作符
+## 2. Comparison operators
 
-比较操作符用于比较两个值的大小或相等性，并返回布尔值（`true` 或 `false`）。
+Comparison operators compare the size or equality of two values and return a boolean (`true` or `false`).
 
-### 相等 (`==`)
+### Equal (`==`)
 
 ```lua
 local a = 10
 local b = 5
-print(a == b)  -- 输出 false
+print(a == b)  -- false
 ```
 
-### 不相等 (`~=`)
+### Not equal (`~=`)
 
 ```lua
 local a = 10
 local b = 5
-print(a ~= b)  -- 输出 true
+print(a ~= b)  -- true
 ```
 
-### 大于 (`>`)
+### Greater than (`>`)
 
 ```lua
 local a = 10
 local b = 5
-print(a > b)  -- 输出 true
+print(a > b)  -- true
 ```
 
-### 小于 (`<`)
+### Less than (`<`)
 
 ```lua
 local a = 10
 local b = 5
-print(a < b)  -- 输出 false
+print(a < b)  -- false
 ```
 
-### 大于等于 (`>=`)
+### Greater than or equal (`>=`)
 
 ```lua
 local a = 10
 local b = 5
-print(a >= b)  -- 输出 true
+print(a >= b)  -- true
 ```
 
-### 小于等于 (`<=`)
+### Less than or equal (`<=`)
 
 ```lua
 local a = 10
 local b = 5
-print(a <= b)  -- 输出 false
+print(a <= b)  -- false
 ```
 
-## 3. 逻辑操作符
+## 3. Logical operators
 
-逻辑操作符用于处理布尔值和逻辑运算。
+Logical operators handle boolean values and logical operations.
 
-### 与 (`and`)
+### AND (`and`)
 
 ```lua
 local a = true
 local b = false
-print(a and b)  -- 输出 false
+print(a and b)  -- false
 ```
 
-### 或 (`or`)
+### OR (`or`)
 
 ```lua
 local a = true
 local b = false
-print(a or b)  -- 输出 true
+print(a or b)  -- true
 ```
 
-### 非 (`not`)
+### NOT (`not`)
 
 ```lua
 local a = true
-print(not a)  -- 输出 false
+print(not a)  -- false
 ```
 
-## 4. 连接操作符
+## 4. Concatenation operator
 
-连接操作符用于将字符串连接在一起。
+The concatenation operator joins strings together.
 
-### 字符串连接 (`..`)
+### String concatenation (`..`)
 
 ```lua
 local firstName = "Lua"
 local lastName = "Programming"
 local fullName = firstName .. " " .. lastName
-print(fullName)  -- 输出 Lua Programming
+print(fullName)  -- Lua Programming
 ```
 
-## 5. 赋值操作符
+## 5. Assignment operator
 
-赋值操作符 `=` 用于把右边表达式的值存入左边的变量，注意它和比较操作符 `==` 不同。
+The assignment operator `=` stores the value of the right-hand expression into the variable on the left. Note that it is different from the comparison operator `==`.
 
-### 赋值操作 (`=`)
+### Assignment (`=`)
 
 ```lua
 local a = 10
 local b = 5
-a = b  -- 将 b 的值赋给 a
-print(a)  -- 输出 5
+a = b  -- assigns the value of b to a
+print(a)  -- 5
 ```
 
-## 6. 综合表达式
+## 6. Combined expressions
 
-表达式可以由多个操作符和操作数组成，执行复杂的计算和逻辑判断。
+An expression can contain several operators and operands to perform more involved calculations and tests.
 
-### 示例
+### Example
 
 ```lua
 local a = 10
 local b = 5
 local c = 2
 local result = (a + b) * c / (b - c)
-print(result)  -- 输出 10.0
+print(result)  -- 10.0
 ```
 
-## 结语
+## Wrap-up
 
-算术七种、比较六种、逻辑三种，再加 `..` 连接和 `=` 赋值，Lua 的操作符就这些。
+Seven arithmetic operators, six comparisons, three logical ones, plus `..` for concatenation and `=` for assignment — that is the complete operator set.
 
-## 参考资料
+## References
 
-- [Lua 5.4 官方手册](https://www.lua.org/manual/5.4/manual.html#2.2)
-- [Lua 5.4 官方手册](https://www.lua.org/manual/5.4/manual.html#2.3)
-- [PIL · 运算符](https://www.lua.org/pil/2.html)
+- [Lua 5.4 reference manual · 2.2 Expressions](https://www.lua.org/manual/5.4/manual.html#2.2)
+- [Lua 5.4 reference manual · 2.3 Operators](https://www.lua.org/manual/5.4/manual.html#2.3)
+- [PIL · Lexical and Syntax Analysis](https://www.lua.org/pil/2.html)
 
 <!-- BACKLINKS-AUTO -->
-## 相关页面
+## Related pages
 
 - [core-concepts](/knowledge/core-concepts.md)
 - [pitfalls](/knowledge/pitfalls.md)

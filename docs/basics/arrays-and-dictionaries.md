@@ -1,37 +1,37 @@
-# 数组和字典的使用
+# Using Arrays and Dictionaries
 
-Lua 的表既能当数组用（数组是表的一种特殊用法），也能当字典用。这一节分开讲两种用法，最后看怎么混在一张表里。
+A Lua table works as an array (an array is just a special way of using a table) and as a dictionary. This section covers the two usages separately, then shows how to mix them in one table.
 
-## 1. 数组的使用
+## 1. Using arrays
 
-在 Lua 中，数组是通过连续的整数键来实现的。数组的索引从 1 开始（不像许多其他编程语言从 0 开始）。
+In Lua an array is implemented with consecutive integer keys. Array indexes start at 1, not 0 as in many other languages.
 
-### 创建数组
+### Creating an array
 
-创建一个数组非常简单，只需使用大括号 `{}` 来定义元素。
+Creating an array is simple: use braces `{}` to define the elements.
 
 ```lua
 local fruits = {"apple", "banana", "orange"}
 ```
 
-### 访问和修改数组元素
+### Accessing and modifying elements
 
-使用索引访问和修改数组中的元素。
+Use an index to read and modify elements.
 
 ```lua
 local fruits = {"apple", "banana", "orange"}
 
--- 访问元素
-print(fruits[1])  -- 输出 "apple"
+-- read an element
+print(fruits[1])  -- "apple"
 
--- 修改元素
+-- change an element
 fruits[2] = "grape"
-print(fruits[2])  -- 输出 "grape"
+print(fruits[2])  -- "grape"
 ```
 
-### 遍历数组
+### Iterating an array
 
-可以使用 `for` 循环遍历数组中的元素。
+Use a `for` loop to walk the elements.
 
 ```lua
 local fruits = {"apple", "banana", "orange"}
@@ -41,22 +41,22 @@ for i = 1, #fruits do
 end
 ```
 
-### 数组的长度
+### Array length
 
-使用 `#` 操作符获取数组的长度。
+Use the `#` operator to get the length.
 
 ```lua
 local fruits = {"apple", "banana", "orange"}
-print(#fruits)  -- 输出 3
+print(#fruits)  -- 3
 ```
 
-## 2. 字典的使用
+## 2. Using dictionaries
 
-字典是通过键（可以是字符串或其他类型）来实现的，键值对存储在表中。字典是一种关联数组，可以用来存储和查找数据。
+A dictionary uses keys (strings or other types); the key-value pairs are stored in a table. A dictionary is an associative array, used to store and look up data.
 
-### 创建字典
+### Creating a dictionary
 
-创建一个字典也是使用大括号 `{}`，但需要指定键值对。
+A dictionary also uses braces `{}`, but you specify key-value pairs.
 
 ```lua
 local person = {
@@ -66,9 +66,9 @@ local person = {
 }
 ```
 
-### 访问和修改字典元素
+### Accessing and modifying entries
 
-通过键来访问和修改字典中的值。
+Read and change values by key.
 
 ```lua
 local person = {
@@ -77,17 +77,17 @@ local person = {
     occupation = "Engineer"
 }
 
--- 访问元素
-print(person.name)  -- 输出 "Alice"
+-- read an entry
+print(person.name)  -- "Alice"
 
--- 修改元素
+-- change an entry
 person.age = 31
-print(person.age)  -- 输出 31
+print(person.age)  -- 31
 ```
 
-### 遍历字典
+### Iterating a dictionary
 
-可以使用 `pairs` 函数遍历字典中的所有键值对。
+Use `pairs` to walk all key-value pairs.
 
 ```lua
 local person = {
@@ -101,13 +101,13 @@ for key, value in pairs(person) do
 end
 ```
 
-### 字典的常见用途
+### Common uses for dictionaries
 
-配置项、按名字查的记录，都适合用字典存。
+Configuration entries, and records looked up by name, are good fits for dictionaries.
 
-## 3. 数组和字典的混合使用
+## 3. Mixing arrays and dictionaries
 
-Lua 的表可以同时承载数组和字典数据。例如，数组元素本身可以是带字段的表。
+A Lua table can hold array data and dictionary data at the same time. For example, the array elements themselves can be tables with fields.
 
 ```lua
 local people = {
@@ -121,17 +121,17 @@ for i, person in ipairs(people) do
 end
 ```
 
-## 4. 总结
+## 4. Summary
 
-数组用整数索引、从 1 数起，`#` 取长度；字典用键取值，`pairs` 遍历。两者可以混在一张表里，这也是 Lua 不需要第二种数据结构的原因。
+Arrays use integer indexes counting from 1, and `#` gives the length. Dictionaries look values up by key and are iterated with `pairs`. Both can live in the same table — which is also why Lua never needed a second data structure.
 
-## 参考资料
+## References
 
-- [Lua 5.4 官方手册](https://www.lua.org/manual/5.4/manual.html#2.2)
+- [Lua 5.4 reference manual · 2.2 Expressions](https://www.lua.org/manual/5.4/manual.html#2.2)
 - [Associative_array](https://en.wikipedia.org/wiki/Associative_array)
 
 <!-- BACKLINKS-AUTO -->
-## 相关页面
+## Related pages
 
 - [data-structures](data-structures.md)
 - [core-concepts](/knowledge/core-concepts.md)

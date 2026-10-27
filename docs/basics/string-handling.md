@@ -1,169 +1,169 @@
-# 字符串处理
+# String Handling
 
-Lua 的内置字符串函数覆盖了拼接、截取、查找、格式化、大小写转换这些日常操作，下面逐个过。
+Lua's built-in string functions cover the everyday operations: concatenation, slicing, searching, formatting and case conversion. This page goes through them one at a time.
 
-## 1. 基本字符串操作
+## 1. Basic string operations
 
-### 字符串连接
+### Concatenation
 
-使用 `..` 操作符可以将多个字符串连接成一个新的字符串。
+The `..` operator joins strings into a new one.
 
 ```lua
 local s1 = "Hello"
 local s2 = "World"
 local result = s1 .. " " .. s2
-print(result)  -- 输出 "Hello World"
+print(result)  -- "Hello World"
 ```
 
-### 字符串长度
+### Length
 
-使用 `#` 操作符获取字符串的长度。
+Use the `#` operator to get a string's length.
 
 ```lua
 local s = "Hello World"
-print(#s)  -- 输出 11
+print(#s)  -- 11
 ```
 
-### 子字符串提取
+### Substring extraction
 
-使用 `string.sub` 函数提取子字符串。
+Use `string.sub` to extract a substring.
 
 ```lua
 local s = "Hello World"
 local substr = string.sub(s, 1, 5)
-print(substr)  -- 输出 "Hello"
+print(substr)  -- "Hello"
 ```
 
-### 字符串替换
+### Replacement
 
-使用 `string.gsub` 函数进行字符串替换。
+Use `string.gsub` to replace text in a string.
 
 ```lua
 local s = "Hello World"
 local new_s = string.gsub(s, "World", "Lua")
-print(new_s)  -- 输出 "Hello Lua"
+print(new_s)  -- "Hello Lua"
 ```
 
-## 2. 字符串格式化
+## 2. Formatting
 
-Lua 提供了 `string.format` 函数用于格式化字符串。
+Lua provides `string.format` for formatting strings.
 
 ```lua
 local name = "Alice"
 local age = 30
 local formatted = string.format("Name: %s, Age: %d", name, age)
-print(formatted)  -- 输出 "Name: Alice, Age: 30"
+print(formatted)  -- "Name: Alice, Age: 30"
 ```
 
-### 常用格式符
+### Common format specifiers
 
-- `%s` - 字符串
-- `%d` - 整数
-- `%f` - 浮点数
+- `%s` - string
+- `%d` - integer
+- `%f` - floating point
 
-## 3. 字符串查找与匹配
+## 3. Searching and matching
 
-### 查找子字符串
+### Finding a substring
 
-使用 `string.find` 函数查找子字符串的位置。
+Use `string.find` to locate a substring.
 
 ```lua
 local s = "Hello World"
 local start_pos, end_pos = string.find(s, "World")
-print(start_pos, end_pos)  -- 输出 7 11
+print(start_pos, end_pos)  -- 7 11
 ```
 
-### 字符串匹配
+### Matching a substring
 
-使用 `string.match` 函数从字符串中提取匹配的子字符串。
+Use `string.match` to extract a matching part of a string.
 
 ```lua
 local s = "Hello World"
 local match = string.match(s, "World")
-print(match)  -- 输出 "World"
+print(match)  -- "World"
 ```
 
-### 正则表达式匹配
+### Pattern matching
 
-`string.match` 和 `string.gmatch` 函数支持 Lua 的模式匹配语法。
+`string.match` and `string.gmatch` support Lua's pattern syntax.
 
 ```lua
 local s = "Hello 123 World 456"
 for num in string.gmatch(s, "%d+") do
-    print(num)  -- 输出 123 和 456
+    print(num)  -- 123 and 456
 end
 ```
 
-## 4. 字符串分割与合并
+## 4. Splitting and joining
 
-### 字符串分割
+### Splitting
 
-Lua 没有内置的字符串分割函数，但可以使用 `string.gmatch` 和模式来实现。
+Lua has no built-in string-splitting function, but you can get the effect with `string.gmatch` and a pattern.
 
 ```lua
 local s = "apple,banana,orange"
 for fruit in string.gmatch(s, "([^,]+)") do
     print(fruit)
 end
--- 输出
+-- output
 -- apple
 -- banana
 -- orange
 ```
 
-### 字符串合并
+### Joining
 
-使用 `table.concat` 函数合并多个字符串。
+Use `table.concat` to join several strings.
 
 ```lua
 local fruits = {"apple", "banana", "orange"}
 local s = table.concat(fruits, ", ")
-print(s)  -- 输出 "apple, banana, orange"
+print(s)  -- "apple, banana, orange"
 ```
 
-## 5. 字符串转换
+## 5. Conversion
 
-### 转换为大写或小写
+### Upper- and lower-case
 
-使用 `string.upper` 和 `string.lower` 函数进行大小写转换。
+Use `string.upper` and `string.lower` to change case.
 
 ```lua
 local s = "Hello World"
-print(string.upper(s))  -- 输出 "HELLO WORLD"
-print(string.lower(s))  -- 输出 "hello world"
+print(string.upper(s))  -- "HELLO WORLD"
+print(string.lower(s))  -- "hello world"
 ```
 
-## 6. 字符串与模式匹配
+## 6. Strings and patterns
 
-Lua 的模式匹配语法类似于正则表达式，但不完全相同，用来做复杂的匹配和提取。
+Lua's pattern syntax is similar to regular expressions but not identical; it is used for more involved matching and extraction.
 
-### 常见模式
+### Common patterns
 
-- `.` - 匹配任何单个字符
-- `%a` - 匹配任何字母字符
-- `%d` - 匹配任何数字字符
-- `%s` - 匹配任何空白字符
-- `%w` - 匹配任何字母或数字字符
+- `.` - matches any single character
+- `%a` - matches any alphabetic character
+- `%d` - matches any digit
+- `%s` - matches any whitespace character
+- `%w` - matches any alphanumeric character
 
-### 示例：提取电子邮件地址
+### Example: extracting an email address
 
 ```lua
 local s = "Contact us at support@example.com"
 local email = string.match(s, "%S+@%S+")
-print(email)  -- 输出 "support@example.com"
+print(email)  -- "support@example.com"
 ```
 
-## 7. 总结
+## 7. Summary
 
-拼接 `..`、取长度 `#`、查找 `string.find`、提取 `string.match`、拆分靠 `string.gmatch`、合并靠 `table.concat`、格式化走 `string.format`。日常处理文本，翻来覆去就是这几个函数。
+Concatenate with `..`, get length with `#`, search with `string.find`, extract with `string.match`, split with `string.gmatch`, join with `table.concat`, and format with `string.format`. Day-to-day text handling rarely needs anything beyond these.
 
-## 参考资料
+## References
 
-- [Lua 5.4 官方手册](https://www.lua.org/manual/5.4/manual.html#6.1)
+- [Lua 5.4 reference manual · 6.1 String Library](https://www.lua.org/manual/5.4/manual.html#6.1)
 - [Hash_function](https://en.wikipedia.org/wiki/Hash_function)
 
 <!-- BACKLINKS-AUTO -->
-## 相关页面
+## Related pages
 
 - [data-structures](data-structures.md)
 - [core-concepts](/knowledge/core-concepts.md)

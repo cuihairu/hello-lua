@@ -1,14 +1,14 @@
-# 元表和元方法
+# Metatables and Metamethods
 
-元表（metatables）和元方法（metamethods）用来改表的默认行为：运算符重载、读不到键时给默认值，都从这里下手。
+Metatables and metamethods change a table's default behavior: operator overloading, default values for missing keys, and the rest all start here.
 
-## 1. 元表的概念
+## 1. The idea of a metatable
 
-元表是一个特殊的表，用于定义和改变另一个表的行为。给表设置元表后，该表的部分操作会由元方法接管。
+A metatable is a special table used to define and alter the behavior of another table. Once a table has a metatable, certain operations on it are taken over by metamethods.
 
-### 设置元表
+### Setting a metatable
 
-使用 `setmetatable` 函数将一个元表与另一个表关联起来。
+Use `setmetatable` to associate a metatable with a table.
 
 ```lua
 local t = {}
@@ -16,21 +16,21 @@ local mt = {}
 setmetatable(t, mt)
 ```
 
-### 获取元表
+### Getting a metatable
 
-使用 `getmetatable` 函数可以获取与某个表关联的元表。
+Use `getmetatable` to retrieve the metatable associated with a table.
 
 ```lua
 local mt = getmetatable(t)
 ```
 
-## 2. 常见的元方法
+## 2. Common metamethods
 
-元方法是定义在元表中的特殊方法，用于实现自定义的行为。以下是一些常见的元方法及其功能：
+Metamethods are special functions defined in a metatable, used to implement custom behavior. Some of the common ones:
 
 ### `__index`
 
-当表中找不到某个键时，`__index` 元方法会被调用。
+`__index` is called when a key cannot be found in the table.
 
 ```lua
 local t = {}
@@ -40,12 +40,12 @@ local mt = {
     end
 }
 setmetatable(t, mt)
-print(t.someKey)  -- 输出 "Default value"
+print(t.someKey)  -- "Default value"
 ```
 
 ### `__newindex`
 
-当对表中不存在的键赋值时，`__newindex` 元方法会被调用（对已存在的键赋值不会触发）。
+`__newindex` is called when you assign to a key that does not exist in the table (assigning to an existing key does not trigger it).
 
 ```lua
 local t = {}
@@ -57,12 +57,12 @@ local mt = {
 }
 setmetatable(t, mt)
 t.someKey = "Some value"
--- 输出 "Setting someKey to Some value"
+-- prints "Setting someKey to Some value"
 ```
 
-### `__add`, `__sub`, `__mul` 等运算符重载
+### Operator overloading with `__add`, `__sub`, `__mul` and so on
 
-元方法可以用来重载 Lua 中的运算符。
+Metamethods can be used to overload Lua's operators.
 
 ```lua
 local Vector = {}
@@ -82,12 +82,12 @@ end
 local v1 = Vector.new(1, 2)
 local v2 = Vector.new(3, 4)
 local v3 = v1 + v2
-print(v3.x, v3.y)  -- 输出 4 6
+print(v3.x, v3.y)  -- 4 6
 ```
 
 ### `__call`
 
-`__call` 元方法允许表像函数一样被调用。
+The `__call` metamethod lets a table be invoked like a function.
 
 ```lua
 local t = {}
@@ -98,12 +98,12 @@ local mt = {
     end
 }
 setmetatable(t, mt)
-print(t(1, 2, 3))  -- 输出 "Called with 3 arguments"
+print(t(1, 2, 3))  -- "Called with 3 arguments"
 ```
 
 ### `__tostring`
 
-`__tostring` 元方法定义了如何将表转换为字符串。
+`__tostring` defines how a table is converted to a string.
 
 ```lua
 local t = {name = "Alice", age = 30}
@@ -113,18 +113,18 @@ local mt = {
     end
 }
 setmetatable(t, mt)
-print(t)  -- 输出 "Name: Alice, Age: 30"
+print(t)  -- "Name: Alice, Age: 30"
 ```
 
-## 3. 使用元表和元方法的注意事项
+## 3. Notes and pitfalls
 
-两个坑要留意。`__index` 和 `__newindex` 里别直接操作原始表，那会无限递归，绕开它要用 `rawget` 和 `rawset`。另外，元表和元方法用得过密会拖慢性能，性能敏感的场合尤其要掂量。
+Two traps to watch. Inside `__index` and `__newindex`, do not touch the original table directly — that recurses forever; go around it with `rawget` and `rawset`. Also, layering metatables and metamethods too densely slows things down, so weigh it carefully in performance-sensitive code.
 
-## 4. 示例：实现自定义行为
+## 4. Example: implementing custom behavior
 
-### 自定义表的行为
+### Customizing a table's behavior
 
-元方法也可用于实现自定义行为，例如记录表的访问和修改。
+Metamethods can also implement custom behavior, such as logging access to and modification of a table.
 
 ```lua
 local t = {}
@@ -139,28 +139,28 @@ local mt = {
     end
 }
 setmetatable(t, mt)
-t.someKey = "Some value"  -- 键不存在，触发 __newindex
-print(t.someKey)          -- 键已存在，直接读取，不触发 __index
-print(t.otherKey)         -- 键不存在，触发 __index
--- 输出
+t.someKey = "Some value"  -- key absent, triggers __newindex
+print(t.someKey)          -- key exists now, direct read, no __index
+print(t.otherKey)         -- key absent, triggers __index
+-- output
 -- Setting key:	someKey	to	Some value
 -- Some value
 -- Accessing key:	otherKey
 -- nil
 ```
 
-## 结语
+## Wrap-up
 
-读键、写键、运算、转字符串、当函数调用，这些触发点全部挂在元表上。把它们串起来，表的行为就基本由你定义了。
+Reading a key, writing a key, arithmetic, conversion to string, calling as a function — all of these hook points hang off the metatable. Chain them together and a table's behavior is essentially yours to define.
 
-## 参考资料
+## References
 
-- [Lua 5.4 官方手册](https://www.lua.org/manual/5.4/manual.html#2.6)
+- [Lua 5.4 reference manual · 2.6 Metamethods](https://www.lua.org/manual/5.4/manual.html#2.6)
 - [Metaprogramming](https://en.wikipedia.org/wiki/Metaprogramming)
-- [PIL · 元表](https://www.lua.org/pil/11.html)
+- [PIL · Metatables](https://www.lua.org/pil/11.html)
 
 <!-- BACKLINKS-AUTO -->
-## 相关页面
+## Related pages
 
 - [data-structures](data-structures.md)
 - [glossary](/glossary.md)

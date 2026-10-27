@@ -1,10 +1,10 @@
-# 控制结构
+# Control Structures
 
-Lua 的控制结构分三类：条件语句、循环语句和改变控制流的关键字。
+Lua's control structures fall into three groups: conditionals, loops, and the keywords that alter control flow.
 
-## 1. 条件语句
+## 1. Conditionals
 
-条件语句用于根据条件的真伪来决定执行不同的代码块。Lua 提供了 `if-then-else` 语句来实现条件判断。
+Conditionals run different blocks of code depending on whether a test is true. Lua provides `if-then-else` for this.
 
 ### `if-then`
 
@@ -12,7 +12,7 @@ Lua 的控制结构分三类：条件语句、循环语句和改变控制流的�
 local age = 18
 
 if age >= 18 then
-    print("成年人")
+    print("adult")
 end
 ```
 
@@ -22,9 +22,9 @@ end
 local age = 16
 
 if age >= 18 then
-    print("成年人")
+    print("adult")
 else
-    print("未成年人")
+    print("minor")
 end
 ```
 
@@ -34,23 +34,23 @@ end
 local score = 85
 
 if score >= 90 then
-    print("优秀")
+    print("excellent")
 elseif score >= 80 then
-    print("良好")
+    print("good")
 elseif score >= 60 then
-    print("及格")
+    print("pass")
 else
-    print("不及格")
+    print("fail")
 end
 ```
 
-## 2. 循环语句
+## 2. Loops
 
-循环语句用于重复执行某段代码，直到满足某个条件为止。Lua 提供了多种循环结构，包括 `while` 循环、`repeat-until` 循环和 `for` 循环。
+Loops repeat a block of code until some condition holds. Lua offers several forms: `while`, `repeat-until` and `for`.
 
-### `while` 循环
+### `while`
 
-`while` 循环在条件为真时重复执行代码块。
+A `while` loop repeats the block as long as the condition is true.
 
 ```lua
 local i = 1
@@ -61,9 +61,9 @@ while i <= 5 do
 end
 ```
 
-### `repeat-until` 循环
+### `repeat-until`
 
-`repeat-until` 循环至少执行一次代码块，然后在每次循环结束时检查条件。
+A `repeat-until` loop runs the block at least once, then checks the condition at the end of each pass.
 
 ```lua
 local i = 1
@@ -74,13 +74,13 @@ repeat
 until i > 5
 ```
 
-### `for` 循环
+### `for`
 
-`for` 循环有两种形式：数值 `for` 和泛型 `for`。
+There are two forms: numeric `for` and generic `for`.
 
-#### 数值 `for` 循环
+#### Numeric `for`
 
-数值 `for` 循环用于迭代一系列数值。
+A numeric `for` iterates over a range of numbers.
 
 ```lua
 for i = 1, 5 do
@@ -88,9 +88,9 @@ for i = 1, 5 do
 end
 ```
 
-#### 泛型 `for` 循环
+#### Generic `for`
 
-泛型 `for` 循环用于遍历表中的元素。
+A generic `for` iterates over the elements of a table.
 
 ```lua
 local fruits = {"apple", "banana", "cherry"}
@@ -100,13 +100,13 @@ for index, fruit in ipairs(fruits) do
 end
 ```
 
-## 3. break 与 return
+## 3. break and return
 
-改变控制流的关键字有两个：`break` 和 `return`。
+Two keywords alter control flow: `break` and `return`.
 
 ### `break`
 
-`break` 语句用于跳出当前的循环。
+`break` exits the current loop.
 
 ```lua
 for i = 1, 10 do
@@ -119,7 +119,7 @@ end
 
 ### `return`
 
-`return` 语句用于从函数中返回，并可选择性地返回一个值。
+`return` exits a function, optionally with a value.
 
 ```lua
 local function greet(name)
@@ -127,14 +127,14 @@ local function greet(name)
 end
 
 local message = greet("Lua")
-print(message)  -- 输出 Hello, Lua
+print(message)  -- Hello, Lua
 ```
 
-## 4. 多重控制结构
+## 4. Nested control structures
 
-在实际应用中，控制结构常常嵌套使用，以实现更复杂的逻辑。
+In practice control structures are often nested to build more involved logic.
 
-### 示例
+### Example
 
 ```lua
 local temperature = 25
@@ -142,26 +142,26 @@ local isRaining = true
 
 if temperature > 20 then
     if isRaining then
-        print("天气温暖但有雨，建议带伞")
+        print("warm but rainy, bring an umbrella")
     else
-        print("天气温暖，适合外出")
+        print("warm and clear, good for going out")
     end
 else
-    print("天气较冷，建议穿暖和些")
+    print("cool out, dress warmer")
 end
 ```
 
-## 结语
+## Wrap-up
 
-条件判断交给 `if`，重复交给 `for`、`while` 和 `repeat-until`，中途跳出用 `break`，从函数退出用 `return`。
+`if` for branching, `for`, `while` and `repeat-until` for repetition, `break` to leave a loop early, and `return` to leave a function.
 
-## 参考资料
+## References
 
-- [Lua 5.4 官方手册](https://www.lua.org/manual/5.4/manual.html#2.2)
-- [PIL · 控制结构](https://www.lua.org/pil/2.html)
+- [Lua 5.4 reference manual · 2.2 Expressions](https://www.lua.org/manual/5.4/manual.html#2.2)
+- [PIL · Lexical and Syntax Analysis](https://www.lua.org/pil/2.html)
 - [Goto](https://en.wikipedia.org/wiki/Goto)
 
 <!-- BACKLINKS-AUTO -->
-## 相关页面
+## Related pages
 
 - [core-concepts](/knowledge/core-concepts.md)

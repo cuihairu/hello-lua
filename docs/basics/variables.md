@@ -1,99 +1,99 @@
-# 变量和赋值
+# Variables and Assignment
 
-Lua 的变量是动态类型的，运行时可以给同一个变量赋不同类型的值。这一节讲定义、赋值和作用域。
+Lua variables are dynamically typed; you can assign values of different types to the same variable at runtime. This section covers definition, assignment and scoping.
 
-## 1. 变量定义
+## 1. Defining variables
 
-在 Lua 中，变量不需要预先声明其类型，直接使用 `local` 关键字或直接赋值即可定义一个变量。`local` 关键字用于定义局部变量，而没有 `local` 的变量将成为全局变量。
+In Lua a variable needs no prior type declaration: use the `local` keyword, or just assign to it. `local` defines a local variable; a variable without `local` becomes global.
 
-### 局部变量
+### Local variables
 
-局部变量的作用范围限制在定义它的块中，例如函数、控制结构等。局部变量有助于避免命名冲突和提高代码的可读性。
+A local variable's scope is limited to the block in which it is defined, such as a function or a control structure. Locals help avoid name clashes and make code easier to read.
 
 ```lua
 local x = 10
 local y = 20
 
-print(x)  -- 输出 10
-print(y)  -- 输出 20
+print(x)  -- 10
+print(y)  -- 20
 ```
 
-### 全局变量
+### Global variables
 
-全局变量在 Lua 中是默认的，如果你没有使用 `local` 关键字定义变量，那么它将是全局的。全局变量的作用范围是整个脚本或程序。
+Globals are the default in Lua: if you do not use `local`, the variable is global. A global's scope is the whole script or program.
 
 ```lua
-z = 30  -- 全局变量
-print(z) -- 输出 30
+z = 30  -- global
+print(z) -- 30
 ```
 
-## 2. 赋值
+## 2. Assignment
 
-Lua 通过赋值操作将值绑定到变量。赋值操作可以同时进行多个变量的赋值，也可以通过表达式进行赋值。
+Lua binds values to variables through assignment. Several variables can be assigned at once, and you can assign the result of an expression.
 
-### 单个变量赋值
+### Single assignment
 
-值可以直接赋给变量：
+Assign a value directly:
 
 ```lua
 local name = "Lua"
 local version = 5.4
 ```
 
-### 多重赋值
+### Multiple assignment
 
-Lua 支持多重赋值，一行同时给多个变量赋值。
+Lua supports multiple assignment, giving several variables values on one line.
 
 ```lua
 local a, b, c = 1, 2, 3
-print(a)  -- 输出 1
-print(b)  -- 输出 2
-print(c)  -- 输出 3
+print(a)  -- 1
+print(b)  -- 2
+print(c)  -- 3
 ```
 
-### 表达式赋值
+### Assignment from an expression
 
-你还可以将一个表达式的结果赋值给一个变量：
+You can also assign an expression's result to a variable:
 
 ```lua
 local sum = 10 + 20
 local product = 5 * 6
-print(sum)      -- 输出 30
-print(product)  -- 输出 30
+print(sum)      -- 30
+print(product)  -- 30
 ```
 
-### 表中的赋值
+### Assignment in tables
 
-Lua 中的表（table）可以用来存储和组织数据。表的字段赋值也遵循类似的规则：
+Lua tables store and organize data, and assigning to a table's fields follows the same rules:
 
 ```lua
 local person = {}
 person.name = "Lua"
 person.age = 5
-print(person.name)  -- 输出 Lua
-print(person.age)   -- 输出 5
+print(person.name)  -- Lua
+print(person.age)   -- 5
 ```
 
-## 3. 变量作用域
+## 3. Variable scope
 
-在 Lua 中，变量的作用域决定了它的可见性和生命周期。局部变量只能在其定义的块内访问，而全局变量则可以在任何地方访问。
+In Lua, a variable's scope determines its visibility and lifetime. A local variable can only be accessed inside the block where it is defined; a global can be accessed anywhere.
 
-### 局部变量的作用域
+### Scope of local variables
 
-局部变量在定义它的块内有效，一旦块结束，局部变量将被销毁：
+A local is valid inside the block where it is defined; once the block ends, the local is destroyed:
 
 ```lua
 do
     local x = 10
-    print(x)  -- 输出 10
+    print(x)  -- 10
 end
 
-print(x)  -- 输出 nil：局部变量 x 已超出作用域，这里访问的是全局变量 x
+print(x)  -- nil: the local x is out of scope, so this reads the global x
 ```
 
-### 全局变量的作用域
+### Scope of global variables
 
-全局变量在整个脚本中有效，除非在某个块内被重新赋值：
+A global is valid throughout the script, unless it is reassigned somewhere:
 
 ```lua
 globalVar = "I am global"
@@ -103,30 +103,30 @@ function test()
 end
 
 test()
-print(globalVar)  -- 输出 Modified in function
+print(globalVar)  -- Modified in function
 ```
 
-## 4. 变量的初始化
+## 4. Initializing variables
 
-在 Lua 中，变量在首次赋值时会被初始化。如果变量在使用前没有被赋值，它将默认值为 `nil`。
+A Lua variable is initialized the first time it is assigned. If a variable is used without ever being assigned, its default value is `nil`.
 
 ```lua
 local a
-print(a)  -- 输出 nil
+print(a)  -- nil
 ```
 
-## 结语
+## Wrap-up
 
-能用 `local` 就用 `local`：作用域小，命名冲突少，出问题也好查。不带 `local` 就成了全局变量，这是 Lua 的默认行为，别把它当成习惯。
+Use `local` whenever you can: the scope is smaller, there are fewer name clashes, and problems are easier to track down. Without `local` the variable becomes global — that is Lua's default behavior, and it should not become your habit.
 
-## 参考资料
+## References
 
-- [Lua 5.4 官方手册](https://www.lua.org/manual/5.4/manual.html#2.2)
-- [PIL · 局部变量](https://www.lua.org/pil/2.html)
+- [Lua 5.4 reference manual · 2.2 Expressions](https://www.lua.org/manual/5.4/manual.html#2.2)
+- [PIL · Lexical and Syntax Analysis](https://www.lua.org/pil/2.html)
 - [Scope_(computer_science)](https://en.wikipedia.org/wiki/Scope_(computer_science))
 
 <!-- BACKLINKS-AUTO -->
-## 相关页面
+## Related pages
 
 - [glossary](/glossary.md)
 - [core-concepts](/knowledge/core-concepts.md)

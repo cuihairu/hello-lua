@@ -1,57 +1,68 @@
-# Lua的设计哲学和特点
+# Lua's Design Philosophy and Features
 
-Lua 的设计始终围绕几个具体取舍：小、可嵌入、可扩展。这一节先讲这些取舍，再列由它们长出的语言特点。
+Lua's design revolves around a few concrete trade-offs: small, embeddable, extensible. This section looks at those trade-offs first, then lists the language features that grew out of them.
 
-## 1. 设计哲学
+## 1. Design philosophy
 
-### 1.1 轻量级和嵌入式
-Lua 的设计初衷是嵌入式脚本语言，轻量级因此排在所有目标之前：编译器和运行时的内存占用通常不到 1MB，可以直接塞进游戏引擎、嵌入式系统和移动设备应用。
+### 1.1 Lightweight and embeddable
 
-### 1.2 简洁性和灵活性
-Lua 追求语言结构和语法的简洁，用尽量少的代码完成任务。核心语法简单，也不包含复杂的语言特性。简洁带来的好处有两个：上手快，解释执行的开销也小。
+Lua was conceived as an embedded scripting language, so being lightweight comes before every other goal: the compiler and runtime typically occupy well under 1 MB, which is enough to drop straight into a game engine, an embedded system, or a mobile app.
 
-同时，Lua 的灵活性体现在其动态类型系统和极简的标准库上。开发者可以根据需求自由扩展 Lua，甚至可以在 Lua 中实现自己的对象系统和模块系统。这种灵活性使得 Lua 在各种应用场景下都能被高度定制化。
+### 1.2 Simplicity and flexibility
 
-### 1.3 可扩展性
-Lua 的设计哲学之一就是高度可扩展性。Lua 提供了简单的 C API，使得开发者可以轻松地在 C 语言中调用 Lua 代码，或者在 Lua 中调用 C 函数。这种双向交互性使得 Lua 可以与现有的 C/C++ 项目无缝集成，同时也允许开发者将性能关键的部分用 C 语言实现，而将非性能关键的部分用 Lua 编写。
+Lua aims for a clean language structure and syntax, getting things done with as little code as possible. The core syntax is simple and deliberately avoids heavyweight language features. Simplicity pays off twice: it is quick to learn, and the cost of interpreting is low.
 
-### 1.4 开发者至上
-Lua 的设计尽量降低开发者的心智负担：语法和功能都刻意避开“陷阱”和复杂性，写起来不用防着语言本身。历次版本更新也坚持向后兼容。
+At the same time, Lua's flexibility comes from its dynamic type system and a deliberately minimal standard library. Developers can extend Lua however they need, and can even build their own object and module systems on top of it. That is what lets Lua be tailored closely to very different kinds of projects.
 
-## 2. Lua 的主要特点
+### 1.3 Extensibility
 
-### 2.1 动态类型
-Lua 是一门动态类型语言，变量的类型在运行时确定，而不是编译时固定。运行时创建、修改数据结构都不需要事先声明类型。
+High extensibility is one of the core ideas behind Lua's design. Lua offers a simple C API, so you can call Lua code from C, or call C functions from Lua. That two-way interaction means Lua integrates seamlessly with existing C/C++ projects, and it lets you write the performance-critical parts in C while keeping the rest in Lua.
 
-### 2.2 自动内存管理
-Lua 内置了自动内存管理机制，主要通过垃圾回收（Garbage Collection, GC）来实现。Lua 的垃圾回收器采用增量式和分代式算法，能够有效地回收不再使用的内存资源，减少内存泄漏的风险。开发者无需手动管理内存，这减少了因内存管理而产生的错误。
+### 1.4 Developer first
 
-### 2.3 强大的表（Tables）
-表是 Lua 中唯一的复合数据结构，既可以作为数组使用，也可以作为字典使用。Lua 的表支持灵活的键值对存储，可以用作数组、字典、集合、对象等多种数据结构。通过元表和元方法，表还可以实现运算符重载、继承等高级特性，使其成为 Lua 编程的核心组件。
+Lua's design tries to keep the mental load on the developer low: the syntax and the features deliberately stay away from "traps" and complexity, so you do not have to guard against the language itself. Successive releases also hold a strong line on backwards compatibility.
 
-### 2.4 协程（Coroutines）
-Lua 提供了原生的协程支持，使得开发者可以轻松实现并发操作。与线程不同，协程是用户态的并发单元，具有轻量级、低开销的特点。协程允许在函数的任意位置挂起和恢复，从而实现非阻塞的代码结构，非常适合用于实现异步 I/O 和复杂的控制流。
+## 2. Main features
 
-### 2.5 高度可嵌入性
-Lua 从设计上就把与宿主应用的集成放在首位。C API 简洁，宿主应用可以嵌入 Lua 解释器并双向通信。加上体积小，资源受限的环境（嵌入式系统、移动设备）也跑得动。
+### 2.1 Dynamic typing
 
-### 2.6 跨平台支持
-Lua 全部由 ANSI C 编写，可移植性好。只要有 C 编译器的平台基本都能跑，Windows、macOS、Linux、iOS、Android 都在列。跨平台应用因此常用它。
+Lua is dynamically typed: a variable's type is decided at runtime rather than fixed at compile time. You can create and reshape data structures at runtime without declaring a type first.
 
-### 2.7 简单易学
-Lua 的语法设计非常简单，类似于其他脚本语言如 Python 和 JavaScript，因此容易上手。对于有编程经验的开发者来说，学习 Lua 通常只需要几天时间。其简洁的语法和一致的设计也使得代码更易于阅读和维护。
+### 2.2 Automatic memory management
 
-## 结语
+Lua includes automatic memory management, implemented mainly through garbage collection. Lua's collector uses incremental and generational algorithms, so it reclaims memory that is no longer needed and keeps the risk of leaks low. Developers do not manage memory by hand, which removes a whole class of errors.
 
-不到 1MB 的运行时、唯一的复合结构表、原生协程和一套 C API，这几件事合起来解释了 Lua 为什么能嵌进那么多宿主程序。
+### 2.3 Powerful tables
 
-## 参考资料
+The table is Lua's only composite data structure, and it can be used both as an array and as a dictionary. Lua tables support flexible key-value storage and can serve as arrays, dictionaries, sets, objects and more. Through metatables and metamethods they can also implement operator overloading and inheritance, which makes the table the central building block of Lua programming.
+
+### 2.4 Coroutines
+
+Lua ships with native coroutine support, so concurrency is straightforward to write. Unlike threads, coroutines are user-level units of concurrency: lightweight and cheap. They can suspend and resume at any point in a function, which gives you a non-blocking code structure — a good fit for asynchronous I/O and complex control flow.
+
+### 2.5 Highly embeddable
+
+Lua puts integration with the host application first by design. The C API is simple, so a host app can embed the Lua interpreter and talk to it in both directions. Combined with the small footprint, it also runs in resource-constrained places such as embedded systems and mobile devices.
+
+### 2.6 Cross-platform support
+
+Lua is written entirely in ANSI C and is highly portable. Any platform with a C compiler can run it — Windows, macOS, Linux, iOS and Android all included. Cross-platform applications use it for exactly that reason.
+
+### 2.7 Simple and easy to learn
+
+Lua's syntax is very simple, similar in feel to other scripting languages such as Python and JavaScript, so it is easy to pick up. For someone with programming experience, Lua usually takes a few days to learn. The clean syntax and consistent design also make the code easier to read and maintain.
+
+## Wrap-up
+
+A runtime under 1 MB, one composite structure, native coroutines and a C API — put those together and it explains why Lua has been embedded in so many host programs.
+
+## References
 
 - [Lua_(programming_language)](https://en.wikipedia.org/wiki/Lua_(programming_language))
 - [Prototype-based_programming](https://en.wikipedia.org/wiki/Prototype-based_programming)
-- [PIL · 起步](https://www.lua.org/pil/1.html)
+- [PIL · First Steps](https://www.lua.org/pil/1.html)
 
-## 相关页面
+## Related pages
 
 - [introduction](introduction.md)
 - [history-and-development](history-and-development.md)

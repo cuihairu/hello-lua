@@ -1,115 +1,115 @@
-# 集成开发环境（IDE）推荐
+# IDE Recommendations
 
-写 Lua 对编辑器没有硬性要求，差别在于插件支持。下面五个都用得顺手，按需挑一个。
+Writing Lua has no hard requirement on the editor; the difference is plugin support. All five below work well for me — pick one that fits.
 
 ## 1. Visual Studio Code (VSCode)
 
-### 1.1 简介
+### 1.1 Overview
 
-Visual Studio Code 是一个免费的、开源的代码编辑器，支持多种编程语言，包括 Lua。安装插件后可以补上 Lua 支持。
+Visual Studio Code is a free, open-source code editor that supports many languages, Lua included. Install a plugin to add Lua support.
 
-### 1.2 安装与配置
+### 1.2 Install and configure
 
-1. 下载并安装 [Visual Studio Code](https://code.visualstudio.com/)。
-2. 打开 VSCode，进入扩展市场（Extensions）。
-3. 搜索并安装 Lua 插件，如 "Lua"（作者：sumneko）或 "Lua Plus"。
-4. 插件设置可按项目调整；配置 Lua 语言服务器后，可以获得智能感知和代码提示。
+1. Download and install [Visual Studio Code](https://code.visualstudio.com/).
+2. Open VSCode and go to the Extensions marketplace.
+3. Search for and install a Lua plugin, such as "Lua" (by sumneko) or "Lua Plus".
+4. The plugin settings can be tuned per project; once a Lua language server is configured you get completions and code hints.
 
-### 1.3 特色功能
+### 1.3 Notable features
 
-- 代码高亮和语法检查
-- 自动完成和智能提示
-- 调试支持
-- 集成终端和源代码控制
+- Syntax highlighting and syntax checking
+- Autocomplete and intelligent suggestions
+- Debugging support
+- Integrated terminal and source control
 
 ## 2. ZeroBrane Studio
 
-### 2.1 简介
+### 2.1 Overview
 
-ZeroBrane Studio 是专为 Lua 开发设计的轻量级 IDE，该有的功能都内置好了。
+ZeroBrane Studio is a lightweight IDE built specifically for Lua development, with everything you need built in.
 
-### 2.2 安装与配置
+### 2.2 Install and configure
 
-1. 下载并安装 [ZeroBrane Studio](https://studio.zerobrane.com/)。
-2. ZeroBrane Studio 启动后即可编写 Lua 代码，无需额外配置。
+1. Download and install [ZeroBrane Studio](https://studio.zerobrane.com/).
+2. ZeroBrane Studio is ready to write Lua code as soon as it starts, with no extra configuration.
 
-### 2.3 特色功能
+### 2.3 Notable features
 
-- 内置 Lua 解释器
-- 调试支持，包括断点和变量监视
-- 代码自动完成和语法高亮
-- 集成文档查看器
+- Built-in Lua interpreter
+- Debugging support, including breakpoints and variable watching
+- Autocomplete and syntax highlighting
+- Integrated documentation viewer
 
-## 3. IntelliJ IDEA with Lua Plugin
+## 3. IntelliJ IDEA with the Lua plugin
 
-### 3.1 简介
+### 3.1 Overview
 
-IntelliJ IDEA 主要用于 Java 开发，装上 Lua 插件后同样能写 Lua。
+IntelliJ IDEA is mainly a Java IDE, but with the Lua plugin it works for Lua as well.
 
-### 3.2 安装与配置
+### 3.2 Install and configure
 
-1. 下载并安装 [IntelliJ IDEA](https://www.jetbrains.com/idea/)。
-2. 启动 IntelliJ IDEA，进入插件市场（Plugins）。
-3. 搜索并安装 "Lua" 插件（作者：EmmyLua）。
-4. 配置插件以支持 Lua 开发。
+1. Download and install [IntelliJ IDEA](https://www.jetbrains.com/idea/).
+2. Start IntelliJ IDEA and go to the Plugins marketplace.
+3. Search for and install the "Lua" plugin (by EmmyLua).
+4. Configure the plugin for Lua development.
 
-### 3.3 特色功能
+### 3.3 Notable features
 
-- 高级代码分析和重构
-- 调试工具
-- 代码自动完成和错误提示
-- 集成版本控制
+- Advanced code analysis and refactoring
+- Debugging tools
+- Autocomplete and error reporting
+- Integrated version control
 
-## 4. Sublime Text with Lua Plugins
+## 4. Sublime Text with Lua plugins
 
-### 4.1 简介
+### 4.1 Overview
 
-Sublime Text 是一个轻量级的文本编辑器，通过安装 Lua 插件，可以用于 Lua 编程。
+Sublime Text is a lightweight text editor; with Lua plugins it works for Lua programming.
 
-### 4.2 安装与配置
+### 4.2 Install and configure
 
-1. 下载并安装 [Sublime Text](https://www.sublimetext.com/)。
-2. 打开 Sublime Text，进入 "Package Control"（需要安装 Package Control 插件）。
-3. 安装 Lua 插件，例如 "Lua"。
-4. 配置插件以提供语法高亮和代码提示。
+1. Download and install [Sublime Text](https://www.sublimetext.com/).
+2. Open Sublime Text and go to "Package Control" (which requires the Package Control plugin).
+3. Install a Lua plugin, for example "Lua".
+4. Configure the plugin for syntax highlighting and code hints.
 
-### 4.3 特色功能
+### 4.3 Notable features
 
-- 高度可定制的用户界面
-- 快速编辑和多光标支持
-- 插件支持
-- 内置命令面板
+- Highly customizable interface
+- Fast editing with multi-cursor support
+- Plugin support
+- Built-in command palette
 
 ## 5. Notepad++
 
-### 5.1 简介
+### 5.1 Overview
 
-Notepad++ 是一个免费的文本编辑器，虽然它不是专门的 IDE，但可以通过插件提供对 Lua 的支持。
+Notepad++ is a free text editor. It is not a dedicated IDE, but plugins bring Lua support.
 
-### 5.2 安装与配置
+### 5.2 Install and configure
 
-1. 下载并安装 [Notepad++](https://notepad-plus-plus.org/)。
-2. 安装 Lua 语言支持插件，或直接用 Notepad++ 自带的语法高亮功能。
-3. 配置编辑器以支持 Lua 文件的高亮和基本编辑功能。
+1. Download and install [Notepad++](https://notepad-plus-plus.org/).
+2. Install a Lua language support plugin, or just use Notepad++'s built-in syntax highlighting.
+3. Configure the editor for Lua file highlighting and basic editing.
 
-### 5.3 特色功能
+### 5.3 Notable features
 
-- 语法高亮和折叠
-- 多文档界面
-- 插件扩展功能
-- 简洁的用户界面
+- Syntax highlighting and folding
+- Multiple document interface
+- Plugin extensibility
+- Simple interface
 
-## 结语
+## Wrap-up
 
-只想要能跑的环境，ZeroBrane Studio 开箱即用、调试内置。已经有顺手的编辑器的话，装个 Lua 插件就够了。
+If you just want something that runs out of the box, ZeroBrane Studio works with debugging built in. If you already have an editor you like, a Lua plugin is enough.
 
-## 参考资料
+## References
 
-- [Lua 官方文档索引](https://www.lua.org/docs.html)
-- [lua-users 维基](http://lua-users.org/wiki/)
+- [Lua official documentation index](https://www.lua.org/docs.html)
+- [lua-users wiki](http://lua-users.org/wiki/)
 
 <!-- BACKLINKS-AUTO -->
-## 相关页面
+## Related pages
 
 - [setup](setup.md)
 - [official-docs](/knowledge/official-docs.md)

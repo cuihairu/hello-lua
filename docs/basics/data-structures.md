@@ -1,25 +1,25 @@
-# 数据结构
+# Data Structures
 
-Lua 只提供一种数据结构：表（tables）。数组、字典以及更复杂的数据组织，都靠它。本组四页：
+Lua provides exactly one data structure: the table. Arrays, dictionaries, and more complicated arrangements are all built on it. This group has four pages:
 
-- [表（Tables）](/basics/tables)：表的创建、数组与字典用法、嵌套表。
-- [元表和元方法](/basics/metatables-and-metamethods)：`setmetatable`、`__index`/`__newindex`、运算符重载。
-- [字符串处理](/basics/string-handling)：拼接、子串、格式化、模式匹配。
-- [数组和字典的使用](/basics/arrays-and-dictionaries)：从 1 起的数组、关联数组、混合表。
+- [Tables](/basics/tables): creating tables, array and dictionary usage, nested tables.
+- [Metatables and metamethods](/basics/metatables-and-metamethods): `setmetatable`, `__index`/`__newindex`, operator overloading.
+- [String handling](/basics/string-handling): concatenation, substrings, formatting, pattern matching.
+- [Arrays and dictionaries](/basics/arrays-and-dictionaries): 1-based arrays, associative arrays, mixed tables.
 
-## 结语
+## Wrap-up
 
-整数索引的表就是数组，字符串索引的表就是字典，改表的行为用元表，处理文本用 `string` 库。Lua 管数据的工具就这些。
+A table with integer keys is an array; a table with string keys is a dictionary. To change how a table behaves, use a metatable; to work with text, use the `string` library. That is the whole toolkit Lua gives you for data.
 
-## 参考资料
+## References
 
-- [Lua 5.4 官方手册](https://www.lua.org/manual/5.4/manual.html#2.2)
+- [Lua 5.4 reference manual · 2.2 Expressions](https://www.lua.org/manual/5.4/manual.html#2.2)
 - [Associative_array](https://en.wikipedia.org/wiki/Associative_array)
 - [Hash_table](https://en.wikipedia.org/wiki/Hash_table)
-- [PIL · 表](https://www.lua.org/pil/12.html)
+- [PIL · Tables](https://www.lua.org/pil/12.html)
 
 <!-- BACKLINKS-AUTO -->
-## 相关页面
+## Related pages
 
 - [glossary](/glossary.md)
 - [README](/knowledge/README.md)

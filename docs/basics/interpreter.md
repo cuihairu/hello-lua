@@ -1,27 +1,27 @@
-# Lua解释器的使用
+# Using the Lua Interpreter
 
-Lua 解释器是一个命令行工具：运行脚本、测试代码片段、交互式地一行行试代码，都通过它完成。
+The Lua interpreter is a command-line tool: it runs scripts, tests code snippets, and lets you try things out interactively one line at a time.
 
-## 1. 启动 Lua 解释器
+## 1. Starting the interpreter
 
-在终端或命令提示符中，输入 `lua` 以启动 Lua 解释器。如果安装成功，你会看到 Lua 提示符 `>`，这表示 Lua 解释器已准备好接受命令。
+Type `lua` in a terminal or command prompt to start the interpreter. If the installation succeeded you will see the Lua prompt `>`, meaning it is ready to take commands.
 
 ```sh
 $ lua
 Lua 5.4.8  Copyright (C) 1994-2025 Lua.org, PUC-Rio
-> 
+>
 ```
 
-## 2. 交互式编程
+## 2. Interactive programming
 
-Lua 提示符接受直接输入的代码，按回车即可执行：
+The prompt accepts code typed directly; press Enter to run it:
 
 ```text
 > print("Hello, Lua!")
 Hello, Lua!
 ```
 
-交互环境可执行 Lua 代码，例如定义变量或函数：
+The interactive environment can run real Lua code, such as defining variables or functions:
 
 ```text
 > x = 10
@@ -35,9 +35,9 @@ Hello, Lua!
 Hello, World!
 ```
 
-## 3. 运行 Lua 脚本
+## 3. Running a Lua script
 
-Lua 解释器也能运行脚本文件。以下是 `script.lua` 的内容：
+The interpreter can also run script files. Here is the content of `script.lua`:
 
 ```lua
 -- script.lua
@@ -47,7 +47,7 @@ for i = 1, 5 do
 end
 ```
 
-在终端运行脚本：
+Run the script from the terminal:
 
 ```sh
 $ lua script.lua
@@ -59,32 +59,32 @@ Number: 4
 Number: 5
 ```
 
-## 4. 使用命令行选项
+## 4. Using command-line options
 
-Lua 解释器支持一些命令行选项，常用选项包括：
+The interpreter supports several command-line options. The common ones:
 
-- `-e`：直接执行 Lua 代码。例如：
+- `-e`: execute Lua code directly. For example:
     ```sh
     $ lua -e 'print("Hello from command line!")'
     Hello from command line!
     ```
 
-- `-l`：加载 Lua 脚本文件。例如：
+- `-l`: load a Lua script file. For example:
     ```sh
     $ lua -l script
     ```
 
-  这将加载 `script.lua` 文件并执行其中的代码。
+  This loads `script.lua` and runs the code in it.
 
-- `-v`：显示 Lua 版本信息。例如：
+- `-v`: show Lua version information. For example:
     ```sh
     $ lua -v
     Lua 5.4.8  Copyright (C) 1994-2025 Lua.org, PUC-Rio
     ```
 
-## 5. 脚本的调试和错误处理
+## 5. Debugging scripts and error handling
 
-当运行 Lua 脚本时，如果代码中有错误，Lua 解释器会显示错误信息和代码出错的位置。例如有如下 `script.lua`：
+When you run a Lua script and the code has an error, the interpreter prints the error message and where the problem is. Given this `script.lua`:
 
 ```lua
 -- script.lua
@@ -92,7 +92,7 @@ local t = {}
 print(t.x + 1)
 ```
 
-运行它时会得到如下错误信息：
+Running it produces this error:
 
 ```sh
 $ lua script.lua
@@ -102,28 +102,28 @@ stack traceback:
 	[C]: in ?
 ```
 
-可以根据错误信息进行调试和修正。
+You can debug and fix the code based on that message.
 
-## 6. 退出 Lua 解释器
+## 6. Exiting the interpreter
 
-要退出 Lua 解释器，可以输入 `os.exit()` 或按 `Ctrl+D`（在 Unix 系统上）或 `Ctrl+Z`（在 Windows 系统上）。
+To exit, type `os.exit()`, or press `Ctrl+D` (on Unix) or `Ctrl+Z` (on Windows).
 
 ```text
 > os.exit()
 ```
 
-或者直接在提示符下按下 `Ctrl+D`，也可以退出解释器。
+Pressing `Ctrl+D` at the prompt also exits the interpreter.
 
-## 结语
+## Wrap-up
 
-测片段进交互模式，跑程序用 `lua script.lua`，出错先看错误信息第一行指到的位置。日常写 Lua 就是在这三步之间打转。
+Use the interactive mode to test snippets, `lua script.lua` to run a program, and on an error read the location pointed at by the first line of the message. Everyday Lua writing mostly stays inside those three steps.
 
-## 参考资料
+## References
 
 - [Interpreter_(computing)](https://en.wikipedia.org/wiki/Interpreter_(computing))
 - [Virtual_machine](https://en.wikipedia.org/wiki/Virtual_machine)
-- [Lua 官方文档索引](https://www.lua.org/docs.html)
+- [Lua official documentation index](https://www.lua.org/docs.html)
 
-## 相关页面
+## Related pages
 
 - [interpreter-implementation](/design-and-implementation/interpreter-implementation.md)

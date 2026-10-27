@@ -1,78 +1,92 @@
-# Lua的应用场景
+# Use Cases for Lua
 
-Lua 的核心库很小，靠嵌入和扩展能力适应不同的开发需求。下面是我整理的几个常见领域。
+Lua's core library is tiny; it adapts to different development needs through embedding and extension. Below are the areas where I keep running into it.
 
-## 1. 游戏开发
+## 1. Game development
 
-### 1.1 游戏脚本
-Lua 在游戏开发中得到了广泛应用，尤其是在脚本编写方面。由于 Lua 轻量级、易嵌入，游戏开发者常常将 Lua 集成到游戏引擎中，用于控制游戏逻辑、事件处理、AI 行为等。例如，知名的游戏引擎如 Unity3D、Cocos2d-x 和 CryEngine 等都支持 Lua 作为脚本语言。Lua 的高效性和简洁性使得开发者可以快速迭代游戏功能，而无需重新编译整个游戏。
+### 1.1 Game scripting
 
-### 1.2 游戏扩展和插件
-Lua 的易用性也让它适合写游戏的扩展和插件。不少游戏允许玩家用 Lua 脚本创建自定义内容，角色行为、关卡设计、游戏规则都可以由玩家自己写。游戏的可玩内容由玩家扩展，参与度随之上来。
+Lua is used widely in game development, scripting above all. Because it is lightweight and easy to embed, game developers integrate Lua into their engines to drive game logic, event handling, AI behavior and so on. Well-known engines such as Unity3D, Cocos2d-x and CryEngine all support Lua as a scripting language. Lua's efficiency and simplicity let developers iterate on game features quickly, without recompiling the whole game.
 
-## 2. 嵌入式系统
+### 1.2 Game extensions and plugins
 
-### 2.1 资源受限的设备
-资源受限的嵌入式系统是 Lua 的老本行。这类系统内存和算力都有限，跑不动复杂的脚本语言；Lua 的小内存占用和运行时开销让它能承担设备控制、配置管理和用户界面处理这些任务。
+Lua's ease of use also makes it a good fit for game extensions and plugins. Many games let players create custom content with Lua scripts: character behavior, level design, game rules — all of it can be written by players themselves. When the playable content can be extended by the players, engagement rises with it.
 
-### 2.2 家电和消费电子产品
-许多家电和消费电子产品，如智能电视、机顶盒和路由器等，都内嵌了 Lua 作为脚本引擎。开发者可以通过 Lua 脚本来控制设备的功能和行为，从而实现灵活的功能扩展和用户自定义设置。
+## 2. Embedded systems
 
-## 3. Web 开发
+### 2.1 Resource-constrained devices
 
-### 3.1 Web 服务器脚本
-Lua 在 Web 开发中的应用也在增多。基于 Lua 的 Web 服务器（如 OpenResty）结合 Nginx，可以高效地处理并发请求和动态内容生成。HTTP 请求处理、数据库交互、业务逻辑都能在 Lua 脚本里完成，开销很小。
+Resource-constrained embedded systems are Lua's home turf. These systems have limited memory and compute and cannot run a heavy scripting language; Lua's small footprint and low runtime overhead let it take on device control, configuration management and user-interface handling.
 
-### 3.2 API 网关
-API 网关是另一个常见去处。请求的路由、负载均衡、安全性检查都可以用 Lua 脚本实现，网关要扛大量并发请求，Lua 的开销正好用得上。
+### 2.2 Appliances and consumer electronics
 
-## 4. 配置管理
+Many appliances and consumer electronics products — smart TVs, set-top boxes, routers — ship with Lua embedded as the scripting engine. Developers use Lua scripts to control the device's functions and behavior, which makes flexible feature extension and user customization possible.
 
-### 4.1 动态配置文件
-Lua 经常被用作配置文件语言，特别是在需要动态配置的场景中。与传统的静态配置文件（如 JSON、YAML）不同，Lua 配置文件可以包含逻辑运算和条件判断，从而实现更为复杂和灵活的配置管理。例如，Neovim 通过 Lua 脚本来管理其配置，用户可以编写高度可定制化的配置脚本。
+## 3. Web development
 
-### 4.2 软件定义网络（SDN）
-在软件定义网络（SDN）领域，Lua 也被用于动态配置网络设备的行为和策略。Lua 的灵活性允许网络管理员在运行时调整网络配置，优化网络流量和性能。
+### 3.1 Web server scripting
 
-## 5. 数据分析和处理
+Lua's use in web development keeps growing. Lua-based web servers such as OpenResty combine with Nginx to handle concurrent requests and dynamic content generation efficiently. HTTP request handling, database interaction and business logic can all live in Lua scripts, with very little overhead.
 
-### 5.1 嵌入式数据处理
-Lua 适合用于嵌入式环境中的数据分析和处理任务。由于 Lua 的轻量级和嵌入特性，开发者可以将数据处理逻辑嵌入到设备中，实时分析和处理数据。例如，在物联网（IoT）设备中，Lua 可以用于处理传感器数据，执行边缘计算。
+### 3.2 API gateways
 
-### 5.2 数据清洗和转换
-Lua 还常用于数据清洗和转换的任务中。其简单易用的语法和强大的表（Table）处理能力，使得开发者可以编写高效的数据转换脚本。这在需要处理大量结构化或半结构化数据的场景中非常有用。
+API gateways are another common destination. Request routing, load balancing and security checks can all be implemented in Lua scripts; a gateway has to absorb a large volume of concurrent requests, and Lua's low overhead is exactly what that calls for.
 
-## 6. 测试和自动化
+## 4. Configuration management
 
-### 6.1 自动化测试
-Lua 也常被用来写自动化测试脚本。用户界面测试、API 测试都可以交给它，测试流程因此简化。
+### 4.1 Dynamic configuration files
 
-### 6.2 持续集成/持续交付（CI/CD）
-在 CI/CD 流水线中，Lua 可以用于编写自定义的脚本和工具来管理构建、部署和发布流程。例如，Lua 可以自动执行代码质量检查、测试执行和部署操作，从而提高开发效率和发布质量。
+Lua is often used as a configuration language, especially where the configuration has to be dynamic. Unlike static formats such as JSON or YAML, a Lua configuration file can contain logic and conditionals, which allows more complex and flexible configuration management. Neovim, for example, manages its configuration through Lua scripts, so users can write highly customized setups.
 
-## 7. 人工智能与机器学习
+### 4.2 Software-defined networking (SDN)
 
-### 7.1 神经网络库
-深度学习早期的主力框架 Torch 就是用 Lua 做接口的。Torch 后来被 PyTorch 等框架取代，Lua 在这个领域的角色也就到此为止。
+In software-defined networking, Lua is used to dynamically configure the behavior and policies of network devices. Its flexibility lets network administrators adjust the network at runtime to optimize traffic and performance.
 
-### 7.2 嵌入式 AI 推理
-在需要轻量级 AI 推理的嵌入式系统中，Lua 也可以实现基本的机器学习算法或模型推理任务，硬件资源有限时这点尤其有用。
+## 5. Data analysis and processing
 
-## 结语
+### 5.1 Embedded data processing
 
-游戏引擎、机顶盒、API 网关、Neovim 配置、Torch。这些场景的共同点是需要一个小而能嵌入宿主的脚本语言，Lua 正是为此设计的。
+Lua suits data analysis and processing tasks in embedded environments. Being lightweight and embeddable, it lets developers put the processing logic on the device and analyze data in real time. In IoT devices, for instance, Lua can process sensor data and run edge computing.
 
-## 相关角度
+### 5.2 Data cleaning and transformation
 
-这里按领域记 Lua 的常见用法；项目案例、出处与 C/FFI 互操作条目的横向索引见[应用场景总览](/knowledge/applications)。
+Lua is also common in data cleaning and transformation. Its simple syntax and strong table handling let developers write efficient data transformation scripts, which is useful whenever large amounts of structured or semi-structured data need processing.
 
-## 参考资料
+## 6. Testing and automation
+
+### 6.1 Automated testing
+
+Lua is often used to write automated test scripts. UI tests and API tests can both be handed to it, which simplifies the testing workflow.
+
+### 6.2 CI/CD
+
+In CI/CD pipelines, Lua can be used to write custom scripts and tools that manage build, deployment and release processes — for example, automatically running code-quality checks, executing tests and performing deployments, which improves development efficiency and release quality.
+
+## 7. AI and machine learning
+
+### 7.1 Neural network libraries
+
+Torch, the framework that carried deep learning in its early years, used Lua as its interface. Torch was later replaced by PyTorch and others, and Lua's role in the field ended there.
+
+### 7.2 Embedded AI inference
+
+In embedded systems that need lightweight AI inference, Lua can also implement basic machine-learning algorithms or model inference, which is especially useful when hardware resources are limited.
+
+## Wrap-up
+
+Game engines, set-top boxes, API gateways, Neovim configuration, Torch. What these have in common is the need for a small scripting language that can be embedded in a host — which is precisely what Lua was designed to be.
+
+## Related angles
+
+This page records the common uses of Lua by field; for a cross-cutting index of project examples, sources and C/FFI interop entries, see the [use-case overview](/knowledge/applications).
+
+## References
 
 - [Lua_(programming_language)](https://en.wikipedia.org/wiki/Lua_(programming_language))
-- [lua-users 维基](http://lua-users.org/wiki/)
+- [lua-users wiki](http://lua-users.org/wiki/)
 
 <!-- BACKLINKS-AUTO -->
-## 相关页面
+## Related pages
 
 - [README](README.md)
 - [applications](/knowledge/applications.md)

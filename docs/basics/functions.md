@@ -1,12 +1,12 @@
-# 函数定义与调用
+# Defining and Calling Functions
 
-函数把一段代码封装成可复用的块，接受参数、返回值。这一节从定义讲到闭包和可变参数。
+A function packages a block of code into something reusable: it takes parameters and returns values. This section goes from definition through closures and variadic arguments.
 
-## 1. 函数定义
+## 1. Defining functions
 
-Lua 使用 `function` 关键字定义函数。函数定义包括函数名、参数列表以及函数体。
+Lua defines functions with the `function` keyword. A definition has a name, a parameter list and a body.
 
-### 基本函数定义
+### Basic definition
 
 ```lua
 function greet(name)
@@ -14,11 +14,11 @@ function greet(name)
 end
 ```
 
-这里定义了名为 `greet` 的函数，它接受一个参数 `name`，打印一条问候消息。
+This defines a function called `greet` that takes one parameter, `name`, and prints a greeting.
 
-### 带返回值的函数
+### A function with a return value
 
-函数可以返回一个或多个值。使用 `return` 关键字来返回值。
+A function can return one or more values, using the `return` keyword.
 
 ```lua
 function add(a, b)
@@ -26,12 +26,12 @@ function add(a, b)
 end
 
 local sum = add(10, 5)
-print(sum)  -- 输出 15
+print(sum)  -- 15
 ```
 
-### 多个返回值
+### Multiple return values
 
-函数可以返回多个值，用逗号分隔。
+A function can return several values, separated by commas.
 
 ```lua
 function divide(a, b)
@@ -39,49 +39,49 @@ function divide(a, b)
 end
 
 local quotient, remainder = divide(10, 3)
-print(quotient, remainder)  -- 输出 3 1
+print(quotient, remainder)  -- 3 1
 ```
 
-## 2. 函数调用
+## 2. Calling functions
 
-在 Lua 中，函数调用通过函数名和参数列表完成。
+In Lua a function call consists of the function name and a parameter list.
 
-### 基本函数调用
+### Basic call
 
 ```lua
-greet("Lua")  -- 调用 greet 函数，输出 "Hello, Lua"
+greet("Lua")  -- calls greet, prints "Hello, Lua"
 ```
 
-### 使用函数返回值
+### Using the return value
 
 ```lua
 local result = add(3, 4)
-print(result)  -- 输出 7
+print(result)  -- 7
 ```
 
-## 3. 匿名函数
+## 3. Anonymous functions
 
-Lua 还支持匿名函数（没有名字的函数），它们通常用于需要一次性使用的情况。
+Lua also supports anonymous functions — functions without a name — which are handy for one-off uses.
 
-### 匿名函数示例
+### Example
 
 ```lua
 local functionList = {
-    function(x) return x * x end,      -- 计算平方
-    function(x) return x * x * x end   -- 计算立方
+    function(x) return x * x end,      -- square
+    function(x) return x * x * x end   -- cube
 }
 
 local square = functionList[1](5)
 local cube = functionList[2](3)
-print(square)  -- 输出 25
-print(cube)    -- 输出 27
+print(square)  -- 25
+print(cube)    -- 27
 ```
 
-## 4. 函数作为参数
+## 4. Functions as parameters
 
-在 Lua 中，函数可以作为参数传递给其他函数。
+In Lua a function can be passed as an argument to another function.
 
-### 示例
+### Example
 
 ```lua
 function applyFunction(func, value)
@@ -92,14 +92,14 @@ local function double(x)
     return x * 2
 end
 
-print(applyFunction(double, 5))  -- 输出 10
+print(applyFunction(double, 5))  -- 10
 ```
 
-## 5. 闭包
+## 5. Closures
 
-Lua 支持闭包（closure），即函数可以捕获并保存其外部变量的环境。
+Lua supports closures: a function can capture and keep the environment of its outer variables.
 
-### 闭包示例
+### Example
 
 ```lua
 function createCounter()
@@ -111,15 +111,15 @@ function createCounter()
 end
 
 local counter = createCounter()
-print(counter())  -- 输出 1
-print(counter())  -- 输出 2
+print(counter())  -- 1
+print(counter())  -- 2
 ```
 
-## 6. 可变参数
+## 6. Variadic arguments
 
-Lua 允许函数接受可变数量的参数。使用 `...` 可以表示可变参数。
+Lua lets a function accept a variable number of arguments, written as `...`.
 
-### 示例
+### Example
 
 ```lua
 function printArgs(...)
@@ -130,25 +130,25 @@ function printArgs(...)
 end
 
 printArgs("a", "b", "c")
--- 输出
+-- output
 -- 1	a
 -- 2	b
 -- 3	c
 ```
 
-## 结语
+## Wrap-up
 
-Lua 的函数支持多返回值、匿名函数、闭包和 `...` 可变参数，而定义只需要一个关键字：`function`。
+Lua functions support multiple return values, anonymous functions, closures and variadic `...` arguments — and defining one takes a single keyword: `function`.
 
-## 参考资料
+## References
 
-- [Lua 5.4 官方手册](https://www.lua.org/manual/5.4/manual.html#2.4)
+- [Lua 5.4 reference manual · 2.4 Functions](https://www.lua.org/manual/5.4/manual.html#2.4)
 - [Closure_(computer_programming)](https://en.wikipedia.org/wiki/Closure_(computer_programming))
 - [Higher-order_function](https://en.wikipedia.org/wiki/Higher-order_function)
-- [PIL · 函数](https://www.lua.org/pil/4.html)
+- [PIL · Functions](https://www.lua.org/pil/4.html)
 
 <!-- BACKLINKS-AUTO -->
-## 相关页面
+## Related pages
 
 - [glossary](/glossary.md)
 - [core-concepts](/knowledge/core-concepts.md)
