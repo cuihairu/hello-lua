@@ -1,48 +1,48 @@
-# LuaJIT的简介
+# Introduction to LuaJIT
 
-## 什么是 LuaJIT？
+## What Is LuaJIT?
 
-LuaJIT 是 Lua 的一个即时编译器（Just-In-Time Compiler）实现，把 Lua 代码动态编译成机器码，执行速度比标准解释器快，同时保持与 Lua 语言的高度兼容。
+LuaJIT is a just-in-time compiler implementation of Lua that dynamically compiles Lua code into machine code, executing faster than the standard interpreter while remaining highly compatible with the Lua language.
 
-## LuaJIT 的主要特点
+## LuaJIT's Main Features
 
-快是它最大的卖点。JIT 把 Lua 字节码编译成底层机器码，与标准解释器相比，多数情况下有几倍甚至几十倍的提升。兼容性上，LuaJIT 对齐 Lua 5.1 的绝大多数特性，对 Lua 5.2 和 5.3 只支持一部分。FFI（Foreign Function Interface）库让 Lua 脚本直接调用 C 函数、使用 C 数据结构，互操作不用再写一层扩展。垃圾回收它也有自己的一套实现，和标准 Lua 不一样，下面单独说。
+Speed is its biggest selling point. JIT compiles Lua bytecode into low-level machine code, and compared with the standard interpreter it usually delivers several-fold to tens-of-fold improvements. For compatibility, LuaJIT aligns with the vast majority of Lua 5.1 features and supports only part of Lua 5.2 and 5.3. The FFI (Foreign Function Interface) library lets Lua scripts call C functions and use C data structures directly, so interop does not require writing another extension layer. It also has its own garbage collection implementation, different from standard Lua, discussed separately below.
 
-## LuaJIT 的主要组件
+## LuaJIT's Main Components
 
-JIT 编译器在运行时把字节码编译成机器码，会识别频繁执行的代码路径并针对性优化。
+The JIT compiler compiles bytecode into machine code at runtime, identifying frequently executed code paths and optimizing them specifically.
 
-FFI 库负责 Lua 与 C 的互操作，省掉了写扩展的环节，调用开销也更小。
+The FFI library handles Lua–C interop, removing the extension-writing step and lowering call overhead.
 
-垃圾回收器同样基于标记-清除算法（增量进行），并针对 LuaJIT 自身的对象模型做了优化。它不使用引用计数，Lua 5.4 的分代回收在 LuaJIT 2.1 中也没有对应实现。
+The garbage collector is also based on the mark-and-sweep algorithm (run incrementally) and optimized for LuaJIT's own object model. It does not use reference counting, and Lua 5.4's generational collection has no counterpart in LuaJIT 2.1.
 
-## 使用 LuaJIT
+## Using LuaJIT
 
-安装可以从 [官方网站](http://luajit.org/) 下载源码，也可以用包管理工具。Linux 系统下：
+You can download the source from the [official website](http://luajit.org/) or install it with a package manager. On Linux:
 
-- 安装 LuaJIT：
+- Install LuaJIT:
     ```sh
     sudo apt-get install luajit
     ```
-- 运行脚本：
+- Run a script:
     ```sh
     luajit your_script.lua
     ```
 
-与标准 Lua 的差异要留意：LuaJIT 与 Lua 5.1 高度兼容，但 Lua 5.2 和 5.3 的特性不是都有，迁移前先确认脚本没有踩到缺口。
+Watch for differences from standard Lua: LuaJIT is highly compatible with Lua 5.1, but not all Lua 5.2 and 5.3 features are present, so confirm the script does not hit any gap before migrating.
 
-## LuaJIT 的应用场景
+## LuaJIT Application Scenarios
 
-游戏开发、实时数据处理这类对性能敏感的应用用得多。嵌入式系统和资源受限的环境也合适，看中的是它执行快、内存占用低。需要和现有 C 库打交道的场景，FFI 正好派上用场。
+Performance-sensitive applications such as game development and real-time data processing use it a lot. Embedded systems and resource-constrained environments are also a fit, valuing its fast execution and low memory footprint. Where you need to work with existing C libraries, FFI comes into play.
 
-## 参考资料
+## References
 
-- [LuaJIT 官方首页](https://luajit.org/luajit.html)
-- [LuaJIT 扩展文档](https://luajit.org/extensions.html)
+- [LuaJIT official home](https://luajit.org/luajit.html)
+- [LuaJIT extensions documentation](https://luajit.org/extensions.html)
 - [LuaJIT](https://en.wikipedia.org/wiki/LuaJIT)
 
 <!-- BACKLINKS-AUTO -->
-## 相关页面
+## Related pages
 
 - [glossary](/glossary.md)
 - [core-concepts](/knowledge/core-concepts.md)

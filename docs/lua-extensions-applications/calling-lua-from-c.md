@@ -1,10 +1,10 @@
-# 在C中调用Lua代码
+# Calling Lua Code from C
 
-在C中调用Lua代码走的是 Lua C API：执行Lua脚本、调用Lua函数、处理返回值，全都围绕一个 `lua_State` 和它的栈进行。
+Calling Lua code from C goes through the Lua C API: executing Lua scripts, calling Lua functions, and handling return values all revolve around a `lua_State` and its stack.
 
-## 1. 初始化Lua环境
+## 1. Initializing the Lua Environment
 
-所有操作都基于一个Lua状态（`lua_State`），第一步是创建它。
+Everything is based on a Lua state (`lua_State`); the first step is to create it.
 
 ```c
 #include <lua.h>
@@ -12,103 +12,103 @@
 #include <lauxlib.h>
 
 int main() {
-    lua_State *L = luaL_newstate();  // 创建新的Lua状态
-    luaL_openlibs(L);                // 打开Lua标准库
+    lua_State *L = luaL_newstate();  // Create a new Lua state
+    luaL_openlibs(L);                // Open the Lua standard libraries
 
-    // 在这里编写代码...
+    // Write your code here...
 
-    lua_close(L);                    // 关闭Lua状态
+    lua_close(L);                    // Close the Lua state
     return 0;
 }
 ```
 
-`luaL_newstate` 创建状态，`luaL_openlibs` 加载Lua标准库，退出前用 `lua_close` 关闭状态、释放资源。
+`luaL_newstate` creates the state and `luaL_openlibs` loads the Lua standard libraries; before exiting, use `lua_close` to close the state and release resources.
 
-## 2. 加载和执行Lua脚本
+## 2. Loading and Executing Lua Scripts
 
-代码可以来自文件，也可以来自字符串，各有对应的入口。
+The code can come from a file or from a string, each with its own entry point.
 
-从文件加载：
+Load from a file:
 
 ```c
 if (luaL_dofile(L, "script.lua") != LUA_OK) {
     fprintf(stderr, "Error: %s\n", lua_tostring(L, -1));
-    lua_pop(L, 1);  // 处理错误
+    lua_pop(L, 1);  // Handle the error
 }
 ```
 
-从字符串加载：
+Load from a string:
 
 ```c
 const char *lua_code = "print('Hello from Lua!')";
 if (luaL_dostring(L, lua_code) != LUA_OK) {
     fprintf(stderr, "Error: %s\n", lua_tostring(L, -1));
-    lua_pop(L, 1);  // 处理错误
+    lua_pop(L, 1);  // Handle the error
 }
 ```
 
-两个入口对应两种来源：`luaL_dofile` 读文件，`luaL_dostring` 执行字符串。失败时栈顶放着错误信息，用 `lua_tostring(L, -1)` 取出来。
+The two entry points match the two sources: `luaL_dofile` reads a file and `luaL_dostring` executes a string. On failure, the error message sits on top of the stack; retrieve it with `lua_tostring(L, -1)`.
 
-## 3. 调用Lua函数
+## 3. Calling Lua Functions
 
-调用分三步：把函数推到栈上，压参数，调用之后取返回值。
+A call has three steps: push the function onto the stack, push the arguments, and after the call retrieve the return values.
 
 ```c
-// 调用Lua函数
-lua_getglobal(L, "my_function");  // 获取Lua全局函数
-lua_pushnumber(L, 10);            // 推送参数1
-lua_pushnumber(L, 20);            // 推送参数2
+// Call a Lua function
+lua_getglobal(L, "my_function");  // Get the global Lua function
+lua_pushnumber(L, 10);            // Push argument 1
+lua_pushnumber(L, 20);            // Push argument 2
 
 if (lua_pcall(L, 2, 1, 0) != LUA_OK) {
     fprintf(stderr, "Error: %s\n", lua_tostring(L, -1));
-    lua_pop(L, 1);  // 处理错误
+    lua_pop(L, 1);  // Handle the error
 } else {
-    double result = lua_tonumber(L, -1);  // 获取返回值
+    double result = lua_tonumber(L, -1);  // Get the return value
     printf("Result: %f\n", result);
-    lua_pop(L, 1);  // 清理栈
+    lua_pop(L, 1);  // Clean the stack
 }
 ```
 
-`lua_getglobal` 把全局函数推上栈，`lua_pushnumber` 压参数，`lua_pcall` 发起调用并接收返回值，`lua_tonumber` 从栈中取出结果。
+`lua_getglobal` pushes the global function onto the stack, `lua_pushnumber` pushes the arguments, `lua_pcall` initiates the call and receives the return values, and `lua_tonumber` reads the result from the stack.
 
-## 4. 处理Lua表和函数
+## 4. Handling Lua Tables and Functions
 
-函数也可能是某个表的字段。取表、再从表里取函数，调用方式不变。
+A function may also be a field of a table. Get the table, then get the function from it; the calling process is unchanged.
 
 ```c
-// 调用Lua表中的函数
-lua_getglobal(L, "my_table");      // 获取Lua表
-lua_getfield(L, -1, "my_function"); // 获取表中的函数
-lua_pushnumber(L, 10);            // 推送参数
+// Call a function in a Lua table
+lua_getglobal(L, "my_table");       // Get the Lua table
+lua_getfield(L, -1, "my_function"); // Get the function from the table
+lua_pushnumber(L, 10);              // Push an argument
 
 if (lua_pcall(L, 1, 1, 0) != LUA_OK) {
     fprintf(stderr, "Error: %s\n", lua_tostring(L, -1));
-    lua_pop(L, 1);  // 处理错误
+    lua_pop(L, 1);  // Handle the error
 } else {
-    double result = lua_tonumber(L, -1);  // 获取返回值
+    double result = lua_tonumber(L, -1);  // Get the return value
     printf("Result: %f\n", result);
-    lua_pop(L, 1);  // 清理栈
+    lua_pop(L, 1);  // Clean the stack
 }
 ```
 
-和上一段的区别只在取函数这一步：`lua_getfield` 从栈顶的表里取字段（这里是函数），而不是从全局环境取。
+The only difference from the previous snippet is how the function is obtained: `lua_getfield` reads a field (here, a function) from the table on top of the stack rather than from the global environment.
 
-## 5. 清理和关闭
+## 5. Cleanup and Shutdown
 
-用完之后，`lua_close` 关闭Lua状态并释放资源：
+When you are done, `lua_close` closes the Lua state and releases resources:
 
 ```c
-lua_close(L);  // 关闭Lua状态
+lua_close(L);  // Close the Lua state
 ```
 
-## 参考资料
+## References
 
-- [Lua 5.4 官方手册](https://www.lua.org/manual/5.4/manual.html#4)
-- [Lua 5.4 官方手册](https://www.lua.org/manual/5.4/manual.html#6.3)
+- [Lua 5.4 manual](https://www.lua.org/manual/5.4/manual.html#4)
+- [Lua 5.4 manual](https://www.lua.org/manual/5.4/manual.html#6.3)
 - [Resource_acquisition_is_initialization](https://en.wikipedia.org/wiki/Resource_acquisition_is_initialization)
 
 <!-- BACKLINKS-AUTO -->
-## 相关页面
+## Related pages
 
 - [glossary](/glossary.md)
 - [core-concepts](/knowledge/core-concepts.md)

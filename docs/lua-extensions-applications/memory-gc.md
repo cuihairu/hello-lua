@@ -1,55 +1,55 @@
-# 内存管理与垃圾回收
+# Memory Management and Garbage Collection
 
-内存管理和垃圾回收决定了一个Lua程序运行时的内存行为：哪些对象活着，什么时候释放。这一篇讲机制，也讲怎么调。
+Memory management and garbage collection decide a Lua program's runtime memory behavior: which objects are alive and when they are released. This page covers both the mechanisms and how to tune them.
 
-## 1. 内存管理概述
+## 1. Memory Management Overview
 
-Lua的内存管理系统负责分配和释放内存资源。它使用垃圾回收（Garbage Collection, GC）机制自动处理内存回收，减少内存泄漏的风险。
+Lua's memory management system handles allocating and freeing memory resources. It uses a garbage collection (GC) mechanism to reclaim memory automatically, reducing the risk of memory leaks.
 
-## 2. 垃圾回收机制
+## 2. Garbage Collection Mechanism
 
-Lua使用基于标记-清除（Mark-and-Sweep）算法的垃圾回收机制。标记阶段从根对象出发，沿着引用链把所有可达的对象标记出来，这些就是程序当前活着的对象。清除阶段遍历内存中的全部对象，没被标记的就是不可达的，程序已经不再使用，清掉并释放它们占用的内存。
+Lua uses a mark-and-sweep garbage collector. In the mark phase it starts from the root objects and follows reference chains to mark all reachable objects; these are the objects currently alive in the program. In the sweep phase it walks every object in memory; anything not marked is unreachable, no longer used by the program, so it is collected and its memory freed.
 
-## 3. Lua的垃圾回收策略
+## 3. Lua's Garbage Collection Strategy
 
-回收分阶段进行，不一口气清完所有垃圾，GC对程序性能的影响因此小一些。回收的节奏可以通过`collectgarbage`函数控制，比如调整回收的频率，或者手动触发回收。
+Collection runs in incremental stages rather than clearing all garbage at once, so GC's impact on program performance is smaller. The collection pace can be controlled with the `collectgarbage` function, for example adjusting the collection frequency or triggering collection manually.
 
-## 4. 使用`collectgarbage`进行垃圾回收控制
+## 4. Controlling Garbage Collection with `collectgarbage`
 
-Lua提供了`collectgarbage`函数用于手动控制垃圾回收。常用的操作有：
+Lua provides the `collectgarbage` function to control garbage collection manually. Common operations:
 
-- 调整垃圾回收参数：
+- Adjust the garbage collection parameters:
   ```lua
-  collectgarbage("incremental", 200, 100, 0)  -- 增量模式：暂停值 200、步进倍率 100、步长不变
+  collectgarbage("incremental", 200, 100, 0)  -- Incremental mode: pause 200, step multiplier 100, step size unchanged
   ```
-  注意 `collectgarbage` 没有 `getpause`/`getstepmul` 这类读取参数的选项，只能设置；可用选项包括 `"collect"`、`"count"`、`"stop"`、`"restart"`、`"setpause"`、`"setstepmul"`、`"incremental"`、`"generational"`、`"step"`、`"isrunning"`。其中 `setpause`/`setstepmul` 沿袭自 5.1，5.4 起已标记为过时，新代码用 `incremental` 形式。
-- 手动触发垃圾回收：
+  Note that `collectgarbage` has no options to read parameters such as `getpause`/`getstepmul`; it can only set them. Available options include `"collect"`, `"count"`, `"stop"`, `"restart"`, `"setpause"`, `"setstepmul"`, `"incremental"`, `"generational"`, `"step"`, `"isrunning"`. Of these, `setpause`/`setstepmul` date back to 5.1 and are deprecated as of 5.4; new code should use the `incremental` form.
+- Trigger garbage collection manually:
   ```lua
-  collectgarbage("collect")  -- 触发一次全垃圾回收
-  ```
-
-## 5. 垃圾回收的优化策略
-
-根据程序的内存使用情况调整增量模式的 `pause`/`stepmul` 参数，GC的压力会贴合实际的分配节奏。性能关键的代码路径里少创建短生命周期对象，避免频繁创建和销毁。弱引用表也有用，让表里的对象不被强引用攥住：
-
-  ```lua
-  local weakTable = setmetatable({}, {__mode = "v"})  -- 创建一个弱值表
+  collectgarbage("collect")  -- Trigger one full garbage collection
   ```
 
-## 6. 内存管理的最佳实践
+## 5. Garbage Collection Optimization Strategies
 
-不再需要的对象别攥着强引用，交给回收器处理，这是避免内存泄漏的基本功。对象创建能省则省，对象池这类重用手段可以减少频繁的创建销毁和内存碎片化。内存用了多少要心里有数，`collectgarbage("count")`和内存分析工具都能看。
+Adjust the incremental mode's `pause`/`stepmul` parameters based on the program's memory usage, so GC pressure matches the actual allocation rhythm. In performance-critical code paths, create fewer short-lived objects to avoid frequent creation and destruction. Weak tables are also useful for keeping objects from being held by strong references:
 
-## 7. LuaJIT的垃圾回收
+  ```lua
+  local weakTable = setmetatable({}, {__mode = "v"})  -- Create a weak-value table
+  ```
 
-如果使用LuaJIT，垃圾回收机制会有所不同。LuaJIT有自己的垃圾回收器，功能与Lua类似，但性能特性和优化策略可能不一样。LuaJIT的FFI库（Foreign Function Interface）允许直接调用C函数，也会影响内存管理的方式。
+## 6. Memory Management Best Practices
 
-## 参考资料
+Do not hold strong references to objects you no longer need; hand them to the collector, which is the basic skill for avoiding memory leaks. Create objects sparingly; reuse mechanisms such as object pools reduce frequent creation/destruction and memory fragmentation. Keep an eye on memory usage: `collectgarbage("count")` and memory profiling tools can both show it.
 
-- [Lua 5.4 官方手册](https://www.lua.org/manual/5.4/manual.html#2.9)
+## 7. Garbage Collection in LuaJIT
+
+If you use LuaJIT, the garbage collection mechanism differs. LuaJIT has its own garbage collector with functionality similar to Lua's, but its performance characteristics and optimization strategies may differ. LuaJIT's FFI library (Foreign Function Interface) also lets Lua call C functions directly, which affects how memory is managed.
+
+## References
+
+- [Lua 5.4 manual](https://www.lua.org/manual/5.4/manual.html#2.9)
 - [Memory_management](https://en.wikipedia.org/wiki/Memory_management)
-- [LuaJIT profiler 文档](https://luajit.org/ext_profiler.html)
+- [LuaJIT profiler documentation](https://luajit.org/ext_profiler.html)
 
-## 相关页面
+## Related pages
 
 - [luajit-optimization](luajit-optimization.md)

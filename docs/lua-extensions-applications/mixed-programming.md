@@ -1,10 +1,10 @@
-# 使用Lua与C语言混合编程
+# Mixed Programming with Lua and C
 
-C 和 Lua 混合编程，分工很清楚：让 Lua 出灵活性和动态特性，C 出性能和底层控制。
+In mixed C and Lua programming, the division of labor is clear: Lua supplies flexibility and dynamic features, C supplies performance and low-level control.
 
-## 1. 创建和初始化Lua环境
+## 1. Creating and Initializing the Lua Environment
 
-所有操作都基于一个Lua状态（`lua_State`），第一步是创建它。
+Everything is based on a Lua state (`lua_State`); the first step is to create it.
 
 ```c
 #include <lua.h>
@@ -12,86 +12,86 @@ C 和 Lua 混合编程，分工很清楚：让 Lua 出灵活性和动态特性�
 #include <lauxlib.h>
 
 int main() {
-    lua_State *L = luaL_newstate();  // 创建新的Lua状态
-    luaL_openlibs(L);                // 打开Lua标准库
+    lua_State *L = luaL_newstate();  // Create a new Lua state
+    luaL_openlibs(L);                // Open the Lua standard libraries
 
-    // 在这里编写代码...
+    // Write your code here...
 
-    lua_close(L);                    // 关闭Lua状态
+    lua_close(L);                    // Close the Lua state
     return 0;
 }
 ```
 
-三个函数各管一段：`luaL_newstate` 创建一个新的Lua状态，`luaL_openlibs` 加载Lua标准库，`lua_close` 关闭Lua状态、释放资源。
+The three functions each handle a stage: `luaL_newstate` creates a new Lua state, `luaL_openlibs` loads the Lua standard libraries, and `lua_close` closes the Lua state and releases resources.
 
-## 2. 在C中调用Lua脚本
+## 2. Calling Lua Scripts from C
 
-脚本可以从文件或字符串加载执行，里面可以放C代码需要调用的函数或数据。
+A script can be loaded and executed from a file or a string, and can hold the functions or data the C code needs to call.
 
-从文件加载：
+Load from a file:
 
 ```c
 if (luaL_dofile(L, "script.lua") != LUA_OK) {
     fprintf(stderr, "Error: %s\n", lua_tostring(L, -1));
-    lua_pop(L, 1);  // 处理错误
+    lua_pop(L, 1);  // Handle the error
 }
 ```
 
-从字符串加载：
+Load from a string:
 
 ```c
 const char *lua_code = "print('Hello from Lua!')";
 if (luaL_dostring(L, lua_code) != LUA_OK) {
     fprintf(stderr, "Error: %s\n", lua_tostring(L, -1));
-    lua_pop(L, 1);  // 处理错误
+    lua_pop(L, 1);  // Handle the error
 }
 ```
 
-两个入口对应两种来源：`luaL_dofile` 从文件加载并执行Lua脚本，`luaL_dostring` 从字符串加载并执行Lua代码。失败时用 `lua_tostring(L, -1)` 取错误信息。
+The two entry points match the two sources: `luaL_dofile` loads and executes a Lua script from a file, and `luaL_dostring` loads and executes Lua code from a string. On failure, get the error message with `lua_tostring(L, -1)`.
 
-## 3. 在C中调用Lua函数
+## 3. Calling Lua Functions from C
 
-从Lua脚本中取到函数，压参数，调用，再处理返回值。
+Fetch a function from the Lua script, push the arguments, call it, then handle the return values.
 
 ```c
-lua_getglobal(L, "my_function");  // 获取Lua全局函数
-lua_pushnumber(L, 10);            // 推送参数1
-lua_pushnumber(L, 20);            // 推送参数2
+lua_getglobal(L, "my_function");  // Get the global Lua function
+lua_pushnumber(L, 10);            // Push argument 1
+lua_pushnumber(L, 20);            // Push argument 2
 
 if (lua_pcall(L, 2, 1, 0) != LUA_OK) {
     fprintf(stderr, "Error: %s\n", lua_tostring(L, -1));
-    lua_pop(L, 1);  // 处理错误
+    lua_pop(L, 1);  // Handle the error
 } else {
-    double result = lua_tonumber(L, -1);  // 获取返回值
+    double result = lua_tonumber(L, -1);  // Get the return value
     printf("Result: %f\n", result);
-    lua_pop(L, 1);  // 清理栈
+    lua_pop(L, 1);  // Clean the stack
 }
 ```
 
-流程和上一节一致：`lua_getglobal` 将Lua全局函数推送到栈上，`lua_pushnumber` 推送参数，`lua_pcall` 调用并接收返回值，`lua_tonumber` 从栈中取出结果。
+The flow is the same as in the previous section: `lua_getglobal` pushes the global Lua function onto the stack, `lua_pushnumber` pushes the arguments, `lua_pcall` calls it and receives the return values, and `lua_tonumber` reads the result from the stack.
 
-## 4. 在Lua中调用C函数
+## 4. Calling C Functions from Lua
 
-C 函数注册进Lua环境之后，脚本就能像调普通函数一样调它。
+Once a C function is registered in the Lua environment, the script can call it like any ordinary function.
 
 ```c
-// C函数
+// C function
 int add_numbers(lua_State *L) {
-    int a = luaL_checkinteger(L, 1);  // 获取第一个参数
-    int b = luaL_checkinteger(L, 2);  // 获取第二个参数
-    lua_pushinteger(L, a + b);        // 推送结果
-    return 1;  // 返回结果的数量
+    int a = luaL_checkinteger(L, 1);  // Get the first argument
+    int b = luaL_checkinteger(L, 2);  // Get the second argument
+    lua_pushinteger(L, a + b);        // Push the result
+    return 1;  // Return the number of results
 }
 
 int main() {
-    lua_State *L = luaL_newstate();  
+    lua_State *L = luaL_newstate();
     luaL_openlibs(L);
 
-    lua_register(L, "add_numbers", add_numbers);  // 注册C函数
+    lua_register(L, "add_numbers", add_numbers);  // Register the C function
 
     if (luaL_dofile(L, "script.lua") != LUA_OK) {
         fprintf(stderr, "Error: %s\n", lua_tostring(L, -1));
-        lua_pop(L, 1);  // 处理错误
+        lua_pop(L, 1);  // Handle the error
     }
 
     lua_close(L);
@@ -99,57 +99,57 @@ int main() {
 }
 ```
 
-script.lua：
+script.lua:
 
 ```lua
 local result = add_numbers(5, 10)
 print("Result from C function: " .. result)
 ```
 
-`lua_register` 注册C函数到Lua环境中，使其可以在Lua中调用；`luaL_checkinteger` 从Lua栈中获取整数参数，`lua_pushinteger` 把结果推回栈上。
+`lua_register` registers a C function in the Lua environment so it can be called from Lua; `luaL_checkinteger` gets an integer argument from the Lua stack, and `lua_pushinteger` pushes the result back onto the stack.
 
-## 5. 处理Lua表
+## 5. Handling Lua Tables
 
-Lua 里的表也能拿到 C 这边来操作。
+Lua tables can also be brought over to the C side and operated on.
 
 ```c
-lua_getglobal(L, "my_table");       // 获取Lua表
-lua_getfield(L, -1, "key1");         // 获取表中字段
+lua_getglobal(L, "my_table");       // Get the Lua table
+lua_getfield(L, -1, "key1");        // Get a field from the table
 if (lua_isstring(L, -1)) {
     const char *value = lua_tostring(L, -1);
     printf("Value: %s\n", value);
 }
-lua_pop(L, 1);  // 清理栈
+lua_pop(L, 1);  // Clean the stack
 ```
 
-`lua_getfield` 从Lua表中获取字段，`lua_tostring` 从Lua栈中获取字符串值。
+`lua_getfield` gets a field from a Lua table, and `lua_tostring` gets a string value from the Lua stack.
 
-## 6. 错误处理
+## 6. Error Handling
 
-在C中调用Lua代码时，错误处理不能省。`lua_pcall` 会捕获Lua脚本中的错误，`lua_tostring` 负责取出错误信息：
+When calling Lua code from C, error handling cannot be skipped. `lua_pcall` catches errors in the Lua script, and `lua_tostring` retrieves the error message:
 
 ```c
 if (lua_pcall(L, 2, 1, 0) != LUA_OK) {
     fprintf(stderr, "Error: %s\n", lua_tostring(L, -1));
-    lua_pop(L, 1);  // 清理错误信息
+    lua_pop(L, 1);  // Clean the error message
 }
 ```
 
-## 7. 清理和关闭
+## 7. Cleanup and Shutdown
 
-收尾就一个调用，`lua_close` 关闭Lua状态并释放资源：
+Cleanup is a single call: `lua_close` closes the Lua state and releases resources:
 
 ```c
-lua_close(L);  // 关闭Lua状态
+lua_close(L);  // Close the Lua state
 ```
 
-## 参考资料
+## References
 
-- [Lua 5.4 官方手册](https://www.lua.org/manual/5.4/manual.html#4)
-- [LuaJIT C API 文档](https://luajit.org/ext_c_api.html)
+- [Lua 5.4 manual](https://www.lua.org/manual/5.4/manual.html#4)
+- [LuaJIT C API documentation](https://luajit.org/ext_c_api.html)
 
 <!-- BACKLINKS-AUTO -->
-## 相关页面
+## Related pages
 
 - [glossary](/glossary.md)
 - [core-concepts](/knowledge/core-concepts.md)

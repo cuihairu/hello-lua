@@ -1,16 +1,16 @@
-# 嵌入式开发
+# Embedded Development
 
-Lua 体量小、开销低，经常被嵌进资源受限的环境。这一篇讲怎么把它集成进去、能拿它做什么、会遇到哪些问题。
+Lua is small and low-overhead, so it is often embedded into resource-constrained environments. This page covers how to integrate it, what you can do with it, and the issues you will run into.
 
-## 1. 为什么用Lua
+## 1. Why Use Lua
 
-理由主要是小：Lua 的代码和内存开销都很低，适合资源受限的嵌入式系统。脚本可以运行时加载执行，改配置、加功能不必重新编译；C API 也简单，嵌进 C/C++ 代码不费劲。
+The main reason is size: Lua has very low code and memory overhead, making it suited to resource-constrained embedded systems. Scripts can be loaded and executed at runtime, so changing configuration or adding features does not require recompiling; the C API is also simple, so embedding into C/C++ code is easy.
 
-## 2. 嵌入式开发中的Lua集成
+## 2. Integrating Lua in Embedded Development
 
-### 2.1 获取Lua源代码
+### 2.1 Getting the Lua Source
 
-源码从 Lua 官方网站下载：
+Download the source from the Lua official website:
 
 ```bash
 wget https://www.lua.org/ftp/lua-5.4.8.tar.gz
@@ -18,27 +18,27 @@ tar -zxvf lua-5.4.8.tar.gz
 cd lua-5.4.8
 ```
 
-### 2.2 编译Lua
+### 2.2 Compiling Lua
 
-在嵌入式系统中，通常要把Lua编译成适合目标平台的库。
+In an embedded system, Lua usually has to be compiled into a library suited to the target platform.
 
-本机编译：
+Build natively:
 
 ```bash
 make linux
 ```
 
-换到不同的嵌入式平台就得交叉编译，例如用`arm-none-eabi-gcc`。Lua 的 Makefile 没有 `CROSS` 变量，用 `CC` 指定工具链即可（`generic` 目标不依赖任何平台特有库，适合裸机等场景）：
+Moving to a different embedded platform means cross-compiling, for example with `arm-none-eabi-gcc`. Lua's Makefile has no `CROSS` variable, so supply the toolchain via `CC` (the `generic` target depends on no platform-specific library and suits bare-metal scenarios, among others):
 
 ```bash
 make generic CC=arm-none-eabi-gcc
 ```
 
-### 2.3 集成Lua到嵌入式系统
+### 2.3 Integrating Lua into the Embedded System
 
-在C/C++代码中使用Lua，分四步。
+Using Lua in C/C++ code has four steps.
 
-1. 初始化Lua环境
+1. Initialize the Lua environment
 
 ```c
 #include "lua.h"
@@ -49,7 +49,7 @@ lua_State *L = luaL_newstate();
 luaL_openlibs(L);
 ```
 
-2. 加载和执行Lua脚本
+2. Load and execute a Lua script
 
 ```c
 if (luaL_dofile(L, "script.lua") != LUA_OK) {
@@ -58,7 +58,7 @@ if (luaL_dofile(L, "script.lua") != LUA_OK) {
 }
 ```
 
-3. 在C/C++中调用Lua函数
+3. Call Lua functions from C/C++
 
 ```c
 lua_getglobal(L, "lua_function");
@@ -73,7 +73,7 @@ if (lua_pcall(L, 1, 1, 0) != LUA_OK) {
 }
 ```
 
-4. 在Lua中调用C/C++函数
+4. Call C/C++ functions from Lua
 
 ```c
 int c_function(lua_State *L) {
@@ -85,35 +85,35 @@ int c_function(lua_State *L) {
 lua_register(L, "c_function", c_function);
 ```
 
-Lua 脚本一侧：
+On the Lua script side:
 
 ```lua
 result = c_function(10)
 print("Result from C function:", result)
 ```
 
-### 2.4 资源管理
+### 2.4 Resource Management
 
-资源紧张的环境里，用完要记得释放Lua状态：
+In resource-constrained environments, remember to release the Lua state when done:
 
 ```c
 lua_close(L);
 ```
 
-## 3. 嵌入式Lua应用示例
+## 3. Embedded Lua Application Examples
 
-### 3.1 配置文件
+### 3.1 Configuration Files
 
-Lua脚本可以用作配置文件，用户改设置不用重新编译代码。
+A Lua script can serve as a configuration file, so users can change settings without recompiling the code.
 
-config.lua：
+config.lua:
 
 ```lua
 setting1 = true
 setting2 = "value"
 ```
 
-C 侧读取：
+Read it on the C side:
 
 ```c
 luaL_dofile(L, "config.lua");
@@ -122,11 +122,11 @@ int setting1 = lua_toboolean(L, -1);
 lua_pop(L, 1);
 ```
 
-### 3.2 动态脚本执行
+### 3.2 Dynamic Script Execution
 
-Lua允许动态加载和执行脚本，适合需要在运行时调整行为的嵌入式系统。
+Lua allows scripts to be loaded and executed dynamically, which suits embedded systems that need to adjust behavior at runtime.
 
-script.lua：
+script.lua:
 
 ```lua
 function dynamic_function(x)
@@ -134,7 +134,7 @@ function dynamic_function(x)
 end
 ```
 
-C 侧执行：
+Execute it on the C side:
 
 ```c
 luaL_dofile(L, "script.lua");
@@ -150,17 +150,17 @@ if (lua_pcall(L, 1, 1, 0) != LUA_OK) {
 }
 ```
 
-## 4. 嵌入式开发中的挑战
+## 4. Challenges in Embedded Development
 
-首先要盯住内存：Lua 的堆栈和内存使用不能超出嵌入式系统的限制。性能关键的应用里，光靠 Lua 不够，热点部分要用 C 代码实现。调试也不轻松，Lua 和 C 混合的代码排错比较麻烦，日志和调试工具能帮上忙。
+First, watch memory: Lua's stack and memory use must not exceed the embedded system's limits. In performance-critical applications, Lua alone is not enough; implement the hot spots in C code. Debugging is also not easy, since mixed Lua and C code is awkward to trace; logging and debugging tools help.
 
-## 参考资料
+## References
 
-- [Lua 5.4 官方手册](https://www.lua.org/manual/5.4/manual.html#4)
+- [Lua 5.4 manual](https://www.lua.org/manual/5.4/manual.html#4)
 - [Dynamic_linking](https://en.wikipedia.org/wiki/Dynamic_linking)
 
 <!-- BACKLINKS-AUTO -->
-## 相关页面
+## Related pages
 
 - [applications](/knowledge/applications.md)
 - [core-concepts](/knowledge/core-concepts.md)

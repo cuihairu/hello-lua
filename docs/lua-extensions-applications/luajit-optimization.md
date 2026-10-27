@@ -1,42 +1,42 @@
-# LuaJIT的性能优化
+# LuaJIT Performance Optimization
 
-LuaJIT 通过即时编译（JIT）和其他一批优化手段，把 Lua 代码的执行性能提了上去。这一篇按环节拆开讲。
+LuaJIT raises the execution performance of Lua code through just-in-time compilation (JIT) and a set of other optimizations. This page breaks them down step by step.
 
-## 1. 即时编译（JIT）
+## 1. Just-In-Time Compilation (JIT)
 
-JIT 编译器在运行时把 Lua 字节码编译成机器码，绕开解释执行的开销，编译的同时就做优化。它只盯频繁执行的路径，也就是“热点代码”：热点由 LuaJIT 自动检测，编译成高效的机器码，整体性能随之上来。
+The JIT compiler compiles Lua bytecode into machine code at runtime, bypassing interpreted execution overhead and optimizing while compiling. It only targets frequently executed paths, the "hot code": hot spots are detected automatically by LuaJIT and compiled into efficient machine code, and overall performance rises with them.
 
-## 2. 字节码优化
+## 2. Bytecode Optimization
 
-被 JIT 编译的 trace 会以机器码的形式缓存在进程内，后续执行同一热点时直接复用，避免重复编译。编译过程中字节码本身也被优化，常量折叠、运算优化这些手段减少了计算和内存访问的开销。
+Compiled JIT traces are cached in the process as machine code and reused directly on later executions of the same hot path, avoiding recompilation. The bytecode itself is also optimized during compilation; constant folding, arithmetic optimizations, and similar techniques reduce computation and memory-access overhead.
 
-## 3. FFI（Foreign Function Interface）
+## 3. FFI (Foreign Function Interface)
 
-FFI 让 Lua 直接调用 C 函数、使用 C 数据结构，Lua 与 C 之间的调用开销因此小了很多。声明还能在编译时做静态类型检查和优化，互操作的性能再有保障。
+FFI lets Lua call C functions and use C data structures directly, so the call overhead between Lua and C is much lower. Declarations also allow static type checking and optimization at compile time, further guaranteeing interop performance.
 
-## 4. 内存管理
+## 4. Memory Management
 
-垃圾回收器同样采用标记-清除算法（增量执行），并针对 LuaJIT 的对象模型做了优化，所以它的停顿特性与标准 Lua 的分代回收不同，调优方式也不同。JIT 编译出的机器码放在专门的代码区域（mcode area）里，按缓存的方式管理：区域用尽时先回收旧的 trace，实在腾不出空间，相关路径就退化为解释执行。
+The garbage collector also uses the mark-and-sweep algorithm (run incrementally) and is optimized for LuaJIT's object model, so its pause characteristics differ from standard Lua's generational collection, and so does the tuning approach. Machine code produced by JIT lives in a dedicated code area (the mcode area) managed like a cache: when the area runs out, old traces are reclaimed first, and if no space can be freed, the affected path degrades to interpreted execution.
 
-## 5. 异常处理和调试优化
+## 5. Exception Handling and Debugging Optimizations
 
-异常处理机制经过优化，错误处理带来的性能损失被压到很小。调试信息和工具用来定位性能瓶颈；调试信息对 JIT 编译器的优化有一点影响，LuaJIT 用灵活的调试策略在调试和性能之间取平衡。
+Exception handling is optimized, so the performance loss from error handling is kept small. Debugging information and tools are used to locate performance bottlenecks; debug information slightly affects JIT compiler optimizations, so LuaJIT uses a flexible debugging strategy to balance debugging against performance.
 
-## 6. 编译器优化
+## 6. Compiler Optimizations
 
-编译器会根据运行时的执行情况做自适应优化，手段包括热路径的动态优化、内联展开、代码合并。生成的机器码也针对目标平台：CPU 指令的选择、寄存器分配都有安排，通常比解释执行的代码快得多。
+The compiler adapts to runtime execution with self-optimizations, including dynamic optimization of hot paths, inlining, and code merging. The generated machine code is also targeted at the platform: CPU instruction selection and register allocation are arranged, usually far faster than interpreted execution.
 
-## 7. 特定于平台的优化
+## 7. Platform-Specific Optimizations
 
-LuaJIT 为不同硬件平台和操作系统准备了专用的机器码后端（x86、x64、ARM 等），生成的指令遵循对应平台的调用约定，可能时还会用上平台的指令特性（例如 x64 下的 SSE2 浮点运算）。
+LuaJIT provides dedicated machine-code backends for different hardware platforms and operating systems (x86, x64, ARM, and so on). The generated instructions follow the platform's calling convention and may use platform instruction features where available (for example SSE2 floating-point operations on x64).
 
-## 参考资料
+## References
 
-- [LuaJIT 优化文档](https://luajit.org/ext_jit.html)
+- [LuaJIT optimization documentation](https://luajit.org/ext_jit.html)
 - [Tracing_just-in-time_compilation](https://en.wikipedia.org/wiki/Tracing_just-in-time_compilation)
 
 <!-- BACKLINKS-AUTO -->
-## 相关页面
+## Related pages
 
 - [memory-gc](memory-gc.md)
 - [glossary](/glossary.md)
