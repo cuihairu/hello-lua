@@ -1,27 +1,27 @@
-# Lua标准库参考
+# Lua Standard Library Reference
 
-这里按库记下 Lua 5.4 自带的标准库。`luaL_openlibs` 默认打开除 `debug` 之外的库（`debug` 库在标准解释器中也会被打开，但嵌入式环境可自行选择）。函数签名与返回值以 Lua 5.4 手册为准。
+This lists the standard library bundled with Lua 5.4, organized by library. `luaL_openlibs` opens all libraries by default except `debug` (the `debug` library is also opened in the standard interpreter, but an embedding environment can choose). Function signatures and return values follow the Lua 5.4 manual.
 
-## 1. base（基础库）
+## 1. base (Basic Library)
 
-随解释器内建，不需要 `require`，提供语言本身的基础能力。
+Built into the interpreter, no `require` needed; it provides the language's basic capabilities.
 
-| 函数 | 说明 |
+| Function | Description |
 | --- | --- |
-| `print(...)` | 输出值，以制表符分隔 |
-| `type(v)` | 返回类型名：`"nil"`、`"boolean"`、`"number"`、`"string"`、`"table"`、`"function"`、`"thread"`、`"userdata"` |
-| `tostring(v)` / `tonumber(v, [base])` | 与字符串相互转换 |
-| `assert(v, [msg])` | 断言，失败时抛出错误 |
-| `error(msg, [level])` | 抛出错误，`level` 控制是否附加位置信息 |
-| `pcall(f, ...)` / `xpcall(f, handler, ...)` | 保护调用 |
-| `next(t, [k])` | 遍历表的下一个键值对 |
-| `pairs(t)` / `ipairs(t)` | 迭代器，分别遍历整个表和从 1 开始的数组部分 |
-| `select(n, ...)` | 返回第 n 个参数或参数总个数（`"#"`） |
-| `rawget(t, k)` / `rawset(t, k, v)` | 绕过元方法直接访问表 |
-| `setmetatable(t, mt)` / `getmetatable(t)` | 设置/获取元表 |
-| `load(chunk, [chunkname])` / `loadfile(filename)` | 编译字符串或文件，返回函数 |
-| `dofile(filename)` | 执行文件（出错会直接抛出，不常用） |
-| `_G` / `_VERSION` | 全局环境表 / 版本字符串 |
+| `print(...)` | Prints values, separated by tabs |
+| `type(v)` | Returns the type name: `"nil"`, `"boolean"`, `"number"`, `"string"`, `"table"`, `"function"`, `"thread"`, `"userdata"` |
+| `tostring(v)` / `tonumber(v, [base])` | Convert to and from strings |
+| `assert(v, [msg])` | Asserts; raises an error on failure |
+| `error(msg, [level])` | Raises an error; `level` controls whether position info is attached |
+| `pcall(f, ...)` / `xpcall(f, handler, ...)` | Protected calls |
+| `next(t, [k])` | Returns the next key-value pair while traversing a table |
+| `pairs(t)` / `ipairs(t)` | Iterators, traversing the whole table and the array part starting at 1, respectively |
+| `select(n, ...)` | Returns the n-th argument or the total argument count (`"#"`) |
+| `rawget(t, k)` / `rawset(t, k, v)` | Access a table directly, bypassing metamethods |
+| `setmetatable(t, mt)` / `getmetatable(t)` | Sets / gets a metatable |
+| `load(chunk, [chunkname])` / `loadfile(filename)` | Compiles a string or file and returns a function |
+| `dofile(filename)` | Runs a file (raises an error directly on failure; not common) |
+| `_G` / `_VERSION` | Global environment table / version string |
 
 ```lua
 print(_VERSION)                        -- Lua 5.4
@@ -29,24 +29,24 @@ print(select("#", 1, 2, 3))            -- 3
 print(pcall(function() error("boom") end))  -- false	[string "..."]:1: boom
 ```
 
-## 2. string（字符串库）
+## 2. string (String Library)
 
-Lua 字符串以字节为单位，且不可变。字符串方法可以通过 `s:method(...)` 方式调用。
+Lua strings are measured in bytes and are immutable. String methods can be called as `s:method(...)`.
 
-| 函数 | 说明 |
+| Function | Description |
 | --- | --- |
-| `string.len(s)` | 字节长度（也等价于 `#s`） |
-| `string.sub(s, i, [j])` | 截取子串，索引支持负数 |
-| `string.rep(s, n, [sep])` | 重复字符串 |
-| `string.upper(s)` / `string.lower(s)` | 大小写转换 |
-| `string.reverse(s)` | 反转 |
-| `string.find(s, pattern, [init])` | 查找模式，返回起止下标 |
-| `string.match(s, pattern, [init])` | 捕获匹配内容 |
-| `string.gsub(s, pattern, repl, [n])` | 全局替换 |
-| `string.gmatch(s, pattern)` | 返回迭代器，逐个返回匹配 |
-| `string.format(fmt, ...)` | 格式化，类似 C 的 `printf` |
-| `string.byte(s, [i])` / `string.char(...)` | 字节与字符互转 |
-| `string.pack` / `string.unpack` / `string.packsize` | 二进制打包（5.3+） |
+| `string.len(s)` | Byte length (also equivalent to `#s`) |
+| `string.sub(s, i, [j])` | Extracts a substring; indices support negatives |
+| `string.rep(s, n, [sep])` | Repeats a string |
+| `string.upper(s)` / `string.lower(s)` | Case conversion |
+| `string.reverse(s)` | Reverses |
+| `string.find(s, pattern, [init])` | Finds a pattern, returning the start and end indices |
+| `string.match(s, pattern, [init])` | Captures the matching content |
+| `string.gsub(s, pattern, repl, [n])` | Global replacement |
+| `string.gmatch(s, pattern)` | Returns an iterator that yields each match |
+| `string.format(fmt, ...)` | Formats, similar to C's `printf` |
+| `string.byte(s, [i])` / `string.char(...)` | Converts between bytes and characters |
+| `string.pack` / `string.unpack` / `string.packsize` | Binary packing (5.3+) |
 
 ```lua
 print(string.format("%s=%d (%.1f%%)", "count", 42, 87.5))  -- count=42 (87.5%)
@@ -54,16 +54,16 @@ print(string.gsub("hello world", "o", "0"))                 -- hell0 w0rld	2
 for w in string.gmatch("a,b,c", "[^,]+") do io.write(w, " ") end  -- a b c
 ```
 
-## 3. table（表库）
+## 3. table (Table Library)
 
-| 函数 | 说明 |
+| Function | Description |
 | --- | --- |
-| `table.insert(t, [pos,] v)` | 在末尾或 `pos` 处插入 |
-| `table.remove(t, [pos])` | 移除并返回元素 |
-| `table.concat(t, [sep], [i], [j])` | 拼接数组部分 |
-| `table.sort(t, [cmp])` | 原地排序，`cmp` 为比较函数 |
-| `table.move(a1, f, e, t, [a2])` | 在表之间移动元素（5.3+） |
-| `table.unpack(t, [i], [j])` | 展开为多个返回值（5.2+） |
+| `table.insert(t, [pos,] v)` | Inserts at the end or at `pos` |
+| `table.remove(t, [pos])` | Removes and returns an element |
+| `table.concat(t, [sep], [i], [j])` | Concatenates the array part |
+| `table.sort(t, [cmp])` | Sorts in place; `cmp` is the comparator |
+| `table.move(a1, f, e, t, [a2])` | Moves elements between tables (5.3+) |
+| `table.unpack(t, [i], [j])` | Unpacks into multiple return values (5.2+) |
 
 ```lua
 local t = {3, 1, 2}
@@ -72,20 +72,20 @@ print(table.concat(t, ","))          -- 1,2,3
 print(table.unpack({10, 20, 30}))    -- 10	20	30
 ```
 
-## 4. math（数学库）
+## 4. math (Math Library)
 
-Lua 5.4 的 `math.random` 默认使用 64 位整数随机数发生器；整数运算不会产生浮点误差。
+Lua 5.4's `math.random` uses a 64-bit integer random number generator by default; integer operations do not introduce floating-point error.
 
-| 函数 | 说明 |
+| Function | Description |
 | --- | --- |
-| `math.max(...)` / `math.min(...)` | 最大/最小值 |
-| `math.abs(n)` / `math.ceil(n)` / `math.floor(n)` | 绝对值、上取整、下取整 |
-| `math.fmod(x, y)` / `math.tointeger(x)` | 浮点取模、转整数 |
-| `math.sqrt(x)` / `math.exp(x)` / `math.log(x, [base])` | 幂与对数 |
-| `math.sin/cos/tan/asin/acos/atan` | 三角函数 |
-| `math.tau` / `math.pi` / `math.huge` | 常量 `2π`、`π`、无穷大 |
-| `math.random([m [, n]])` | 随机数，`math.randomseed(x)` 设种子 |
-| `math.type(x)` | 返回 `"integer"` 或 `"float"` |
+| `math.max(...)` / `math.min(...)` | Maximum / minimum |
+| `math.abs(n)` / `math.ceil(n)` / `math.floor(n)` | Absolute value, ceiling, floor |
+| `math.fmod(x, y)` / `math.tointeger(x)` | Floating-point modulo, convert to integer |
+| `math.sqrt(x)` / `math.exp(x)` / `math.log(x, [base])` | Powers and logarithms |
+| `math.sin/cos/tan/asin/acos/atan` | Trigonometric functions |
+| `math.tau` / `math.pi` / `math.huge` | Constants `2π`, `π`, infinity |
+| `math.random([m [, n]])` | Random numbers; `math.randomseed(x)` sets the seed |
+| `math.type(x)` | Returns `"integer"` or `"float"` |
 
 ```lua
 print(math.floor(-1.5), math.ceil(2.1))   -- -2 3
@@ -95,9 +95,9 @@ math.randomseed(os.time())
 print(math.random(1, 6))
 ```
 
-## 5. io（文件 I/O）
+## 5. io (File I/O)
 
-`io.read`/`io.write` 操作默认输入输出；`io.open` 返回文件句柄（失败时返回 `nil, errmsg`，它不会抛出错误）。
+`io.read`/`io.write` operate on the default input/output; `io.open` returns a file handle (on failure it returns `nil, errmsg` and does not raise an error).
 
 ```lua
 local f = io.open("/tmp/lua_io_demo.txt", "w")
@@ -108,39 +108,39 @@ end
 
 local f2 = io.open("/tmp/lua_io_demo.txt", "r")
 if f2 then
-    print(f2:read("a"))          -- 读取整个文件
+    print(f2:read("a"))          -- reads the whole file
     f2:close()
 end
 ```
 
-## 6. os（操作系统库）
+## 6. os (Operating System Library)
 
-| 函数 | 说明 |
+| Function | Description |
 | --- | --- |
-| `os.time([t])` / `os.difftime(t2, t1)` | 时间戳与差值 |
-| `os.clock()` | 程序运行 CPU 时间 |
-| `os.date([format, [t]])` | 格式化时间 |
-| `os.getenv(var)` | 读取环境变量 |
-| `os.remove(filename)` / `os.rename(a, b)` | 删除/重命名文件 |
-| `os.tmpname()` | 临时文件名 |
-| `os.execute([cmd])` | 执行外部命令 |
+| `os.time([t])` / `os.difftime(t2, t1)` | Timestamp and difference |
+| `os.clock()` | CPU time used by the program |
+| `os.date([format, [t]])` | Formats a time |
+| `os.getenv(var)` | Reads an environment variable |
+| `os.remove(filename)` / `os.rename(a, b)` | Deletes / renames a file |
+| `os.tmpname()` | Temporary file name |
+| `os.execute([cmd])` | Runs an external command |
 
 ```lua
 print(os.date("%Y-%m-%d %H:%M:%S"))
-print(os.getenv("HOME") or "未设置")
+print(os.getenv("HOME") or "not set")
 ```
 
-## 7. coroutine（协程库）
+## 7. coroutine (Coroutine Library)
 
-| 函数 | 说明 |
+| Function | Description |
 | --- | --- |
-| `coroutine.create(f)` | 创建协程 |
-| `coroutine.resume(co, ...)` | 恢复执行，返回 `true, ...` 或 `false, err` |
-| `coroutine.yield(...)` | 挂起当前协程 |
-| `coroutine.status(co)` | `suspended`、`running`、`normal`、`dead` |
-| `coroutine.wrap(f)` | 创建可直接调用的包装函数 |
-| `coroutine.isyieldable([co])` | 当前是否可挂起 |
-| `coroutine.running([ismain])` | 返回当前协程及是否为主协程（5.4 新增 `ismain`） |
+| `coroutine.create(f)` | Creates a coroutine |
+| `coroutine.resume(co, ...)` | Resumes execution, returning `true, ...` or `false, err` |
+| `coroutine.yield(...)` | Suspends the current coroutine |
+| `coroutine.status(co)` | `suspended`, `running`, `normal`, `dead` |
+| `coroutine.wrap(f)` | Creates a wrapper function that can be called directly |
+| `coroutine.isyieldable([co])` | Whether the current coroutine can yield |
+| `coroutine.running([ismain])` | Returns the current coroutine and whether it is the main one (`ismain` is new in 5.4) |
 
 ```lua
 local co = coroutine.wrap(function(a)
@@ -151,27 +151,27 @@ print(co(10))        -- 11
 print(co(5))         -- 10
 ```
 
-## 8. package（模块库）
+## 8. package (Module Library)
 
-管理模块搜索与加载：`require`、`package.path`、`package.cpath`、`package.loaded`（已加载模块缓存）、`package.preload`、`package.loadlib`、`package.searchers`。
+Manages module search and loading: `require`, `package.path`, `package.cpath`, `package.loaded` (cache of loaded modules), `package.preload`, `package.loadlib`, `package.searchers`.
 
 ```lua
 print(package.loaded["string"] ~= nil)          -- true
 package.path = package.path .. ";./mylib/?.lua"
 ```
 
-## 9. utf8（UTF-8 库，5.3+）
+## 9. utf8 (UTF-8 Library, 5.3+)
 
-`utf8.char`、`utf8.codepoint`、`utf8.len`、`utf8.offset`、`utf8.charpattern`。注意 `string.len`/`string.sub` 操作的是字节，不是字符。
+`utf8.char`, `utf8.codepoint`, `utf8.len`, `utf8.offset`, `utf8.charpattern`. Note that `string.len`/`string.sub` operate on bytes, not characters.
 
 ```lua
-print(utf8.len("中文abc"))                 -- 5
-print(("中文abc"):sub(1, 3))               -- 按字节截取，前三个字节正好是“中”
+print(utf8.len("héllo"))                   -- 5  (6 bytes, 5 characters)
+print(("héllo"):sub(1, 3))                 -- h + 2-byte é = first 3 bytes
 ```
 
-## 10. debug（调试库）
+## 10. debug (Debug Library)
 
-提供运行时内省与调试能力，包括 `debug.getinfo`、`debug.getlocal`、`debug.setlocal`、`debug.getupvalue`、`debug.sethook`、`debug.traceback`、`debug.getregistry` 等。该库可能破坏封装并影响性能，生产环境应谨慎使用。
+Provides runtime introspection and debugging capabilities, including `debug.getinfo`, `debug.getlocal`, `debug.setlocal`, `debug.getupvalue`, `debug.sethook`, `debug.traceback`, `debug.getregistry`, and more. This library can break encapsulation and hurt performance, so use it with caution in production.
 
 ```lua
 local function f()
@@ -180,19 +180,19 @@ end
 f()
 ```
 
-## 总结
+## Summary
 
-Lua 5.4 的标准库刻意保持精简：基础能力放在 `base`，其余按职责分库，且都可以用 `require` 按需加载（`base`、`coroutine`、`package`、`string`、`table` 除外，它们在 `luaL_openlibs` 中总是可用）。除以上十个库外，Lua 5.4 不再提供 `bit32` 库，位运算已由 `& | ~ << >>` 等语言运算符承担。
+Lua 5.4's standard library is deliberately kept small: basic capabilities live in `base`, while the rest are split by responsibility, and each can be loaded on demand with `require` (except `base`, `coroutine`, `package`, `string`, and `table`, which are always available in `luaL_openlibs`). Beyond the ten libraries above, Lua 5.4 no longer provides a `bit32` library; bit operations are now handled by the language operators `& | ~ << >>` and so on.
 
-## 参考资料
+## References
 
-- [Lua 5.4 官方手册](https://www.lua.org/manual/5.4/manual.html#6.1)
-- [Lua 5.4 官方手册](https://www.lua.org/manual/5.4/manual.html#6.2)
-- [Lua 5.4 官方手册](https://www.lua.org/manual/5.4/manual.html#6.3)
-- [Lua 5.4 官方手册](https://www.lua.org/manual/5.4/manual.html#6.6)
-- [Lua 5.4 官方手册](https://www.lua.org/manual/5.4/manual.html#6.8)
+- [Lua 5.4 official manual](https://www.lua.org/manual/5.4/manual.html#6.1)
+- [Lua 5.4 official manual](https://www.lua.org/manual/5.4/manual.html#6.2)
+- [Lua 5.4 official manual](https://www.lua.org/manual/5.4/manual.html#6.3)
+- [Lua 5.4 official manual](https://www.lua.org/manual/5.4/manual.html#6.6)
+- [Lua 5.4 official manual](https://www.lua.org/manual/5.4/manual.html#6.8)
 
 <!-- BACKLINKS-AUTO -->
-## 相关页面
+## Related pages
 
 - [pitfalls](/knowledge/pitfalls.md)

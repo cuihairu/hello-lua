@@ -1,54 +1,54 @@
-# 源码、论文与延伸阅读
+# Source Code, Papers, and Further Reading
 
-这些是我查 Lua 设计、源码与工程问题时用过或记下的材料，按主题放在一起，方便回查。
+These are the materials I have used or noted down while researching Lua design, source code, and engineering questions, grouped by topic for easy reference.
 
-## 1. 论文：理解设计决策
+## 1. Papers: Understanding Design Decisions
 
-The Evolution of Lua（Roberto Ierusalimschy 等，HOPL III, 2007）讲 Lua 从 1993 年到 2005 年的演化，解释了为什么 Lua 选择表作为唯一的数据结构、为什么嵌入式优先。The Implementation of Lua 5.0（JUCS, 2005）系统介绍 Lua 的寄存器虚拟机、哈希表实现与函数调用约定，是理解字节码与虚拟机章节的经典文献：<https://www.lua.org/doc/jucs05.pdf>。Revisiting Coroutines（ACM TOPLAS, 2009）讨论对称与非对称协程的语义差异，与站内协程主题相关。
+*The Evolution of Lua* (Roberto Ierusalimschy et al., HOPL III, 2007) describes Lua's evolution from 1993 to 2005, explaining why Lua chose tables as its only data structure and why it prioritizes embedding. *The Implementation of Lua 5.0* (JUCS, 2005) systematically introduces Lua's register-based virtual machine, hash table implementation, and function calling conventions; it is the classic reference for the bytecode and virtual machine chapters: <https://www.lua.org/doc/jucs05.pdf>. *Revisiting Coroutines* (ACM TOPLAS, 2009) discusses the semantic differences between symmetric and asymmetric coroutines and is relevant to the coroutine topics on this site.
 
-## 2. 官方手册与源码阅读
+## 2. Official Manual and Source Code Reading
 
-- Lua 5.5 参考手册：<https://www.lua.org/manual/5.5/>，第 2 章（语言）和第 3 章（标准库）覆盖新版本的语言与库变化；旧版手册（如 [5.4](https://www.lua.org/manual/5.4/)）仍在原地址维护。
-- 源码阅读路线（约 3 万行 C 代码，核心文件更少）：
-  1. `llex.c` / `lparser.c` / `lcode.c`：词法分析、语法分析与代码生成，直接生成字节码，不经过 AST；
-  2. `lopcodes.h` / `lvm.c`：指令编码与虚拟机主循环 `luaV_execute`；
-  3. `lgc.c`：增量标记-清除与分代回收的实现；
-  4. `lapi.c` / `lstate.c`：C API 与 `lua_State`（协程线程）的管理；
-  5. `ldo.c`：调用栈与错误处理（setjmp/longjmp）。
-- 源码在线浏览：<https://www.lua.org/source/>，或 GitHub 镜像 <https://github.com/lua/lua>；站内的 [Lua 5.5 源码解析](/design-and-implementation/lua55-source) 按 v5.5.1 逐文件走过一遍，可作这条路线的对照读本。
+- Lua 5.5 reference manual: <https://www.lua.org/manual/5.5/>; Chapter 2 (language) and Chapter 3 (standard library) cover the new-version language and library changes. Older manuals (such as [5.4](https://www.lua.org/manual/5.4/)) are still maintained at their original addresses.
+- Source code reading route (about 30 thousand lines of C, with fewer core files):
+  1. `llex.c` / `lparser.c` / `lcode.c`: lexing, parsing, and code generation, producing bytecode directly without an AST;
+  2. `lopcodes.h` / `lvm.c`: instruction encoding and the VM main loop `luaV_execute`;
+  3. `lgc.c`: implementation of incremental mark-and-sweep and generational collection;
+  4. `lapi.c` / `lstate.c`: C API and `lua_State` (coroutine thread) management;
+  5. `ldo.c`: call stack and error handling (setjmp/longjmp).
+- Source code browsing online: <https://www.lua.org/source/>, or the GitHub mirror <https://github.com/lua/lua>; the site's [Lua 5.5 source analysis](/design-and-implementation/lua55-source) walks through v5.5.1 file by file and can serve as a companion to this route.
 
-## 3. 书籍
+## 3. Books
 
-《Programming in Lua》第 4 版是 Lua 官方作者 Roberto Ierusalimschy 所著的语言类书籍，第 4 版对应 Lua 5.3；第 1 版免费：<https://www.lua.org/pil/>。《Lua 设计与实现》（中文）以 5.1/5.3 源码为主线讲解词法分析、虚拟机与 GC。《Game Programming Patterns》中的 Interpreter / Bytecode 章节（Robert Nystrom）用通俗语言解释字节码虚拟机的动机与取舍。
+The 4th edition of *Programming in Lua* is the language book written by Lua's official author, Roberto Ierusalimschy; the 4th edition corresponds to Lua 5.3. The 1st edition is free: <https://www.lua.org/pil/>. *Lua Design and Implementation* (in Chinese) uses the 5.1/5.3 source code as its main thread to explain lexing, the virtual machine, and GC. The Interpreter / Bytecode chapters of *Game Programming Patterns* (Robert Nystrom) explain the motivation and trade-offs of a bytecode virtual machine in plain language.
 
-## 4. 工具实践
+## 4. Tooling in Practice
 
-- `luac -l -l`：查看编译器生成的真实字节码，是验证虚拟机相关表述的第一手工具：
+- `luac -l -l`: shows the real bytecode the compiler generates and is the first-hand tool for verifying virtual machine claims:
 
   ```bash
   echo 'local a = 10 + 5' > /tmp/t.lua
   luac -l -l /tmp/t.lua
   ```
 
-- `collectgarbage("count")` / `collectgarbage("step")`：观察 GC 行为与内存曲线。
-- LuaJIT 的 `jit.dump` 与 `-jp` 分析器：查看 trace 编译与采样分析结果，理解 JIT 与解释器的差异。
+- `collectgarbage("count")` / `collectgarbage("step")`: observe GC behavior and the memory curve.
+- LuaJIT's `jit.dump` and `-jp` profiler: inspect trace compilation and sampling results, and understand the difference between JIT and the interpreter.
 
-## 5. 社区资料
+## 5. Community Resources
 
-lua-users wiki 的 LuaImplementations 条目（<http://lua-users.org/wiki/LuaImplementations>）对比了各 Lua 实现，Lua、LuaJIT、Ravi、PUC Lua 衍生版都在其中。LuaJIT 扩展文档（<https://luajit.org/extensions.html>）说明 FFI、`bit` 库以及与 Lua 5.1/5.2/5.3 的差异。awesome-lua（<https://github.com/LewisJEllis/awesome-lua>）是第三方库与工具清单。
+The LuaImplementations entry on the lua-users wiki (<http://lua-users.org/wiki/LuaImplementations>) compares the various Lua implementations, including Lua, LuaJIT, Ravi, and PUC Lua derivatives. The LuaJIT extensions documentation (<https://luajit.org/extensions.html>) explains FFI, the `bit` library, and the differences from Lua 5.1/5.2/5.3. awesome-lua (<https://github.com/LewisJEllis/awesome-lua>) is a list of third-party libraries and tools.
 
-## 我的源码阅读顺序
+## My Source Code Reading Order
 
-我读源码时会先用 `luac -l -l` 看实际字节码，再读《The Implementation of Lua 5.0》补原理，然后沿“解析器 → 虚拟机 → GC → C API”往下看；有疑问时回到官方手册核对。这条顺序把几个实现主题串了起来。工具安装与社区求助渠道见[Lua相关资源与社区](/appendix/resources)。
+When reading source code, I first look at the actual bytecode with `luac -l -l`, then read *The Implementation of Lua 5.0* to fill in the principles, and then go down the route "parser -> virtual machine -> GC -> C API"; when questions arise, I check the official manual. This order ties together several implementation topics. Tool installation and community help channels are in [Lua resources and community](/appendix/resources).
 
-## 参考资料
+## References
 
-- [PIL · 进阶主题](https://www.lua.org/pil/14.html)
-- [Lua 官方文档索引](https://www.lua.org/docs.html)
-- [Lua_(programming_language)](https://en.wikipedia.org/wiki/Lua_(programming_language))
+- [PIL · Advanced topics](https://www.lua.org/pil/14.html)
+- [Lua official documentation index](https://www.lua.org/docs.html)
+- [Lua (programming language)](https://en.wikipedia.org/wiki/Lua_(programming_language))
 
 <!-- BACKLINKS-AUTO -->
-## 相关页面
+## Related pages
 
 - [resources](resources.md)
 - [README](/knowledge/README.md)

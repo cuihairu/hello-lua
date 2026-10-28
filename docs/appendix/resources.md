@@ -1,52 +1,52 @@
-# Lua相关资源与社区
+# Lua Resources and Community
 
-这里记下我查 Lua 文档、工具和社区资料时常用的入口。核对语言与 API 行为时，我通常先回到官方手册，再看社区讨论。
+These are the entry points I commonly use when looking up Lua documentation, tools, and community material. When verifying language and API behavior, I usually start with the official manual and then look at community discussion.
 
-## 1. 官方资源
+## 1. Official Resources
 
-Lua 官方网站 <https://www.lua.org/> 发布版本、新闻与官方文档。Lua 5.4 参考手册 <https://www.lua.org/manual/5.4/> 是语言与标准库的权威定义，本站涉及的 API 均以此为准。各版本源码压缩包在 <https://www.lua.org/ftp/>，也可以到 <https://www.lua.org/source/> 在线浏览核心源码；GitHub 镜像在 <https://github.com/lua/lua>。
+The official Lua website <https://www.lua.org/> publishes releases, news, and official documentation. The Lua 5.4 reference manual <https://www.lua.org/manual/5.4/> is the authoritative definition of the language and standard library, and all APIs referenced on this site follow it. Source archives for each version are at <https://www.lua.org/ftp/>, and you can also browse the core source online at <https://www.lua.org/source/>; the GitHub mirror is at <https://github.com/lua/lua>.
 
-## 2. 文档与社区站点
+## 2. Documentation and Community Sites
 
-lua-users wiki（<http://lua-users.org/wiki/>，外部社区站点）是社区维护的知识库，其中有用户贡献的教程与技巧条目，LuaCurses、SandBoxes、OptimisingUsingLocalVariables 都在里面。Lua 5.4 中文手册可在 GitHub 搜索 “lua 5.4 中文手册” 找到社区翻译版，内容以官方手册为准。我临时验证小段代码时会用 Lua 官网的在线演示（<https://www.lua.org/demo.html>）。
+The lua-users wiki (<http://lua-users.org/wiki/>, external community site) is a community-maintained knowledge base with user-contributed tutorials and tips, including LuaCurses, SandBoxes, and OptimisingUsingLocalVariables. A community translation of the Lua 5.4 manual in Chinese can be found by searching for "lua 5.4 中文手册" on GitHub, with the official manual as the source of truth. When I need to quickly verify small snippets, I use the online demo on the Lua website (<https://www.lua.org/demo.html>).
 
-## 3. 工具与包管理
+## 3. Tools and Package Management
 
-- LuaRocks：<https://luarocks.org/> 是 Lua 的包管理器，用它安装第三方库：
+- LuaRocks: <https://luarocks.org/> is Lua's package manager; use it to install third-party libraries:
 
   ```bash
   luarocks install luafilesystem
   ```
 
-- LuaJIT：<https://luajit.org/>，高性能 Lua 实现，附带 FFI 库，源码在 <https://github.com/LuaJIT/LuaJIT>。
-- ZeroBrane Studio：<https://studio.zerobrane.com/>，轻量级 Lua IDE，内置调试器。
-- EmmyLua / Lua 语言服务器：为 VS Code 等编辑器提供补全、跳转与静态检查。
+- LuaJIT: <https://luajit.org/>, a high-performance Lua implementation bundled with the FFI library; source at <https://github.com/LuaJIT/LuaJIT>.
+- ZeroBrane Studio: <https://studio.zerobrane.com/>, a lightweight Lua IDE with a built-in debugger.
+- EmmyLua / Lua language server: provides completion, jump-to-definition, and static checking for editors such as VS Code.
 
-## 4. 社区与求助渠道
+## 4. Community and Help Channels
 
-- lua-l 邮件列表：<https://www.lua.org/lua-l.html>，官方邮件列表，Lua 作者与核心维护者活跃于此，讨论语言设计、内部实现与版本演进问题。
-- GitHub：搜索 `lua` 相关项目；第三方库的 issue 区是报告兼容性问题的首选渠道。
-- Stack Overflow：使用 `lua` 标签提问，历史问答覆盖了绝大多数常见错误。
-- 中文社区：云风翻译的《Lua 5.3 参考手册》与相关博客、游戏开发社区（如知乎、掘金的 Lua 专题）是中文资料较集中的地方。
+- lua-l mailing list: <https://www.lua.org/lua-l.html>, the official mailing list where Lua's authors and core maintainers are active, discussing language design, internals, and version evolution.
+- GitHub: search `lua`-related projects; the issue trackers of third-party libraries are the first place to report compatibility problems.
+- Stack Overflow: ask with the `lua` tag; past Q&A covers the large majority of common errors.
+- Chinese communities: Yunfeng's translation of the *Lua 5.3 reference manual* and related blogs, plus game development communities (such as the Lua topics on Zhihu and Juejin), are where Chinese material is concentrated.
 
-## 5. 常用参考书
+## 5. Common Reference Books
 
-- 《Programming in Lua》（第 4 版，Lua 5.3），官方作者撰写，第 1 版可在官网免费阅读：<https://www.lua.org/pil/>。
-- 《Lua 程序设计（第 2 版）》，第 1 版的中译本。
-- 《Lua 设计与实现》/《Lua 源码剖析》类中文书籍，涉及虚拟机与 GC 实现。
+- *Programming in Lua* (4th edition, Lua 5.3), written by the official author; the 1st edition is free to read on the official site: <https://www.lua.org/pil/>.
+- *Lua Programming (2nd edition)*, the Chinese translation of the 1st edition.
+- Chinese books such as *Lua Design and Implementation* / *Lua Source Code Analysis*, covering the virtual machine and GC internals.
 
-## 我的查阅顺序
+## My Lookup Order
 
-我通常先查官方手册的语言、标准库和 C API 部分，再用 LuaRocks 装库做小项目，之后结合 `lua-users wiki` 与源码看虚拟机、垃圾回收等内部机制。遇到具体问题时，我会用官方手册和 lua-l 邮件列表存档核对。源码阅读顺序与论文记录见[延伸阅读与参考资料](/appendix/further-reading)。
+I usually check the language, standard library, and C API parts of the official manual first, then install libraries with LuaRocks to work on a small project, and then combine the `lua-users wiki` with the source code to look at internals such as the virtual machine and garbage collection. When a concrete problem arises, I verify against the official manual and the lua-l mailing list archives. The source code reading order and paper notes are in [Further reading and references](/appendix/further-reading).
 
-## 参考资料
+## References
 
-- [Lua 官方文档索引](https://www.lua.org/docs.html)
-- [Lua 下载页](https://www.lua.org/download.html)
-- [LuaRocks 包管理器首页](https://luarocks.org/)
+- [Lua official documentation index](https://www.lua.org/docs.html)
+- [Lua download page](https://www.lua.org/download.html)
+- [LuaRocks package manager homepage](https://luarocks.org/)
 
 <!-- BACKLINKS-AUTO -->
-## 相关页面
+## Related pages
 
 - [further-reading](further-reading.md)
 - [glossary](/glossary.md)

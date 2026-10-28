@@ -1,20 +1,20 @@
-# 使用LuaJIT的FFI库
+# Using LuaJIT's FFI Library
 
-LuaJIT 的 FFI（Foreign Function Interface）库允许 Lua 脚本直接调用 C 函数、使用 C 数据结构。相比写一套 C/C++ 插件再接到 Lua-C 接口上，FFI 免去了这些中间环节。
+LuaJIT's FFI (Foreign Function Interface) library lets Lua scripts call C functions and use C data structures directly. Compared to writing a C/C++ plugin and wiring it into the Lua-C interface, FFI removes those intermediate steps.
 
-## 1. 引入 FFI 库
+## 1. Introducing the FFI Library
 
-用 FFI 之前，先在 Lua 脚本中引入 `ffi` 模块：
+Before using FFI, introduce the `ffi` module in the Lua script:
 
 ```lua
 local ffi = require("ffi")
 ```
 
-## 2. 定义 C 语言函数和数据结构
+## 2. Defining C Functions and Data Structures
 
-C 函数和数据结构用 `ffi.cdef` 定义，它接受一个字符串参数，里面写 C 语言的声明。
+Use `ffi.cdef` to define C functions and data structures; it accepts a string argument containing the C declarations.
 
-### 示例：定义 C 语言函数
+### Example: Defining a C Function
 
 ```lua
 ffi.cdef[[
@@ -22,7 +22,7 @@ ffi.cdef[[
 ]]
 ```
 
-### 示例：定义 C 语言结构体
+### Example: Defining a C Struct
 
 ```lua
 ffi.cdef[[
@@ -33,21 +33,21 @@ ffi.cdef[[
 ]]
 ```
 
-## 3. 加载 C 动态库
+## 3. Loading C Dynamic Libraries
 
-用 `ffi.load` 加载 C 动态库（共享库），之后就能调用库中定义的函数。
+Use `ffi.load` to load a C dynamic library (shared library); afterwards you can call the functions defined in it.
 
-### 示例：加载 C 标准库
+### Example: Loading the C Standard Library
 
 ```lua
-local libc = ffi.load("c") -- 加载标准 C 库
+local libc = ffi.load("c") -- loads the standard C library
 ```
 
-## 4. 调用 C 函数
+## 4. Calling C Functions
 
-声明和加载都做完，这些 C 函数就能直接在 Lua 里调了。
+Once declarations and loading are done, these C functions can be called directly from Lua.
 
-### 示例：调用 `printf` 函数
+### Example: Calling the `printf` Function
 
 ```lua
 ffi.cdef[[
@@ -55,15 +55,15 @@ ffi.cdef[[
 ]]
 
 local libc = ffi.load("c")
--- 可变参数里的 Lua 数字按 double 传给 C，%d 要先显式转成 int
-libc.printf("Hello from C! %d\n", ffi.new("int", 42))  -- 输出 Hello from C! 42
+-- Lua numbers in varargs are passed to C as double; %d must be explicitly converted to int first
+libc.printf("Hello from C! %d\n", ffi.new("int", 42))  -- outputs Hello from C! 42
 ```
 
-## 5. 使用 C 数据结构
+## 5. Using C Data Structures
 
-定义了 C 数据结构后，可以在 Lua 里创建它的实例并操作字段。
+After defining a C data structure, you can create instances of it in Lua and operate on its fields.
 
-### 示例：创建和操作 C 结构体
+### Example: Creating and Operating on a C Struct
 
 ```lua
 ffi.cdef[[
@@ -80,11 +80,11 @@ myPoint.y = 20
 print("Point coordinates:", myPoint.x, myPoint.y)
 ```
 
-## 6. 使用 C 函数与结构体结合
+## 6. Combining C Functions and Structs
 
-C 函数和结构体可以配合起来用。
+C functions and structs can be used together.
 
-### 示例：定义和调用一个处理结构体的 C 函数
+### Example: Defining and Calling a C Function That Processes a Struct
 
 ```c
 // mylib.c
@@ -111,16 +111,16 @@ ffi.cdef[[
     void print_point(Point *p);
 ]]
 
-local mylib = ffi.load("mylib")  -- 加载 C 库
+local mylib = ffi.load("mylib")  -- loads the C library
 local myPoint = ffi.new("Point", 1, 2)
 mylib.print_point(myPoint)
 ```
 
-## 7. 错误处理
+## 7. Error Handling
 
-在使用 FFI 时，需要特别注意类型安全和内存管理。传递不正确的数据类型或访问已释放的内存可能导致崩溃或未定义行为。
+When using FFI, you need to pay particular attention to type safety and memory management. Passing an incorrect data type or accessing freed memory can cause crashes or undefined behavior.
 
-### 示例：检查函数返回值
+### Example: Checking a Function's Return Value
 
 ```lua
 ffi.cdef[[
@@ -134,18 +134,18 @@ if result < 0 then
 end
 ```
 
-## 总结
+## Summary
 
-FFI 用起来就一条主线：`ffi.cdef` 声明，`ffi.load` 加载，然后直接调用。要盯住的是声明必须和真实签名一致，类型和内存出错就是崩溃或未定义行为。
+Using FFI is one main line: declare with `ffi.cdef`, load with `ffi.load`, then call directly. What you must watch is that declarations match the real signatures; a type or memory error is a crash or undefined behavior.
 
-## 参考资料
+## References
 
-- [Lua 5.4 官方手册](https://www.lua.org/manual/5.4/manual.html#4)
-- [LuaJIT FFI 文档](https://luajit.org/ext_ffi.html)
+- [Lua 5.4 official manual](https://www.lua.org/manual/5.4/manual.html#4)
+- [LuaJIT FFI documentation](https://luajit.org/ext_ffi.html)
 - [LuaJIT FFI API](https://luajit.org/ext_ffi_api.html)
 
 <!-- BACKLINKS-AUTO -->
-## 相关页面
+## Related pages
 
 - [glossary](/glossary.md)
 - [applications](/knowledge/applications.md)
