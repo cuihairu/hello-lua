@@ -26,3 +26,7 @@ Scope notes: `SUMMARY.md` is build-excluded and stays as the English maintenance
 
 - [x] 审核发现：完成项仍写着“7 pages left”，与完成标记及“Remaining: 0”直接矛盾（todo.md:3）— 属实，已改“0 pages left”。证据：`git show cd8939b -- todo.md` 仅切换 `- [ ]`→`- [x]` 而未改文字；`find docs -name '*.md'` 非 zh/review/SUMMARY 计 104 页，全部完成。
 - [x] 审核发现：Progress 表用 d88325d 的 7 页替换了 d792355 的 10 页记录，行合计仅 94，与 Total translated: 104 不符（todo.md:16）— 属实，已恢复 d792355 行（10 页）并保留 d88325d 行（7 页），合计 104。证据：`git show d792355:todo.md` 有 `docs/lua-extensions-applications/ (10 pages)` 行；`git diff d792355 d88325d -- todo.md` 为空，说明 cd8939b 误改；d88325d 实际改 7 个 md（`git show --stat d88325d`）。
+- [x] 审核发现：两处 README 均移除了 `[English](README.md) | [中文](README.zh.md)` 语言切换链接，GitHub 读者无法再直接互切中英版本（README.md:1）— 属实，已恢复。证据：`git show 6f60261` 在两个 README 中删除该行；恢复后 `git diff HEAD~1 -- README.md README.zh.md` 为空。
+- [x] 审核发现：头部同时保留本地 `docs/public/badges/docs.svg` 与新增 shields.io `docs` 徽章，存在重复的 docs 徽章（README.md:1）— 属实，已移除 shields.io 徽章，仅保留本地 `docs/public/badges/docs.svg`（aria-label `docs: VitePress`）。证据：恢复后两个 README 均无 `img.shields.io/badge/docs-`。
+- ~~审核发现：README.zh.md 新增徽章 URL 内嵌未转义中文「文档」，可能无法被 shields.io 或部分渲染器正确解析（README.zh.md:1）~~ 不属实：`curl "https://img.shields.io/badge/docs-文档-blue"` 实测返回 HTTP 200 且 SVG 正确渲染 `docs: 文档`；非 ASCII 字符由浏览器/HTTP 客户端自动 percent-encode，无需手动转义。
+- [x] 审核发现：头部删除 `# Hello Lua` 标题及「Read online / Knowledge Points」导航链接，README 信息量与可导航性下降（README.md:1）— 属实，已恢复。证据：恢复后两个 README 均含 `# Hello Lua`、Read online/在线阅读 及 Knowledge Points/知识点总览 链接；`git diff HEAD~1 -- README.md` 为空。
