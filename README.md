@@ -13,9 +13,9 @@
   <img src="docs/public/badges/langs.svg" alt="langs" />
 </p>
 
-Lua developer notes · [Read online](https://cuihairu.github.io/hello-lua//)
+Lua developer notes · [Read online](https://cuihairu.github.io/hello-lua/)
 
-Knowledge Points · [Browse](https://cuihairu.github.io/hello-lua//knowledge/README) <a href="https://cuihairu.github.io/hello-lua/"><img src="https://img.shields.io/badge/docs-blue" alt="docs"></a>
+Knowledge Points · [Browse](https://cuihairu.github.io/hello-lua/knowledge/README)
 </div>
 
 ---

@@ -13,9 +13,9 @@
   <img src="docs/public/badges/langs.svg" alt="langs" />
 </p>
 
-Lua 开发者笔记 · [在线阅读](https://cuihairu.github.io/hello-lua/zh//)
+Lua 开发者笔记 · [在线阅读](https://cuihairu.github.io/hello-lua/zh/)
 
-知识点总览 · [在线阅读](https://cuihairu.github.io/hello-lua/zh//knowledge/README) <a href="https://cuihairu.github.io/hello-lua/zh/"><img src="https://img.shields.io/badge/%E6%96%87%E6%A1%A3-blue" alt="docs"></a>
+知识点总览 · [在线阅读](https://cuihairu.github.io/hello-lua/zh/knowledge/README)
 </div>
 
 ---
