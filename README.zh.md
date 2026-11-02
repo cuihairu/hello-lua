@@ -6,11 +6,11 @@
 
 # Hello Lua
 
-<p align="center"><img src="docs/public/badges/topic.svg" alt="topic" /> <img src="docs/public/badges/docs.svg" alt="docs" /> <img src="docs/public/badges/license.svg" alt="license" /> <img src="docs/public/badges/langs.svg" alt="langs" /></p>
+<p align="center"><img src="docs/public/badges/topic.svg" alt="topic" /> <a href="https://cuihairu.github.io/hello-lua/zh/"><img src="docs/public/badges/docs.svg" alt="docs" /></a> <img src="docs/public/badges/license.svg" alt="license" /> <img src="docs/public/badges/langs.svg" alt="langs" /></p>
 
-Lua 开发者笔记 · [在线阅读](https://cuihairu.github.io/hello-lua/)
+Lua 开发者笔记 · [在线阅读](https://cuihairu.github.io/hello-lua/zh/)
 
-知识点总览 · [在线阅读](https://cuihairu.github.io/hello-lua/knowledge/README)
+知识点总览 · [在线阅读](https://cuihairu.github.io/hello-lua/zh/knowledge/README)
 </div>
 
 ---
