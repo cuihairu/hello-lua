@@ -20,10 +20,10 @@ Personal notes and experience shared from a game developer’s perspective, cove
 ## Local Development
 
 ```bash
-pnpm install          # Install dependencies
-pnpm run docs:dev     # Local development server
-pnpm run docs:build   # Build to docs/.vitepress/dist
-pnpm run docs:preview # Preview the build output locally
+npm install          # Install dependencies
+npm run docs:dev     # Local development server
+npm run docs:build   # Build to docs/.vitepress/dist
+npm run docs:preview # Preview the build output locally
 ```
 
 ## License
