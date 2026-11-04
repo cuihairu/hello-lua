@@ -20,10 +20,10 @@ Lua 开发者笔记 · [在线阅读](https://cuihairu.github.io/hello-lua/zh/)
 ## 本地开发
 
 ```bash
-npm install          # 安装依赖
-npm run docs:dev     # 本地开发
-npm run docs:build   # 构建到 docs/.vitepress/dist
-npm run docs:preview # 本地预览构建产物
+pnpm install          # 安装依赖
+pnpm run docs:dev     # 本地开发
+pnpm run docs:build   # 构建到 docs/.vitepress/dist
+pnpm run docs:preview # 本地预览构建产物
 ```
 
 ## License
