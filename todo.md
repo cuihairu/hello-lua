@@ -54,3 +54,4 @@ Scope notes: `SUMMARY.md` is build-excluded and stays as the English maintenance
 - [x] 审核发现：本轮 diff 未见问题（97f79fdb..HEAD）— 属实，`git log --oneline 97f79fdb..HEAD` 仅含 0779780 `docs: record audit verification`；`git diff 97f79fdb..HEAD --stat` 仅 `todo.md | 1 +`，内容为勾选并记录上一轮 e26a1645..HEAD 验证，无任何代码改动。证据：`git diff 97f79fdb..HEAD` 仅新增一行 todo 记录；`git show 0779780 --stat` 仅改 todo.md。
 - [x] 审核发现：本轮 diff 未见问题（0779780a..HEAD）— `git rev-list 0779780a..HEAD` 仅含 `e99949ac7814d10a556476700209c7addeaa5d8a`；已用 `git show --stat` 确认该提交仅更新 todo.md 审核记录，无代码或配置改动。
 - [x] 审核发现：本轮 diff 未见问题（e99949ac..HEAD）— `git rev-list e99949ac..HEAD` 仅含 `cc9b9ed090caa89cd4026c633e5cd0125c5f5ca7`；已用 `git show --stat cc9b9ed` 确认该提交仅更新 todo.md 审核记录（`todo.md | 1 +`），无任何代码或配置改动。
+- [x] 审核发现：本轮 diff 未见问题（cc9b9ed0..HEAD）— 属实，`git rev-list cc9b9ed0..HEAD` 仅含 `3e2df4e9b9dee95f1be69631f819d591e7f6895d`；已用 `git show --stat 3e2df4e` 确认该提交仅更新 todo.md 审核记录（`todo.md | 1 +`），无任何代码或配置改动。
